@@ -1,0 +1,32 @@
+{
+  "name": "dionysus.club",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "build:clean": "turbo build:clean",
+    "build:app": "turbo build --filter=app.dionysus.club",
+    "build:api": "turbo build --filter=api.dionysus.club",
+    "dev": "turbo run dev",
+    "dev:app": "turbo dev --filter=app.dionysus.club",
+    "dev:api": "turbo dev --filter=api.dionysus.club",
+    "start": "turbo start",
+    "start:app": "turbo start --filter=app.dionysus.club",
+    "start:api": "turbo start --filter=api.dionysus.club",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check-types": "turbo run check-types",
+    "graph:build": "turbo build --graph",
+    "prettier": "turbo prettier"
+  },
+  "devDependencies": {
+    "@repo/tsconfig": "workspace:*",
+    "prettier": "^3.5.3",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "turbo": "^2.4.4",
+    "typescript": "5.8.2"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": "v22"
+  }
+}

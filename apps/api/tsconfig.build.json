@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.api.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "module": "commonjs",
+    "moduleResolution": "Node",
+  }
+}

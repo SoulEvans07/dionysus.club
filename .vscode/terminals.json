@@ -1,0 +1,34 @@
+{
+  "terminals": [
+    {
+      "name": "server",
+      "icon": "server",
+      "color": "terminal.ansiRed",
+      "commands": ["cd apps/api", "pnpm dev"],
+      "focus": true,
+      "execute": true
+    },
+    {
+      "name": "app",
+      "icon": "preview",
+      "color": "terminal.ansiBlue",
+      "commands": ["cd apps/app", "pnpm dev"],
+      "focus": true,
+      "execute": true
+    },
+    {
+      "name": "libs",
+      "icon": "library",
+      "color": "terminal.ansiMagenta",
+      "commands": ["cd libs"],
+      "focus": true,
+      "execute": true
+    },
+    {
+      "name": "cmd",
+      "icon": "terminal",
+      "color": "terminal.ansiGreen",
+      "execute": false
+    }
+  ]
+}

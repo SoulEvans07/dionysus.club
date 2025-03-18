@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+
+    "incremental": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "declaration": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    "paths": {
+      "~/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "./db", "./drizzle.config.ts"]
+}

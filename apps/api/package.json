@@ -1,0 +1,26 @@
+{
+  "name": "api.dionysus.club",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsup",
+    "start": "cross-env NODE_PATH=dist node dist/index.cjs"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.8",
+    "@repo/dtos": "workspace:^",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.7",
+    "hono": "^4.7.4",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.17",
+    "tsconfig-paths": "^4.2.0",
+    "tsup": "^8.4.0",
+    "tsx": "^4.7.1",
+    "typescript": "^5.8.2"
+  }
+}

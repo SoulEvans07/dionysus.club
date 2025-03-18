@@ -1,0 +1,20 @@
+{
+  "name": "@repo/dtos",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "prettier": "prettier . --write"
+  },
+  "dependencies": {
+    "tozod": "^3.0.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "shx": "^0.3.4",
+    "typescript": "^5.3.3"
+  }
+}
