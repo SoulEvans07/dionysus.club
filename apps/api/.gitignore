@@ -24,8 +24,5 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# drizzle
-db/migrations/meta
-
 # misc
 .DS_Store

@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1742503351458,
+      "tag": "0000_add_timestamp_procedure",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1742510576698,
+      "tag": "0001_add_user_ingredient",
+      "breakpoints": true
+    }
+  ]
+}
