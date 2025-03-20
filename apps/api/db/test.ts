@@ -8,7 +8,11 @@ async function main() {
   const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
   const db = drizzle(pool, { schema });
 
-  const result = await db.select().from(schema.ingredients);
+  const result = await db.query.ingredients.findMany({
+    with: {
+      owner: true
+    }
+  });
   console.log('res', result);
 
   await pool.end();
