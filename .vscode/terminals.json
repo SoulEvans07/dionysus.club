@@ -17,6 +17,11 @@
       "execute": true
     },
     {
+      "name": "db",
+      "icon": "database",
+      "color": "terminal.ansiWhite"
+    },
+    {
       "name": "libs",
       "icon": "library",
       "color": "terminal.ansiMagenta",

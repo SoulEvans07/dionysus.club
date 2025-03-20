@@ -4,8 +4,8 @@
 
     "incremental": true,
     "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -21,5 +21,5 @@
       "~/*": ["./src/*"]
     }
   },
-  "include": ["src", "./db", "./drizzle.config.ts"]
+  "include": ["./src", "./db", "./drizzle.config.ts"]
 }

@@ -1,0 +1,20 @@
+name: dionysus.club
+
+services:
+  postgres:
+    image: postgres:16.8-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=dionysus_club
+      - POSTGRES_USER=dionysus
+      - POSTGRES_PASSWORD=postgres
+      - PGPORT=7432
+    ports:
+      - '7432:7432'
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/
+
+volumes:
+  db:
+    driver: local
