@@ -25,6 +25,9 @@
       "cache": false,
       "persistent": true
     },
+    "db:migrate": {
+      "cache": false
+    },
     "start": {
       "cache": false,
       "persistent": true

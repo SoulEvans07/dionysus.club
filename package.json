@@ -9,6 +9,7 @@
     "dev": "turbo run dev",
     "dev:app": "turbo dev --filter=app.dionysus.club",
     "dev:api": "turbo dev --filter=api.dionysus.club",
+    "db:migrate": "turbo db:migrate --filter=api.dionysus.club",
     "start": "turbo start",
     "start:app": "turbo start --filter=app.dionysus.club",
     "start:api": "turbo start --filter=api.dionysus.club",
