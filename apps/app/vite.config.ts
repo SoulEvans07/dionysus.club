@@ -8,7 +8,7 @@ import { z } from 'zod';
 dotenv.config();
 
 const Env = z.object({
-  PORT: z.coerce.number(),
+  PORT: z.coerce.number().optional(),
 });
 
 const env = Env.parse(process.env);
