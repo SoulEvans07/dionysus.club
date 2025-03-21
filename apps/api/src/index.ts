@@ -1,36 +1,33 @@
-import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import { serve } from '@hono/node-server';
 
-import { TestType } from '@repo/dtos';
 import { random } from './random';
 
 import '~/env';
-import { db, sql } from './database';
+import { db, sql } from '~/database';
+import { ingredientController } from './controllers/ingredient';
 
-const app = new Hono();
+const app = new Hono().basePath('/api');
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+  })
+);
 
-app.get('/', c => {
-  const q = c.req.query();
-  const { name } = TestType.parse(q);
-
-  return c.json({ message: `Hello ${name ?? 'Hono'}! ${random()}` });
+app.get('/health', async (c) => {
+  const { rows } = await db.execute(sql`select now()`);
+  return c.json({ healthy: true, dbTime: rows[0].now });
 });
 
-app.get('/ingredients', async c => {
-  const list = await db.query.ingredients.findMany({});
-  return c.json(list);
-});
-
-app.get('/api/health', c => {
-  return c.json({ healthy: true });
-});
+app.route('/ingredients', ingredientController);
 
 serve(
   {
     fetch: app.fetch,
     port: process.env.PORT ?? 3000,
   },
-  info => {
+  (info) => {
     console.log(`Server is running on http://localhost:${info.port}`);
   }
 );

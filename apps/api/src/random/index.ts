@@ -1,3 +1,3 @@
 export function random() {
-  return 'hello'
+  return 'hello';
 }

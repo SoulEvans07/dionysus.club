@@ -11,13 +11,13 @@ async function main() {
   const db = drizzle(pool, { schema });
   await reset(db, schema);
 
-  await seed(db, schema).refine(fake => ({
+  await seed(db, schema).refine((fake) => ({
     users: {
       columns: {},
       count: 5,
       with: {
-        ingredients: 5
-      }
+        ingredients: 5,
+      },
     },
     ingredients: {
       columns: {

@@ -1,5 +1,4 @@
 {
-  "files": [],
   "compilerOptions": {
     "noEmit": true,
 
@@ -22,8 +21,6 @@
       "~/*": ["./src/*"]
     }
   },
-  "references": [
-    { "path": "./tsconfig.db.json" },
-    { "path": "./tsconfig.build.json" }
-  ]
+  "include": ["./src"],
+  "references": [{ "path": "./tsconfig.db.json" }]
 }
