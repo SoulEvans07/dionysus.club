@@ -3,10 +3,10 @@
   "rewrites": [
     {
       "source": "/api/:match*",
-      "destination": "dionysusclub-production.up.railway.app/api/:match*"
+      "destination": "https://dionysusclub-production.up.railway.app/api/:match*"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!api).*)",
       "destination": "/index.html"
     }
   ]
