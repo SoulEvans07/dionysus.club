@@ -3,6 +3,7 @@ import tseslint from 'typescript-eslint';
 import prettier from 'eslint-config-prettier';
 import prettierConfig from 'eslint-config-prettier';
 import hono from 'eslint-plugin-hono';
+import drizzle from 'eslint-plugin-drizzle';
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -13,8 +14,9 @@ export default tseslint.config(
       ecmaVersion: 2020,
     },
     plugins: {
-      hono: hono,
+      hono,
       prettier,
+      drizzle
     },
     rules: {
       // Hono Rules

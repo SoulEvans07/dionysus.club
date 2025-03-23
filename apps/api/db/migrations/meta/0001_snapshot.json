@@ -1,5 +1,5 @@
 {
-  "id": "58fc69fb-84cb-4bab-804d-9977c4c0ba3a",
+  "id": "fe940153-e07f-4ff1-a536-c3dd8a04d548",
   "prevId": "0282c5f2-8000-4df7-b70d-fd7372379289",
   "version": "7",
   "dialect": "postgresql",
@@ -68,8 +68,12 @@
           "name": "ingredients_owner_id_users_id_fk",
           "tableFrom": "ingredients",
           "tableTo": "users",
-          "columnsFrom": ["owner_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "owner_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -90,6 +94,12 @@
           "primaryKey": true,
           "notNull": true,
           "default": "gen_random_uuid()"
+        },
+        "kinde_id": {
+          "name": "kinde_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
         },
         "name": {
           "name": "name",
@@ -127,7 +137,15 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "users_kinde_id_unique": {
+          "name": "users_kinde_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "kinde_id"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

@@ -6,7 +6,8 @@ import { ingredients } from './ingredient';
 
 export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
-  username: varchar('name', { length: 256 }).notNull(),
+  kindeId: varchar('kinde_id', { length: 256 }).unique().notNull(),
+  username: varchar('username', { length: 256 }).notNull(),
   email: varchar('email', { length: 256 }).notNull(),
   ...entityTimestamps(),
 });

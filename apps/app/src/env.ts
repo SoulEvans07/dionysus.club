@@ -1,8 +1,6 @@
 import { z } from 'zod';
 
-const envVariables = z.object({
-  VITE_SERVER_URL: z.string(),
-});
+const envVariables = z.object({});
 
 envVariables.parse(import.meta.env);
 

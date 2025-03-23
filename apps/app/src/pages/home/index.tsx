@@ -1,29 +1,27 @@
 import { useEffect, useState } from 'react';
-import { Ingredient } from '@repo/dtos';
+import { IngredientDTO } from '@repo/dtos';
 import { Input } from '~/components/shadcn/input';
-
-const apiUrl = import.meta.env.VITE_SERVER_URL;
 
 export function HomePage() {
   const refresh = async () => {
-    const list = await fetch(`${apiUrl}/ingredients/list`)
+    const list = await fetch('/api/ingredients/list')
       .then((res) => res.json())
-      .then((data) => Ingredient.array().parse(data));
+      .then((data) => IngredientDTO.array().parse(data));
     setList(list);
   };
 
-  const [list, setList] = useState<Ingredient[]>([]);
+  const [list, setList] = useState<IngredientDTO[]>([]);
   useEffect(() => void refresh(), []);
 
   const [id, setId] = useState('');
-  const [item, setItem] = useState<Ingredient | null>(null);
+  const [item, setItem] = useState<IngredientDTO | null>(null);
   useEffect(() => {
     if (id === '') {
       setItem(null);
     } else {
-      fetch(`${apiUrl}/ingredients/${id}`)
+      fetch(`/api/ingredients/${id}`)
         .then((res) => res.json())
-        .then((data) => Ingredient.parse(data))
+        .then((data) => IngredientDTO.parse(data))
         .then((item) => setItem(item));
     }
   }, [id]);

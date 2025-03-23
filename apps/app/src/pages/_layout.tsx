@@ -8,6 +8,8 @@ export function RootLayout() {
         <button className="mr-auto flex text-3xl font-bold">Logo</button>
         <NavBtn href="/home">Home</NavBtn>
         <NavBtn href="/settings">Settings</NavBtn>
+        <NavBtn href="/api/auth/login">Login</NavBtn>
+        <NavBtn href="/api/auth/logout">Logout</NavBtn>
       </nav>
       <div className="h-[calc(100vh-4rem)] overflow-y-auto">
         <Outlet />

@@ -10,7 +10,7 @@ export function Layout() {
 
   return (
     <div className="flex h-full w-full flex-1 flex-row gap-1">
-      <nav className="flex w-[20rem] flex-col gap-1 rounded-tr-sm bg-slate-900 p-2">
+      <nav className="flex w-[20rem] min-w-[20rem] flex-col gap-1 rounded-tr-sm bg-slate-900 p-2">
         <H1>Settings</H1>
         <NavItem href="/settings/profile" active={pathname.startsWith('/settings/profile')}>
           <User />

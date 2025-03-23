@@ -1,26 +1,10 @@
-import { Hono } from 'hono';
-import { cors } from 'hono/cors';
 import { serve } from '@hono/node-server';
+// import { serveStatic } from '@hono/node-server/serve-static';
+import { app } from './app';
 
-import { random } from './random';
-
-import '~/env';
-import { db, sql } from '~/database';
-import { ingredientController } from './controllers/ingredient';
-
-const app = new Hono().basePath('/api');
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-  })
-);
-
-app.get('/health', async (c) => {
-  const { rows } = await db.execute(sql`select now()`);
-  return c.json({ healthy: true, dbTime: rows[0].now });
-});
-
-app.route('/ingredients', ingredientController);
+// NOTE: https://www.youtube.com/watch?v=jXyTIQOfTTk&t=165s&pp=ygUJaG9ubyBhdXRo
+// app.get('*', serveStatic({ root: '../apps/app/dist'}))
+// app.get('*', serveStatic({ root: '../apps/app/dist/index.html'}))
 
 serve(
   {
