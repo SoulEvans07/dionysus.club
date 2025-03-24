@@ -3,7 +3,7 @@ import { cn } from './classnames';
 
 type HTMLTag = keyof JSX.IntrinsicElements;
 
-const supportedTags = ['a', 'div', 'span', 'hr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'] satisfies HTMLTag[];
+const supportedTags = ['a', 'button', 'div', 'span', 'hr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'] satisfies HTMLTag[];
 type SupportedTag = (typeof supportedTags)[number];
 
 function twElem<T extends SupportedTag>(tag: T, className: string): React.FC<JSX.IntrinsicElements[T]> {

@@ -18,8 +18,6 @@ type Env = {
 };
 
 export const getUser = createMiddleware<Env>(async (c, next) => {
-  console.log('getUser');
-
   try {
     const manager = sessionManager(c);
     const isAuthenticated = await kindeAuthClient.isAuthenticated(manager);
