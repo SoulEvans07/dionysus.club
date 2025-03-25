@@ -15,6 +15,20 @@
       "when": 1742691088482,
       "tag": "0001_add_user_ingredient",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1742937536168,
+      "tag": "0002_add_cocktails",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1742938970482,
+      "tag": "0003_set_recipe_flags_default",
+      "breakpoints": true
     }
   ]
 }

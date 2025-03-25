@@ -14,13 +14,13 @@
     "db:pull:after": "prettier ./db/migrations -w",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "db:migrate": "drizzle-kit migrate",
+    "db:migr": "drizzle-kit migrate",
     "db:seed": "tsx ./db/seed.ts",
     "db:test": "tsx ./db/test.ts",
     "db:check": "drizzle-kit check",
-    "migration:gen": "drizzle-kit generate",
-    "migration:gen:mty": "drizzle-kit generate --custom",
-    "migration:drop": "drizzle-kit drop",
+    "migr:gen": "drizzle-kit generate",
+    "migr:gen:mty": "drizzle-kit generate --custom",
+    "migr:drop": "drizzle-kit drop",
     "prettier": "prettier . --write"
   },
   "dependencies": {

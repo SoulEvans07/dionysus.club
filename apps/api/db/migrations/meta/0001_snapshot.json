@@ -101,8 +101,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "name": {
-          "name": "name",
+        "username": {
+          "name": "username",
           "type": "varchar(256)",
           "primaryKey": false,
           "notNull": true

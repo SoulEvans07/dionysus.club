@@ -1,7 +1,6 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { and, eq } from 'drizzle-orm';
-import { z } from 'zod';
 
 import { IngredientDTO, CreateIngredientDTO, UpdateIngredientDTO } from '@repo/dtos';
 import { db, ingredients } from '~/database';
