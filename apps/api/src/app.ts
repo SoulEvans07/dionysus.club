@@ -28,4 +28,8 @@ app.get('/test', getUser, async c => {
   return c.json({ user: c.var.user });
 })
 
+app.get('/ping', getUser, async c => {
+  return c.json({ ping: 'pong' });
+})
+
 app.route('/ingredients', ingredientController);
