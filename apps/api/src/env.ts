@@ -11,8 +11,8 @@ const envVariables = z.object({
   KINDE_DOMAIN: z.string(),
   KINDE_CLIENT_ID: z.string(),
   KINDE_CLIENT_SECRET: z.string(),
-  KINDE_REDIRECT_URI: z.string().url(),
-  KINDE_LOGOUT_REDIRECT_URI: z.string().url(),
+  KINDE_REDIRECT_URI: z.url(),
+  KINDE_LOGOUT_REDIRECT_URI: z.url(),
 });
 
 envVariables.parse(process.env);
