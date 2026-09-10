@@ -1,4 +1,4 @@
-export type ID = string;
+export type ID = string; // UUID
 export type Identifiable = { id: ID };
 
 export type BarRoles = 'admin' | 'bartender' | 'guest';
@@ -29,6 +29,7 @@ export type ImageBlob = FullEntity & {
 };
 
 export type User = Entity & {
+  kindeId: string;
   email: string; // uniq
   username: string; // uniq
   profileImageId: ImageBlob['id'] | null;
@@ -95,16 +96,6 @@ export type RecipeInstructionStep = {
   // e.g. "Add 50ml of [Lime Juice](ingredient:lime-juice)"
   description: string;
   imageId: ImageBlob['id'] | null; // opened as accordion content
-};
-
-// --------------------------------------------------------------------
-// Stock system
-// --------------------------------------------------------------------
-
-export type IngredientStock = {
-  barId: Bar['id'];
-  ingredientId: Ingredient['id'];
-  available: boolean;
 };
 
 // --------------------------------------------------------------------
