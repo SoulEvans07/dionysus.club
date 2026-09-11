@@ -1,5 +1,5 @@
 import { createMiddleware } from 'hono/factory';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, isNull } from 'drizzle-orm';
 
 import { bars, barUsers, db } from '~/database';
 import type { AuthedUser } from '~/auth/kinde';
@@ -18,8 +18,10 @@ export const getBar = createMiddleware<Env>(async (c, next) => {
   const barId = c.req.param('barId');
 
   const bar = barId
-    ? await db.query.bars.findFirst({ where: eq(bars.id, barId) })
-    : await db.query.bars.findFirst({ where: and(eq(bars.ownedBy, user.id), eq(bars.barType, 'personal')) });
+    ? await db.query.bars.findFirst({ where: and(eq(bars.id, barId), isNull(bars.deletedAt)) })
+    : await db.query.bars.findFirst({
+        where: and(eq(bars.ownedBy, user.id), eq(bars.barType, 'personal'), isNull(bars.deletedAt)),
+      });
 
   if (!bar) return c.json({ error: 'Not found' }, 404);
 
