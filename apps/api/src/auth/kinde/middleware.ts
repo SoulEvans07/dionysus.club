@@ -6,14 +6,16 @@ import { db, users } from '~/database';
 import { sessionManager } from './session';
 import { kindeAuthClient } from './client';
 
+export type AuthedUser = Omit<UserType, 'id'> & {
+  id: string;
+  kindeId: string;
+  username: string;
+  email: string;
+};
+
 type Env = {
   Variables: {
-    user: Omit<UserType, 'id'> & {
-      id: string;
-      kindeId: string;
-      username: string;
-      email: string;
-    };
+    user: AuthedUser;
   };
 };
 

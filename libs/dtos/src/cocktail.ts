@@ -3,7 +3,8 @@ import { IngredientDTO } from './ingredient';
 
 export const RecipeItemDTO = z.object({
   ingredient: IngredientDTO,
-  amount: z.number(),
+  quantity: z.number(),
+  unit: z.string(),
   isOptional: z.boolean(),
   isGarnish: z.boolean(),
 });
@@ -16,16 +17,19 @@ export const CocktailDTO = z.object({
 });
 export type CocktailDTO = z.infer<typeof CocktailDTO>;
 
-export const CreateCocktailDTO = CocktailDTO.omit({ id: true });
+export const CreateCocktailDTO = CocktailDTO.omit({ id: true, recipe: true });
 export type CreateCocktailDTO = z.infer<typeof CreateCocktailDTO>;
 
-export const UpdateCocktailDTO = CocktailDTO.pick({ id: true }).merge(CocktailDTO.omit({ id: true }).partial());
+export const UpdateCocktailDTO = CocktailDTO.pick({ id: true }).merge(
+  CocktailDTO.omit({ id: true, recipe: true }).partial()
+);
 export type UpdateCocktailDTO = z.infer<typeof UpdateCocktailDTO>;
 
 export const AddRecipeItemToCocktailDTO = z.object({
   ingredientId: z.string(),
-  amount: z.number(),
-  isOptional: z.boolean(),
-  isGarnish: z.boolean(),
+  quantity: z.number(),
+  unit: z.string(),
+  isOptional: z.boolean().default(false),
+  isGarnish: z.boolean().default(false),
 });
 export type AddRecipeItemToCocktailDTO = z.infer<typeof AddRecipeItemToCocktailDTO>;

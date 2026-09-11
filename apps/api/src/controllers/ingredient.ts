@@ -5,57 +5,63 @@ import { and, eq } from 'drizzle-orm';
 import { IngredientDTO, CreateIngredientDTO, UpdateIngredientDTO } from '@repo/dtos';
 import { db, ingredients } from '~/database';
 import { getUser } from '~/auth/kinde';
+import { getBar } from '~/middleware/bar';
 
 export const ingredientController = new Hono();
 
-ingredientController.get('/list', getUser, async (c) => {
-  const user = c.var.user;
+ingredientController.get('/list', getUser, getBar, async (c) => {
+  const bar = c.var.bar;
 
   const list = await db.query.ingredients.findMany({
-    where: eq(ingredients.ownerId, user.id),
+    where: eq(ingredients.barId, bar.id),
   });
 
-  return c.json<IngredientDTO[]>(list);
+  return c.json<IngredientDTO[]>(IngredientDTO.array().parse(list));
 });
 
-ingredientController.get('/:id', getUser, async (c) => {
-  const user = c.var.user;
+ingredientController.get('/:id', getUser, getBar, async (c) => {
+  const bar = c.var.bar;
   const id = c.req.param('id');
 
   const item = await db.query.ingredients.findFirst({
-    where: and(eq(ingredients.id, id), eq(ingredients.ownerId, user.id)),
+    where: and(eq(ingredients.id, id), eq(ingredients.barId, bar.id)),
   });
 
-  if (!item) return c.status(404);
+  if (!item) return c.json({ error: 'Not found' }, 404);
 
-  return c.json<IngredientDTO>(item);
+  return c.json<IngredientDTO>(IngredientDTO.parse(item));
 });
 
-ingredientController.post('/create', getUser, zValidator('json', CreateIngredientDTO), async (c) => {
-  const owner = c.var.user;
+ingredientController.post('/create', getUser, getBar, zValidator('json', CreateIngredientDTO), async (c) => {
+  const user = c.var.user;
+  const bar = c.var.bar;
   const body = c.req.valid('json');
 
-  const item = await db.insert(ingredients).values({
-    ...body,
-    ownerId: owner.id,
-  });
+  const [item] = await db
+    .insert(ingredients)
+    .values({ ...body, barId: bar.id, createdById: user.id, updatedById: user.id })
+    .returning();
 
   return c.json(item);
 });
 
-ingredientController.put('/update', getUser, zValidator('json', UpdateIngredientDTO), async (c) => {
+ingredientController.put('/update', getUser, getBar, zValidator('json', UpdateIngredientDTO), async (c) => {
   const user = c.var.user;
+  const bar = c.var.bar;
   const body = c.req.valid('json');
 
   const item = await db.query.ingredients.findFirst({
-    where: and(eq(ingredients.id, body.id), eq(ingredients.ownerId, user.id)),
+    where: and(eq(ingredients.id, body.id), eq(ingredients.barId, bar.id)),
   });
 
   if (!item) {
     return c.json({ error: 'Unauthorized' }, 401);
   }
 
-  await db.update(ingredients).set(body).where(eq(ingredients.id, body.id));
+  await db
+    .update(ingredients)
+    .set({ ...body, updatedById: user.id })
+    .where(eq(ingredients.id, body.id));
 
   return c.json({ id: body.id });
 });

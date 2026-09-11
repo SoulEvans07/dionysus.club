@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { eq } from 'drizzle-orm';
 
-import { db, users } from '~/database';
+import { bars, barUsers, db, users } from '~/database';
 import { sessionManager } from './session';
 import { kindeAuthClient } from './client';
 import { getUser } from './middleware';
@@ -40,10 +40,32 @@ kindeAuthController.get('/post-login', async (c) => {
 
     if (!existing) {
       // P3: redirect to first login page so user can set username and such
-      await db.insert(users).values({
-        kindeId: user.id,
-        email: user.email,
-        username: user.email.split('@')[0],
+      await db.transaction(async (tx) => {
+        const [created] = await tx
+          .insert(users)
+          .values({
+            kindeId: user.id,
+            email: user.email,
+            username: user.email.split('@')[0],
+          })
+          .returning();
+
+        const [personalBar] = await tx
+          .insert(bars)
+          .values({
+            ownedBy: created.id,
+            name: `${created.username}'s Bar`,
+            barType: 'personal',
+            createdById: created.id,
+            updatedById: created.id,
+          })
+          .returning();
+
+        await tx.insert(barUsers).values({
+          barId: personalBar.id,
+          userId: created.id,
+          role: 'admin',
+        });
       });
     }
   } else {

@@ -6,6 +6,7 @@ import '~/env';
 import { db, sql } from '~/database';
 import { getUser, kindeAuthController } from './auth/kinde';
 import { ingredientController } from './controllers/ingredient';
+import { cocktailController } from './controllers/cocktail';
 
 export const app = new Hono().basePath('/api');
 
@@ -32,4 +33,8 @@ app.get('/ping', getUser, async c => {
   return c.json({ ping: 'pong' });
 })
 
+app.route('/bars/:barId/ingredients', ingredientController);
 app.route('/ingredients', ingredientController);
+
+app.route('/bars/:barId/cocktails', cocktailController);
+app.route('/cocktails', cocktailController);
