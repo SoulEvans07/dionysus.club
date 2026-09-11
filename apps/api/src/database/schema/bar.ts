@@ -20,7 +20,7 @@ export const bars = pgTable('bars', {
   barType: barTypeEnum().notNull(),
 });
 
-export const barRoleEnum = pgEnum('bar_role', ['admin', 'bartender', 'guest']);
+export const barRoleEnum = pgEnum('bar_role', ['admin', 'bartender', 'member', 'guest']);
 
 export const barUsers = pgTable(
   'bar_users',
