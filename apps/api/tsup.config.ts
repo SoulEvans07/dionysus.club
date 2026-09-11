@@ -2,6 +2,7 @@ import { defineConfig } from 'tsup';
 
 export default defineConfig({
   entry: ['./src/index.ts'],
+  tsconfig: './tsconfig.app.json',
   noExternal: ['@repo'], // Bundle any package starting with `@repo` and their dependencies
   splitting: false,
   bundle: true,

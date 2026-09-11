@@ -1,26 +1,4 @@
 {
-  "compilerOptions": {
-    "noEmit": true,
-
-    "incremental": true,
-    "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "declaration": true,
-    "resolveJsonModule": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-
-    "paths": {
-      "~/*": ["./src/*"]
-    }
-  },
-  "include": ["./src"],
-  "references": [{ "path": "./tsconfig.db.json" }]
+  "files": [],
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.db.json" }]
 }
