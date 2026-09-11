@@ -1,9 +1,12 @@
 import { z } from 'zod';
+import { ImageDTO } from './image';
 
 export const BarType = z.enum(['public', 'private', 'personal']);
 export type BarType = z.infer<typeof BarType>;
 
-export const BarRole = z.enum(['admin', 'bartender', 'guest']);
+export const BarRoleDAL = z.enum(['admin', 'bartender', 'member', 'guest']);
+export type BarRoleDAL = z.infer<typeof BarRoleDAL>;
+export const BarRole = z.enum(['owner', 'admin', 'bartender', 'member', 'guest']);
 export type BarRole = z.infer<typeof BarRole>;
 
 export const BarDTO = z.object({
@@ -14,9 +17,16 @@ export const BarDTO = z.object({
   description: z.string(),
   barType: BarType,
   logoImageId: z.string().nullable(),
+  logoImage: ImageDTO.nullable(),
   bannerImageId: z.string().nullable(),
+  bannerImage: ImageDTO.nullable(),
 });
 export type BarDTO = z.infer<typeof BarDTO>;
+
+export const MyBarListDTO = BarDTO.extend({
+  role: BarRole,
+});
+export type MyBarListDTO = z.infer<typeof MyBarListDTO>;
 
 export const CreateBarDTO = BarDTO.omit({ id: true, ownedBy: true, barType: true }).extend({
   barType: BarType.exclude(['personal']),
@@ -32,8 +42,10 @@ export const BarMemberDTO = z.object({
 });
 export type BarMemberDTO = z.infer<typeof BarMemberDTO>;
 
-export const AddBarMemberDTO = BarMemberDTO;
+export const AddBarMemberDTO = BarMemberDTO.extend({
+  role: BarRoleDAL,
+});
 export type AddBarMemberDTO = z.infer<typeof AddBarMemberDTO>;
 
-export const UpdateBarMemberDTO = BarMemberDTO.pick({ role: true });
+export const UpdateBarMemberDTO = AddBarMemberDTO.pick({ role: true });
 export type UpdateBarMemberDTO = z.infer<typeof UpdateBarMemberDTO>;

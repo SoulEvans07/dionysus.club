@@ -21,6 +21,24 @@ export default defineConfig({
       '/api': {
         target: env.SERVER_URL,
         changeOrigin: true,
+        configure: (proxy) => {
+          proxy.on('error', (err, _req, _res) => {
+            console.log('proxy error', err);
+          });
+          proxy.on('proxyReq', (proxyReq, req, _res) => {
+            console.log(
+              '>>>',
+              req.method,
+              req.url,
+              '==>',
+              proxyReq.method,
+              `${proxyReq.protocol}//${proxyReq.host}${proxyReq.path}`
+            );
+          });
+          proxy.on('proxyRes', (proxyRes, req, _res) => {
+            console.log('<<<', proxyRes.statusCode, req.url);
+          });
+        },
       },
     },
   },

@@ -2,7 +2,15 @@ import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { and, eq, inArray, isNull, or } from 'drizzle-orm';
 
-import { AddBarMemberDTO, BarDTO, CreateBarDTO, UpdateBarDTO, UpdateBarMemberDTO } from '@repo/dtos';
+import {
+  AddBarMemberDTO,
+  BarDTO,
+  BarRole,
+  CreateBarDTO,
+  MyBarListDTO,
+  UpdateBarDTO,
+  UpdateBarMemberDTO,
+} from '@repo/dtos';
 import { bars, barUsers, db } from '~/database';
 import { getUser, type AuthedUser } from '~/auth/kinde';
 import { getBar } from '~/middleware/bar';
@@ -24,15 +32,31 @@ barController.get('/list', getUser, async (c) => {
 
   const memberships = await db.query.barUsers.findMany({ where: eq(barUsers.userId, user.id) });
   const memberBarIds = memberships.map((m) => m.barId);
+  const membershipByBarId = memberships.reduce(
+    (acc, curr) => {
+      return { ...acc, [curr.barId]: curr.role };
+    },
+    {} as Record<string, BarRole>
+  );
 
   const list = await db.query.bars.findMany({
     where: and(
       isNull(bars.deletedAt),
       or(eq(bars.ownedBy, user.id), memberBarIds.length ? inArray(bars.id, memberBarIds) : undefined)
     ),
+    with: {
+      logoImage: true,
+      bannerImage: true,
+    }
   });
 
-  return c.json<BarDTO[]>(BarDTO.array().parse(list));
+  const mylist: MyBarListDTO[] = list.map((bar): MyBarListDTO => {
+    const role: BarRole = bar.ownedBy === user.id ? 'owner' : membershipByBarId[bar.id];
+    if (!role) throw new Error('Failed to match role to bar');
+    return { ...bar, role };
+  });
+
+  return c.json<MyBarListDTO[]>(mylist);
 });
 
 barController.post('/create', getUser, zValidator('json', CreateBarDTO), async (c) => {
@@ -115,29 +139,23 @@ barController.post('/:barId/members', getUser, getBar, zValidator('json', AddBar
   return c.json({ success: true });
 });
 
-barController.put(
-  '/:barId/members/:userId',
-  getUser,
-  getBar,
-  zValidator('json', UpdateBarMemberDTO),
-  async (c) => {
-    const user = c.var.user;
-    const bar = c.var.bar;
-    const targetUserId = c.req.param('userId');
-    const body = c.req.valid('json');
+barController.put('/:barId/members/:userId', getUser, getBar, zValidator('json', UpdateBarMemberDTO), async (c) => {
+  const user = c.var.user;
+  const bar = c.var.bar;
+  const targetUserId = c.req.param('userId');
+  const body = c.req.valid('json');
 
-    if (!(await isBarAdmin(bar.id, bar.ownedBy, user))) {
-      return c.json({ error: 'Unauthorized' }, 401);
-    }
-
-    await db
-      .update(barUsers)
-      .set({ role: body.role })
-      .where(and(eq(barUsers.barId, bar.id), eq(barUsers.userId, targetUserId)));
-
-    return c.json({ success: true });
+  if (!(await isBarAdmin(bar.id, bar.ownedBy, user))) {
+    return c.json({ error: 'Unauthorized' }, 401);
   }
-);
+
+  await db
+    .update(barUsers)
+    .set({ role: body.role })
+    .where(and(eq(barUsers.barId, bar.id), eq(barUsers.userId, targetUserId)));
+
+  return c.json({ success: true });
+});
 
 barController.delete('/:barId/members/:userId', getUser, getBar, async (c) => {
   const user = c.var.user;

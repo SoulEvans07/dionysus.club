@@ -17,7 +17,7 @@ export const bars = pgTable('bars', {
   description: text('description').notNull().default(''),
   logoImageId: uuid('logo_image_id').references((): AnyPgColumn => imageBlobs.id),
   bannerImageId: uuid('banner_image_id').references((): AnyPgColumn => imageBlobs.id),
-  barType: barTypeEnum().notNull(),
+  barType: barTypeEnum().notNull(), // TODO: change to type
 });
 
 export const barRoleEnum = pgEnum('bar_role', ['admin', 'bartender', 'member', 'guest']);
