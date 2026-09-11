@@ -3,8 +3,9 @@ import { Navigate } from 'react-router';
 import { createRouter } from '~/utils/router';
 import { ErrorBoundary } from './_error';
 import { RootLayout } from './_layout';
-import { HomePage } from './home';
-import { settingsRouter } from './settings/_router';
+import { barRoutes } from './bar/_router';
+import { menuRoutes } from './menu/_router';
+import { profileRoutes } from './profile/_router';
 
 export const appRoutes = createRouter([
   {
@@ -12,9 +13,11 @@ export const appRoutes = createRouter([
     ErrorBoundary,
     Component: RootLayout,
     children: [
-      { index: true, element: <Navigate to="/home" /> },
-      { path: 'home', Component: HomePage },
-      ...settingsRouter,
+      { index: true, element: <Navigate to="/bar" /> },
+      ...barRoutes,
+      ...menuRoutes,
+      ...profileRoutes,
+      { path: '*', element: <Navigate to="/" /> },
     ],
   },
 ]);

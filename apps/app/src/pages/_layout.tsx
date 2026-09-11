@@ -1,22 +1,30 @@
-import { Link, Outlet } from 'react-router';
-import { tw } from '~/utils/twElem';
+import { Outlet } from 'react-router';
+import {
+  Martini,
+  // BookOpen,
+  // BookOpenText,
+  // Notebook,
+  NotebookTabs,
+  // Calendar,
+  UsersRound,
+  // CircleUserRound
+} from 'lucide-react';
+import { NavBar, type BottomNavBarProps } from '~/components/navbar';
 
 export function RootLayout() {
   return (
-    <div className="h-full overflow-hidden bg-slate-950">
-      <nav className="flex h-[4rem] flex-row items-center gap-2 p-2">
-        <button className="mr-auto flex text-3xl font-bold">Logo</button>
-        <NavBtn href="/home">Home</NavBtn>
-        <NavBtn href="/settings">Settings</NavBtn>
-        <NavBtn href="/api/auth/login">Login</NavBtn>
-        <NavBtn href="/api/auth/logout">Logout</NavBtn>
-      </nav>
-      <div className="h-[calc(100vh-4rem)] overflow-y-auto">
-        <Outlet />
+    <div className="h-dvh w-dvw overflow-hidden">
+      <Outlet />
+      <div className="fixed bottom-0 left-0 right-0 flex items-center justify-center">
+        <NavBar navItems={bottomNavItems} />
       </div>
     </div>
   );
 }
 
-const NavBtn = tw.a('bg-slate-700 text-slate-100 px-4 h-full flex justify-center items-center rounded-sm');
-// const NavBtn = tw.comp(Link, 'bg-slate-700 text-slate-100 px-4 h-full flex justify-center items-center');
+const bottomNavItems: BottomNavBarProps['navItems'] = [
+  { label: 'Bar', route: '/bar', Icon: Martini },
+  { label: 'Menu', route: '/menu', Icon: NotebookTabs },
+  // { label: 'Events', route: '/events', Icon: Calendar },
+  { label: 'Profile', route: '/profile', Icon: UsersRound },
+];

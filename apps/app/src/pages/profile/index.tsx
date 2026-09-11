@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { H1 } from '~/components/common';
-import { Input } from '~/components/shadcn/input';
 
-export function ProfileSettings() {
+export function ProfileScreen() {
   const [data, setData] = useState<unknown | null>(null);
 
   useEffect(() => {
@@ -14,7 +13,6 @@ export function ProfileSettings() {
   return (
     <div>
       <H1>Profile</H1>
-      <Input placeholder="Username" />
       <pre className="max-w-full overflow-auto whitespace-pre-wrap">{JSON.stringify(data, undefined, 2)}</pre>
     </div>
   );
