@@ -1,24 +1,17 @@
-import { pgTable, uuid, varchar, type AnyPgColumn } from 'drizzle-orm/pg-core';
+import { pgTable, varchar } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm/relations';
 
-import { entityTimestamps } from '../entity';
+import { fullEntity } from '../entity';
 import { users } from './user';
 
 export const imageBlobs = pgTable('image_blobs', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  filename: varchar('filename', { length: 1024 }).notNull(),
-  url: varchar('url', { length: 2048 }).notNull(),
-  createdBy: uuid('created_by')
-    .references((): AnyPgColumn => users.id)
-    .notNull(),
-  updatedBy: uuid('updated_by').references((): AnyPgColumn => users.id),
-  deletedBy: uuid('deleted_by'),
-  ...entityTimestamps(),
+  ...fullEntity(),
+  filename: varchar('filename', { length: 64 }).notNull(),
+  url: varchar('url', { length: 256 }).notNull(),
 });
 
 export const imageBlobRelations = relations(imageBlobs, ({ one }) => ({
-  createdByUser: one(users, {
-    fields: [imageBlobs.createdBy],
-    references: [users.id],
-  }),
+  createdBy: one(users, { fields: [imageBlobs.createdById], references: [users.id] }),
+  updatedBy: one(users, { fields: [imageBlobs.updatedById], references: [users.id] }),
+  deletedBy: one(users, { fields: [imageBlobs.deletedById], references: [users.id] }),
 }));

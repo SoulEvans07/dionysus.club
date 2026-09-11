@@ -38,13 +38,13 @@ export type User = Entity & {
 export type BarType = 'public' | 'private' | 'personal';
 
 export type Bar = FullEntity & {
-  createdBy: User['id'];
   ownedBy: User['id'];
   name: string;
   slogan: string; // tagline for the bar under the name
   description: string;
   logoImageId: ImageBlob['id'] | null;
   bannerImageId: ImageBlob['id'] | null;
+  barType: BarType;
 };
 
 export type BarUserRelationship = {
@@ -63,6 +63,7 @@ export type Ingredient = FullEntity & {
   barId: Bar['id'];
   name: string;
   description: string;
+  available: boolean;
   units: (UnitTypes | Units)[];
   tags: string[]; // TODO: move to a separate table; add nested tags
   iconImageId: ImageBlob['id'] | null;
@@ -78,7 +79,7 @@ export type Cocktail = FullEntity & {
   cardImageId: ImageBlob['id'] | null;
 };
 
-export type RecipeIngredient = {
+export type RecipeItem = {
   cocktailId: Cocktail['id'];
   ingredientId: Ingredient['id'];
   index: number;
@@ -89,7 +90,7 @@ export type RecipeIngredient = {
 };
 
 // TODO: consider instruction groups
-export type RecipeInstructionStep = {
+export type RecipeStep = {
   cocktailId: Cocktail['id'];
   index: number;
   // TODO: for description: support markdown + refs to ingredients,
@@ -116,12 +117,9 @@ export type Menu = FullEntity & {
   barId: Bar['id'];
   title: string;
   subtitle: string;
-};
-
-export type MenuItem = {
-  menuId: Menu['id'];
-  cocktailId: Cocktail['id'];
-  menuGroupId: MenuGroup['id'] | null; // used for manual grouping, regardless if group filter selects it.
+  // TODO: implement a filter language to filter cocktails by tags, ingredients, etc.
+  filter: string;
+  defaultSortBy: string; // "index" | "name"
 };
 
 export type MenuGroup = Identifiable & {
@@ -130,7 +128,15 @@ export type MenuGroup = Identifiable & {
   title: string;
   description: string;
   // TODO: implement a filter language to filter cocktails by tags, ingredients, etc.
-  // filter: string;
+  filter: string;
+  defaultSortBy: string; // "index" | "name"
+};
+
+export type MenuItem = {
+  menuId: Menu['id'];
+  cocktailId: Cocktail['id'];
+  menuGroupId: MenuGroup['id'] | null; // used for manual grouping, regardless if group filter selects it
+  index: number;
 };
 
 // --------------------------------------------------------------------
