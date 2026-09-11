@@ -1,0 +1,213 @@
+[
+  {
+    "name": "Old Fashioned",
+    "image": "old-fashioned.jpg",
+    "group": "Whisky",
+    "recipe": [
+      { "ingredient": "Bourbon whisky", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Simple syrup", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Angostura bitters", "quantity": 2, "unit": "dash", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Orange twist", "quantity": 1, "unit": "pcs", "isOptional": true, "isGarnish": true }
+    ]
+  },
+  {
+    "name": "Negroni",
+    "image": "negroni.jpg",
+    "group": "Gin",
+    "recipe": [
+      { "ingredient": "Gin", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Campari", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Red vermouth", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Orange twist", "quantity": 1, "unit": "pcs", "isOptional": true, "isGarnish": true }
+    ]
+  },
+  {
+    "name": "Martini",
+    "image": "martini.jpg",
+    "group": "Gin",
+    "recipe": [
+      { "ingredient": "Gin", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Dry vermouth", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lemon twist", "quantity": 1, "unit": "pcs", "isOptional": true, "isGarnish": true }
+    ]
+  },
+  {
+    "name": "Daiquiri",
+    "image": "daiquiri.jpg",
+    "group": "Rum",
+    "recipe": [
+      { "ingredient": "White rum", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lime juice", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Simple syrup", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ]
+  },
+  {
+    "name": "Whisky Sour",
+    "image": "whisky-sour.jpg",
+    "group": "Whisky",
+    "recipe": [
+      { "ingredient": "Whisky", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lemon juice", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Simple syrup", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Egg white", "quantity": 15, "unit": "ml", "isOptional": true, "isGarnish": false }
+    ]
+  },
+  {
+    "name": "Margarita",
+    "image": "margarita.jpg",
+    "group": "Tequila",
+    "recipe": [
+      { "ingredient": "Tequila", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Triple Sec", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lime juice", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Salt", "quantity": 1, "unit": "pinch", "isOptional": true, "isGarnish": true }
+    ]
+  },
+  {
+    "name": "Mojito",
+    "image": "mojito.png",
+    "group": "Rum",
+    "recipe": [
+      { "ingredient": "White rum", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lime juice", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Sugar", "quantity": 2, "unit": "tsp", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Mint", "quantity": 8, "unit": "pcs", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Sparkling Water", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ]
+  },
+  {
+    "name": "Manhattan",
+    "image": "manhattan.jpg",
+    "group": "Whisky",
+    "recipe": [
+      { "ingredient": "Rye whisky", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Red vermouth", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Angostura bitters", "quantity": 2, "unit": "dash", "isOptional": false, "isGarnish": false }
+    ]
+  },
+  {
+    "name": "Aviation",
+    "image": "aviation.jpg",
+    "group": "Gin",
+    "recipe": [
+      { "ingredient": "Gin", "quantity": 45, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Maraschino liqueur", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lemon juice", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Violet syrup", "quantity": 5, "unit": "ml", "isOptional": true, "isGarnish": false }
+    ]
+  },
+  {
+    "name": "Sidecar",
+    "image": "sidecar.jpg",
+    "group": "Brandy",
+    "recipe": [
+      { "ingredient": "Brandy", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Cointreau", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lemon juice", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ]
+  },
+  {
+    "name": "White Lady",
+    "image": "white-lady.jpg",
+    "group": "Gin",
+    "recipe": [
+      { "ingredient": "Gin", "quantity": 45, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Cointreau", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lemon juice", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Egg white", "quantity": 15, "unit": "ml", "isOptional": true, "isGarnish": false }
+    ]
+  },
+  {
+    "name": "Black Russian",
+    "image": "black-russian.jpg",
+    "group": "Vodka",
+    "recipe": [
+      { "ingredient": "Vodka", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Coffee liqueur", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ]
+  },
+  {
+    "name": "White Russian",
+    "image": "white-russian.jpg",
+    "group": "Vodka",
+    "recipe": [
+      { "ingredient": "Vodka", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Coffee liqueur", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Heavy cream", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ]
+  },
+  {
+    "name": "Espresso Martini",
+    "image": "espresso-martini.jpg",
+    "group": "Vodka",
+    "recipe": [
+      { "ingredient": "Vodka", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Coffee liqueur", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Coffee", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Simple syrup", "quantity": 10, "unit": "ml", "isOptional": true, "isGarnish": false }
+    ]
+  },
+  {
+    "name": "Paloma",
+    "image": "paloma.jpg",
+    "group": "Tequila",
+    "recipe": [
+      { "ingredient": "Tequila", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Grapefruit juice", "quantity": 75, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lime juice", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Sparkling Water", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Salt", "quantity": 1, "unit": "pinch", "isOptional": true, "isGarnish": true }
+    ]
+  },
+  {
+    "name": "Bees Knees",
+    "image": "bees-knees.jpg",
+    "group": "Gin",
+    "recipe": [
+      { "ingredient": "Gin", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Honey syrup", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lemon juice", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ]
+  },
+  {
+    "name": "Southside",
+    "image": "southside.jpg",
+    "group": "Gin",
+    "recipe": [
+      { "ingredient": "Gin", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lime juice", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Simple syrup", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Mint", "quantity": 6, "unit": "pcs", "isOptional": false, "isGarnish": false }
+    ]
+  },
+  {
+    "name": "Tequila Sunrise",
+    "image": "tequila-sunrise.jpg",
+    "group": "Tequila",
+    "recipe": [
+      { "ingredient": "Tequila", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Orange juice", "quantity": 90, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Grenadine", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ]
+  },
+  {
+    "name": "Pina Colada",
+    "image": "pina-colada.jpg",
+    "group": "Rum",
+    "recipe": [
+      { "ingredient": "White rum", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Creme of Coconut", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Pinapple juice", "quantity": 90, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ]
+  },
+  {
+    "name": "Dark 'n' Stormy",
+    "image": "dark-n-stormy.jpg",
+    "group": "Rum",
+    "recipe": [
+      { "ingredient": "Dark rum", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Ginger beer", "quantity": 120, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lime juice", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ]
+  }
+]
