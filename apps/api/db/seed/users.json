@@ -1,1 +1,5 @@
-[{ "username": "admin" }, { "username": "adam.szi" }]
+[
+  { "username": "szi.adam", "email": "szi.adam@simonyi.bme.hu", "kindeId": "kp_20cab42216ed446c9996e7ff461b5e4d" },
+  { "username": "soulevans07", "email": "soulevans07@gmail.com", "kindeId": "kp_33db7a0096914d429116831d957f7838" },
+  { "username": "soulevans.dev", "email": "soulevans.dev@gmail.com", "kindeId": "kp_dda10e934e5243fbb2db975140797440" }
+]

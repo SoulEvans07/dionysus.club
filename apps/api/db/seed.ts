@@ -28,16 +28,7 @@ async function main() {
     return blob.id;
   }
 
-  const seededUsers = await db
-    .insert(schema.users)
-    .values(
-      users.map(({ username }) => ({
-        kindeId: `seed-${username}`,
-        email: `${username}@dionysus.club`,
-        username,
-      }))
-    )
-    .returning();
+  const seededUsers = await db.insert(schema.users).values(users).returning();
 
   for (const user of seededUsers) {
     const [personalBar] = await db
