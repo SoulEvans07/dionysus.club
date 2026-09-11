@@ -7,7 +7,7 @@ const supportedTags = ['a', 'button', 'div', 'span', 'hr', 'h1', 'h2', 'h3', 'h4
 type SupportedTag = (typeof supportedTags)[number];
 
 function twElem<T extends SupportedTag>(tag: T, className: string): React.FC<JSX.IntrinsicElements[T]> {
-  const Element: React.FC<JSX.IntrinsicElements[T]> = props => {
+  const Element: React.FC<JSX.IntrinsicElements[T]> = (props) => {
     return React.createElement(tag, { ...props, className: cn(className, props.className) });
   };
   Element.displayName = tag;
@@ -16,7 +16,7 @@ function twElem<T extends SupportedTag>(tag: T, className: string): React.FC<JSX
 }
 
 function twComp<P extends { className?: string }>(comp: React.FC<P>, className: string): React.FC<P> {
-  const Element: React.FC<P> = props => {
+  const Element: React.FC<P> = (props) => {
     return React.createElement(comp, { ...props, className: cn(className, props.className) });
   };
   Element.displayName = comp.displayName;
