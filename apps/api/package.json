@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint .",
     "dev": "nodemon -r tsconfig-paths/register src/index.ts",
-    "clear": "shx rm -r ./dist",
+    "clear": "shx rm -rf ./dist",
     "build": "tsup",
     "build:clean": "pnpm clear && pnpm build",
     "start": "cross-env NODE_PATH=dist node dist/index.js",
