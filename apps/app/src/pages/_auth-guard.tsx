@@ -9,7 +9,10 @@ export function AuthGuard() {
   const isUnauthorized = error instanceof UnauthorizedError;
 
   useEffect(() => {
-    if (isUnauthorized) window.location.href = '/api/auth/login';
+    if (!isUnauthorized) return;
+
+    const redirect = window.location.pathname + window.location.search;
+    window.location.href = `/api/auth/login?redirect=${encodeURIComponent(redirect)}`;
   }, [isUnauthorized]);
 
   if (isPending || isUnauthorized) return null;

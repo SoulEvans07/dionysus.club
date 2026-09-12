@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import { eq } from 'drizzle-orm';
+import { getCookie, setCookie, deleteCookie } from 'hono/cookie';
 
 import { bars, db, users } from '~/database';
 import { sessionManager } from './session';
@@ -8,7 +9,32 @@ import { getUser } from './middleware';
 
 export const kindeAuthController = new Hono();
 
+const POST_LOGIN_REDIRECT_COOKIE = 'post_login_redirect';
+
+// Only allow same-app relative paths, so this can't be abused as an open redirect.
+function isSafeRedirectPath(path: string | null | undefined): path is string {
+  if (!path) return false;
+  if (!path.startsWith('/')) return false;
+  if (path.startsWith('//')) return false;
+  if (path.startsWith('/\\')) return false;
+  if (path.includes('://')) return false;
+  return true;
+}
+
 kindeAuthController.get('/login', async (c) => {
+  const redirect = c.req.query('redirect');
+
+  if (isSafeRedirectPath(redirect)) {
+    setCookie(c, POST_LOGIN_REDIRECT_COOKIE, redirect, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'Lax',
+      maxAge: 300,
+    });
+  } else {
+    deleteCookie(c, POST_LOGIN_REDIRECT_COOKIE);
+  }
+
   const loginUrl = await kindeAuthClient.login(sessionManager(c));
   return c.redirect(loginUrl.toString());
 });
@@ -63,7 +89,10 @@ kindeAuthController.get('/post-login', async (c) => {
     return c.json({ error: 'Unauthorized' }, 401);
   }
 
-  return c.redirect('/');
+  const redirect = getCookie(c, POST_LOGIN_REDIRECT_COOKIE);
+  deleteCookie(c, POST_LOGIN_REDIRECT_COOKIE);
+
+  return c.redirect(isSafeRedirectPath(redirect) ? redirect : '/');
 });
 
 kindeAuthController.get('/logout', async (c) => {
