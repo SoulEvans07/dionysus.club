@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router';
 
 import { createRouter } from '~/utils/router';
+import { AuthGuard } from './_auth-guard';
 import { ErrorBoundary } from './_error';
 import { RootLayout } from './_layout';
 import { barRoutes } from './bar/_router';
@@ -14,9 +15,10 @@ export const appRoutes = createRouter([
     Component: RootLayout,
     children: [
       { index: true, element: <Navigate to="/bar" /> },
-      ...barRoutes,
-      ...menuRoutes,
-      ...profileRoutes,
+      {
+        Component: AuthGuard,
+        children: [...barRoutes, ...menuRoutes, ...profileRoutes],
+      },
       { path: '*', element: <Navigate to="/" /> },
     ],
   },

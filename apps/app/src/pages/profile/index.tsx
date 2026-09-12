@@ -1,19 +1,16 @@
-import { useState, useEffect } from 'react';
 import { H1 } from '~/components/common';
+import { useCurrentUser } from '~/auth';
 
 export function ProfileScreen() {
-  const [data, setData] = useState<unknown | null>(null);
-
-  useEffect(() => {
-    fetch('/api/auth/me')
-      .then((res) => res.json())
-      .then((data) => setData(data));
-  }, []);
+  const { data: currentUser } = useCurrentUser();
 
   return (
     <div>
       <H1>Profile</H1>
-      <pre className="max-w-full overflow-auto whitespace-pre-wrap">{JSON.stringify(data, undefined, 2)}</pre>
+      {!currentUser && <div>Nothing</div>}
+      {currentUser && (
+        <pre className="max-w-full overflow-auto whitespace-pre-wrap">{JSON.stringify(currentUser, undefined, 2)}</pre>
+      )}
     </div>
   );
 }
