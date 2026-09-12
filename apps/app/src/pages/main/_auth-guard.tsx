@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
-import { Outlet } from 'react-router';
-
+import { useEffect, type PropsWithChildren } from 'react';
 import { useCurrentUser, UnauthorizedError } from '~/auth';
 
-export function AuthGuard() {
+export function AuthGuard(props: PropsWithChildren) {
   const { isPending, error } = useCurrentUser();
 
   const isUnauthorized = error instanceof UnauthorizedError;
@@ -18,5 +16,5 @@ export function AuthGuard() {
   if (isPending || isUnauthorized) return null;
   if (error) throw error;
 
-  return <Outlet />;
+  return props.children;
 }
