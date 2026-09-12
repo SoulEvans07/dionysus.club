@@ -3,6 +3,7 @@ import { useCurrentUser } from '~/auth';
 
 export function ProfileScreen() {
   const { data: currentUser } = useCurrentUser();
+  const handleLogout = () => (window.location.href = '/api/auth/logout');
 
   return (
     <div>
@@ -11,6 +12,9 @@ export function ProfileScreen() {
       {currentUser && (
         <pre className="max-w-full overflow-auto whitespace-pre-wrap">{JSON.stringify(currentUser, undefined, 2)}</pre>
       )}
+      <button className="rounded bg-indigo-400 p-2 text-indigo-50" onClick={handleLogout}>
+        Logout
+      </button>
     </div>
   );
 }

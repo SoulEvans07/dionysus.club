@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router';
-import { LayoutContainerWithNavbar } from '~/components/navbar';
+import { styles } from '~/styles/constants';
 
 export function MenuLayout() {
   return (
-    <LayoutContainerWithNavbar>
+    <div className="h-dvh w-dvw overflow-y-auto" style={styles.bottomNavbarGuard}>
       <Outlet />
-    </LayoutContainerWithNavbar>
+    </div>
   );
 }
