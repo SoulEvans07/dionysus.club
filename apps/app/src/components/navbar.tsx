@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, type CSSProperties, type PropsWithChildren } from 'react';
-import { Link, useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { type LucideIcon } from 'lucide-react';
 import { styles } from '~/styles/constants';
@@ -75,11 +75,14 @@ type NavItemProps = NavItem & VariantProps<typeof navButton> & { index: number }
 
 function NavButton(props: NavItemProps) {
   const { route, Icon, label, active, index } = props;
+  const navigate = useNavigate();
+  const handleNav = () => {
+    if (!active) navigate(route, { viewTransition: true });
+  };
 
   return (
-    <Link
-      to={route}
-      viewTransition
+    <div
+      onClick={handleNav}
       className={navButton({ active })}
       style={{
         gridColumn: index + 1,
@@ -92,7 +95,7 @@ function NavButton(props: NavItemProps) {
     >
       <Icon className="h-10 w-10 p-1.5" />
       <span className="text-xs">{label}</span>
-    </Link>
+    </div>
   );
 }
 
