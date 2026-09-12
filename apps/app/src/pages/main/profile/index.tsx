@@ -4,6 +4,7 @@ import { useCurrentUser } from '~/auth';
 export function ProfileScreen() {
   const { data: currentUser } = useCurrentUser();
   const handleLogout = () => (window.location.href = '/api/auth/logout');
+  const handleReload = () => window.location.reload();
 
   return (
     <div>
@@ -14,6 +15,10 @@ export function ProfileScreen() {
       )}
       <button className="rounded bg-indigo-400 p-2 text-indigo-50" onClick={handleLogout}>
         Logout
+      </button>
+
+      <button className="rounded bg-indigo-400 p-2 text-indigo-50" onClick={handleReload}>
+        Reload
       </button>
     </div>
   );
