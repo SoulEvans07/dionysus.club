@@ -1,17 +1,12 @@
 import { createMiddleware } from 'hono/factory';
-import { type UserType } from '@kinde-oss/kinde-typescript-sdk';
 import { eq } from 'drizzle-orm';
 
+import { UserDTO } from '@repo/dtos';
 import { db, users } from '~/database';
 import { sessionManager } from './session';
 import { kindeAuthClient } from './client';
 
-export type AuthedUser = Omit<UserType, 'id'> & {
-  id: string;
-  kindeId: string;
-  username: string;
-  email: string;
-};
+export type AuthedUser = UserDTO
 
 type Env = {
   Variables: {

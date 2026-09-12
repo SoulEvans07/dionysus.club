@@ -1,4 +1,4 @@
-import { UserDTO } from '@repo/dtos';
+import { MeDTO } from '@repo/dtos';
 import { UnauthorizedError } from '~/types/error';
 
 export class AuthAPI {
@@ -9,6 +9,6 @@ export class AuthAPI {
     if (!resp.ok) throw new Error('Failed to fetch current user');
 
     const data = await resp.json();
-    return UserDTO.parse(data.user);
+    return MeDTO.parse(data);
   }
 }

@@ -1,6 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import _ from 'lodash';
-
 import { api } from '~/api';
 
 export const sidebarQuery = {

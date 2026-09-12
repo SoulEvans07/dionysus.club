@@ -1,11 +1,12 @@
 import { Hono } from 'hono';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { getCookie, setCookie, deleteCookie } from 'hono/cookie';
 
 import { bars, db, users } from '~/database';
 import { sessionManager } from './session';
 import { kindeAuthClient } from './client';
 import { getUser } from './middleware';
+import { MeDTO } from '@repo/dtos';
 
 export const kindeAuthController = new Hono();
 
@@ -101,5 +102,9 @@ kindeAuthController.get('/logout', async (c) => {
 });
 
 kindeAuthController.get('/me', getUser, async (c) => {
-  return c.json({ user: c.var.user });
+  const personalBar = await db.query.bars.findFirst({
+    where: and(eq(bars.ownedBy, c.var.user.id), eq(bars.barType, 'personal')),
+  });
+
+  return c.json<MeDTO>({ ...c.var.user, personalBarId: personalBar?.id ?? 'MISSING_PERSONAL_BAR' });
 });

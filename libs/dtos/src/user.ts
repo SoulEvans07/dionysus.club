@@ -9,3 +9,8 @@ export const UserDTO = z.object({
   profileImageId: z.string().nullable(),
 });
 export type UserDTO = z.infer<typeof UserDTO>;
+
+export const MeDTO = UserDTO.extend({
+  personalBarId: z.string(),
+});
+export type MeDTO = z.infer<typeof MeDTO>;

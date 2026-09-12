@@ -1,33 +1,63 @@
-import { useQuery } from '@tanstack/react-query';
-import { IngredientDTO } from '@repo/dtos';
-import { H1, H2 } from '~/components/common';
+import { useMemo } from 'react';
+import { useParams } from 'react-router';
+import { z } from 'zod';
+import { H1 } from '~/components/common';
+import { useCocktailList } from '~/queries/cocktail';
+import { useIngredientList } from '~/queries/ingredient';
+
+const Params = z.object({ barId: z.string() });
 
 export function BarScreen() {
-  const { isPending, error, data, isFetching } = useQuery({
-    queryKey: ['ingredients'],
-    queryFn: async () => {
-      const response = await fetch('/api/ingredients/list');
-      const data = await response.json();
-      return IngredientDTO.array().parse(data);
-    },
-  });
+  const params = useParams();
+  const { barId } = useMemo(() => Params.parse(params), [params]);
 
   return (
     <div>
       <H1>Bar Screen</H1>
-      <H2>Ingredients</H2>
-      <div>
-        {isPending && <span>Loading...</span>}
-        {error && <span className="text-rose-500">Error occured!</span>}
-        {isFetching && <span>Updating...</span>}
-        {data?.map((ingr) => (
-          <div key={ingr.id} className="p-2">
-            <div>{ingr.name}</div>
-            <div>{ingr.description}</div>
-            <div>{ingr.available ? 'Available' : 'Unavailable'}</div>
-          </div>
-        ))}
-      </div>
+      <IngredientList barId={barId} />
+      <CocktailList barId={barId} />
+    </div>
+  );
+}
+type IngredientListProps = { barId: string };
+function IngredientList(props: IngredientListProps) {
+  const { barId } = props;
+  const { isPending, error, data, isFetching } = useIngredientList(barId);
+
+  if (isPending) return <div>Loading...</div>;
+  if (error) return <div>Error</div>;
+
+  return (
+    <div>
+      <h1>Ingredients</h1>
+      {data.map((ingr) => (
+        <div key={ingr.id} className="p-2">
+          <div>{ingr.name}</div>
+          <div>{ingr.description}</div>
+          <div>{ingr.available ? 'Available' : 'Unavailable'}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+type CocktailListProps = { barId: string };
+function CocktailList(props: CocktailListProps) {
+  const { barId } = props;
+  const { isPending, error, data, isFetching } = useCocktailList(barId);
+
+  if (isPending) return <div>Loading...</div>;
+  if (error) return <div>Error</div>;
+
+  return (
+    <div>
+      <h1>Cocktails</h1>
+      {data.map((cocktail) => (
+        <div key={cocktail.id} className="p-2">
+          <div>{cocktail.name}</div>
+          <div>{cocktail.description}</div>
+        </div>
+      ))}
     </div>
   );
 }

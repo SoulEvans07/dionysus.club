@@ -36,7 +36,7 @@ sidebarController.get('/', getUser, async (c) => {
         index: 0,
         id: 'owned',
         name: 'Owned',
-        bars: list.filter((o) => o.ownedBy === user.id),
+        bars: list.filter((o) => o.ownedBy === user.id && o.barType !== 'personal'),
         color: 'violet',
         icon: 'crown',
       },
