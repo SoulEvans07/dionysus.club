@@ -92,7 +92,7 @@ export function MainSidebar() {
   return (
     <div
       className={sidebar({ open })}
-      style={{ paddingBottom: `calc(${styles.bottomNavbar.height} + 1.25 * ${styles.bottomNavbar.margin})` }}
+      style={{ paddingBottom: `calc(${styles.bottomNavbar.height} + 1.75 * ${styles.bottomNavbar.marginBottom})` }}
     >
       <div className="flex h-full flex-col gap-2 overflow-y-auto">
         <GroupWrapper>

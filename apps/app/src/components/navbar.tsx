@@ -1,3 +1,4 @@
+import { type PropsWithChildren } from 'react';
 import { Link, useLocation } from 'react-router';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { type LucideIcon } from 'lucide-react';
@@ -57,7 +58,18 @@ function NavButton(props: NavItemProps) {
       }}
     >
       <Icon className="h-10 w-10 p-1.5" />
-      <span className="text-sm">{label}</span>
+      <span className="text-xs">{label}</span>
     </Link>
+  );
+}
+
+export function LayoutContainerWithNavbar(props: PropsWithChildren) {
+  return (
+    <div
+      className="ml-18 h-dvh w-dvw overflow-y-auto"
+      style={{ paddingBottom: `calc(${styles.bottomNavbar.height} + 1.25 * ${styles.bottomNavbar.marginBottom})` }}
+    >
+      {props.children}
+    </div>
   );
 }
