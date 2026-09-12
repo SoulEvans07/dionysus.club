@@ -8,3 +8,102 @@
   height: 100dvh;
   position: relative;
 }
+
+/* Nav-driven view transitions: the active screen slides behind a fixed navbar
+   whose sliding pill indicator (view-transition-name: nav-indicator) morphs
+   in the same transition, keeping timing in sync automatically. */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-group(main-screen) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+::view-transition-old(main-screen),
+::view-transition-new(main-screen) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+::view-transition-group(navbar) {
+  animation: none;
+  mix-blend-mode: normal;
+  z-index: 10;
+}
+
+::view-transition-group(nav-indicator) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+  z-index: 50;
+}
+
+::view-transition-group(.nav-item) {
+  animation: none;
+  mix-blend-mode: normal;
+  z-index: 100;
+}
+
+:root[data-nav-direction="ltr"]::view-transition-old(main-screen) {
+  animation-name: nav-screen-exit-right;
+}
+
+:root[data-nav-direction="ltr"]::view-transition-new(main-screen) {
+  animation-name: nav-screen-enter-from-left;
+}
+
+:root[data-nav-direction="rtl"]::view-transition-old(main-screen) {
+  animation-name: nav-screen-exit-left;
+}
+
+:root[data-nav-direction="rtl"]::view-transition-new(main-screen) {
+  animation-name: nav-screen-enter-from-right;
+}
+
+@keyframes nav-screen-enter-from-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes nav-screen-exit-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes nav-screen-enter-from-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes nav-screen-exit-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

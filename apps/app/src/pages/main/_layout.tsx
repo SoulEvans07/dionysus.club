@@ -1,3 +1,4 @@
+import { type CSSProperties } from 'react';
 import { Outlet } from 'react-router';
 import {
   Martini,
@@ -15,8 +16,10 @@ import { NavBar, type BottomNavBarProps } from '~/components/navbar';
 export function MainLayout() {
   return (
     <>
-      <Outlet />
-      <div className="fixed bottom-0 left-0 right-0 flex items-center justify-center">
+      <div className="h-dvh w-dvw" style={{ viewTransitionName: 'main-screen' } as CSSProperties}>
+        <Outlet />
+      </div>
+      <div className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center">
         <NavBar navItems={bottomNavItems} />
       </div>
     </>
