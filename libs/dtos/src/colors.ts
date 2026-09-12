@@ -1,0 +1,31 @@
+import { z } from 'zod';
+
+export const TwBaseColor = z.enum([
+  'slate',
+  'gray',
+  'zinc',
+  'neutral',
+  'stone',
+  'mauve',
+  'olive',
+  'mist',
+  'taupe',
+  'red',
+  'orange',
+  'amber',
+  'yellow',
+  'lime',
+  'green',
+  'emerald',
+  'teal',
+  'cyan',
+  'sky',
+  'blue',
+  'indigo',
+  'violet',
+  'purple',
+  'fuchsia',
+  'pink',
+  'rose',
+]);
+export type TwBaseColor = z.infer<typeof TwBaseColor>;

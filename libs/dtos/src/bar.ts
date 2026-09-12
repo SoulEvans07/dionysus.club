@@ -1,5 +1,7 @@
 import { z } from 'zod';
 import { ImageDTO } from './image';
+import { TwBaseColor } from './colors';
+import { DynamicIcon } from './icons';
 
 export const BarType = z.enum(['public', 'private', 'personal']);
 export type BarType = z.infer<typeof BarType>;
@@ -49,3 +51,19 @@ export type AddBarMemberDTO = z.infer<typeof AddBarMemberDTO>;
 
 export const UpdateBarMemberDTO = AddBarMemberDTO.pick({ role: true });
 export type UpdateBarMemberDTO = z.infer<typeof UpdateBarMemberDTO>;
+
+export const SidebarBarGroup = z.object({
+  index: z.number(),
+  id: z.string(),
+  name: z.string(),
+  bars: BarDTO.array(),
+  color: TwBaseColor,
+  icon: DynamicIcon,
+});
+export type SidebarBarGroup = z.infer<typeof SidebarBarGroup>;
+
+export const SidebarDTO = z.object({
+  personal: BarDTO,
+  groups: SidebarBarGroup.array(),
+});
+export type SidebarDTO = z.infer<typeof SidebarDTO>;

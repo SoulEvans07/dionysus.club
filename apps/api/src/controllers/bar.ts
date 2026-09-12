@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { and, eq, inArray, isNull, or } from 'drizzle-orm';
-
+import _ from 'lodash';
 import {
   AddBarMemberDTO,
   BarDTO,
@@ -33,9 +33,7 @@ barController.get('/list', getUser, async (c) => {
   const memberships = await db.query.barUsers.findMany({ where: eq(barUsers.userId, user.id) });
   const memberBarIds = memberships.map((m) => m.barId);
   const membershipByBarId = memberships.reduce(
-    (acc, curr) => {
-      return { ...acc, [curr.barId]: curr.role };
-    },
+    (acc, curr) => ({ ...acc, [curr.barId]: curr.role }),
     {} as Record<string, BarRole>
   );
 
@@ -47,7 +45,7 @@ barController.get('/list', getUser, async (c) => {
     with: {
       logoImage: true,
       bannerImage: true,
-    }
+    },
   });
 
   const mylist: MyBarListDTO[] = list.map((bar): MyBarListDTO => {

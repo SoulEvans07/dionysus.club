@@ -5,6 +5,7 @@ import { logger } from 'hono/logger';
 import '~/env';
 import { db, sql } from '~/database';
 import { getUser, kindeAuthController } from './auth/kinde';
+import { sidebarController } from './controllers/sidebar';
 import { ingredientController } from './controllers/ingredient';
 import { cocktailController } from './controllers/cocktail';
 import { barController } from './controllers/bar';
@@ -28,13 +29,10 @@ app.get('/health', async (c) => {
 
 app.route('/auth', kindeAuthController);
 
-app.get('/test', getUser, async c => {
-  return c.json({ user: c.var.user });
-})
+app.get('/test', getUser, async c => c.json({ user: c.var.user }));
+app.get('/ping', getUser, async c => c.json({ ping: 'pong' }));
 
-app.get('/ping', getUser, async c => {
-  return c.json({ ping: 'pong' });
-})
+app.route('/sidebar', sidebarController);
 
 app.route('/bars', barController);
 
