@@ -1,90 +1,19 @@
 import { useMemo, useState } from 'react';
-import { ChevronsRight, Compass, Plus, LucideIcon, Crown, UsersRound } from 'lucide-react';
+import { ChevronsRight, Compass, Plus, LucideIcon } from 'lucide-react';
 import { cva } from 'class-variance-authority';
 import colors from 'tailwindcss/colors';
-import { useQuery } from '@tanstack/react-query';
-import _ from 'lodash';
 
-import { BarDTO, MyBarListDTO } from '@repo/dtos';
+import { BarDTO } from '@repo/dtos';
 import { tw } from '~/utils/twElem';
 import { cn } from '~/utils/classnames';
 import { styles } from '~/styles/constants';
-
-export type BarCategoryConfig = {
-  name: string;
-  style: {
-    color: string;
-    backgroundColor: string;
-  };
-  btnStyle: {
-    color: string;
-    backgroundColor: string;
-  };
-  Icon: LucideIcon;
-};
-
-export type BarGroup = BarCategoryConfig & { bars: BarDTO[] };
-
-export type BarGroups = {
-  personal: BarDTO;
-  owned: BarGroup;
-  memberOf: BarGroup;
-};
-
-const emptyGroups: BarGroups = {
-  personal: {} as BarDTO,
-  owned: {
-    name: 'Owned',
-    style: {
-      color: colors.violet[400],
-      backgroundColor: colors.violet[800],
-    },
-    btnStyle: {
-      color: colors.violet[300],
-      backgroundColor: colors.violet[600],
-    },
-    Icon: Crown,
-    bars: [],
-  },
-  memberOf: {
-    name: 'Member',
-    style: {
-      color: colors.blue[400],
-      backgroundColor: colors.blue[800],
-    },
-    btnStyle: {
-      color: colors.blue[300],
-      backgroundColor: colors.blue[600],
-    },
-    Icon: UsersRound,
-    bars: [],
-  },
-};
+import { BarGroup, useSidebarData } from '~/queries/sidebar';
 
 export function MainSidebar() {
   const [open, setOpen] = useState(false);
   const toggleSidebar = () => setOpen((prev) => !prev);
 
-  const { isPending, error, data } = useQuery({
-    queryKey: ['bars'],
-    queryFn: async () => {
-      const response = await fetch('/api/bars/list');
-      if (!response.ok) throw new Error('Network response was not ok');
-      const data = await response.json();
-      return MyBarListDTO.array().parse(data);
-    },
-    select: (bars) => {
-      console.log('>>> SELECT!!');
-      const groups = bars.reduce((acc, curr) => {
-        if (curr.barType === 'personal') return { ...acc, personal: curr };
-        if (['owner', 'admin'].includes(curr.role)) {
-          return { ...acc, owned: { ...acc.owned, bars: [...acc.owned.bars, curr] } };
-        }
-        return { ...acc, memberOf: { ...acc.memberOf, bars: [...acc.memberOf.bars, curr] } };
-      }, _.cloneDeep(emptyGroups));
-      return groups;
-    },
-  });
+  const { isPending, error, data } = useSidebarData();
 
   if (isPending) return null;
   if (error) return null;

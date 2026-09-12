@@ -9,7 +9,7 @@ import '~/styles/tailwind.css';
 
 import '~/env';
 import { appRoutes } from './pages/_router';
-import { queryClient } from './client';
+import { queryClient } from './queries/_client';
 
 const root = document.getElementById('root');
 

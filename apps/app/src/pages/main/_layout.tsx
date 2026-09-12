@@ -10,17 +10,16 @@ import {
   // CircleUserRound
 } from 'lucide-react';
 
-import { AuthGuard } from './_auth-guard';
 import { NavBar, type BottomNavBarProps } from '~/components/navbar';
 
 export function MainLayout() {
   return (
-    <AuthGuard>
+    <>
       <Outlet />
       <div className="fixed bottom-0 left-0 right-0 flex items-center justify-center">
         <NavBar navItems={bottomNavItems} />
       </div>
-    </AuthGuard>
+    </>
   );
 }
 

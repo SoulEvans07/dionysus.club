@@ -1,5 +1,5 @@
 import { H1 } from '~/components/common';
-import { useCurrentUser } from '~/auth';
+import { useCurrentUser } from '~/queries/auth';
 
 export function ProfileScreen() {
   const { data: currentUser } = useCurrentUser();
