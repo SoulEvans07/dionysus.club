@@ -10,10 +10,7 @@ export function LoginScreen() {
   const [searchParams] = useSearchParams();
   const { redirect } = useMemo(() => SearchParams.parse(searchParams), [searchParams]);
   const handleLogin = useCallback(() => {
-    const loginUri = redirect ? `/api/auth/login?redirect=${redirect}` : '/api/auth/login';
-    const loginWindow = window.open(loginUri, 'sso-login', 'popup,width=500,height=700');
-
-    // window.location.href = redirect ? `/api/auth/login?redirect=${redirect}` : '/api/auth/login';
+    window.location.href = redirect ? `/api/auth/login?redirect=${redirect}` : '/api/auth/login';
   }, [redirect]);
 
   return (
