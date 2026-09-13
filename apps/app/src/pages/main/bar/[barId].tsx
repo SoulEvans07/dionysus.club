@@ -24,6 +24,7 @@ import { H1 } from '~/components/common';
 import { sizes } from '~/styles/constants';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/shadcn/collapsible';
 import { cn } from '~/utils/classnames';
+import { Spinner } from '~/components/shadcn/spinner';
 
 const Params = z.object({ barId: z.string() });
 
@@ -38,6 +39,8 @@ export function BarScreen() {
   const members = useBarMembers(barId);
   const membersCount = members.data?.length ?? 0;
 
+  const skeleton = useMemo(() => bar.isPending || members.isPending, [bar.isPending, members.isPending]);
+
   return (
     <div
       className="mt-1 flex min-h-[calc(100%-0.25rem)] flex-col gap-2 rounded-tl-2xl border-l border-t border-slate-200 bg-slate-300"
@@ -47,17 +50,17 @@ export function BarScreen() {
         className="aspect-5/2 bg-linear-to-t flex flex-col justify-end rounded-tl-2xl from-slate-500 to-slate-50"
         style={banner}
       />
-      <div className="flex flex-col px-3">
-        <H1 className="mb-0">{bar.data?.name}</H1>
+      <div className="flex flex-col gap-0.5 px-3">
+        <H1 className={cn('mb-0', { skeleton })}>{bar.data?.name ?? 'Bar'}</H1>
         <div className="flex flex-row items-center gap-2">
-          <div className="flex flex-row items-center gap-1">
+          <div className={cn('flex flex-row items-center gap-1', { skeleton })}>
             <TypeIcon className="size-4" />
             <span>{type}</span>
           </div>
           {type !== 'personal' && (
             <>
               <span>|</span>
-              <span>
+              <span className={cn({ skeleton })}>
                 {membersCount} {membersCount > 1 ? 'members' : 'member'}
               </span>
             </>
@@ -110,17 +113,20 @@ const MenuButton = tw.button(
 
 type CollapsibleSectionProps = PropsWithChildren & {
   title: string;
+  isPending?: boolean;
+  isFetching?: boolean;
 };
 function CollapsibleSection(props: CollapsibleSectionProps) {
-  const { title, children } = props;
+  const { children, title, isPending, isFetching } = props;
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className="flex flex-col">
-      <CollapsibleTrigger asChild>
+      <CollapsibleTrigger disabled={isPending} asChild>
         <MenuItem>
-          <h2 className="font-semibold">{title}</h2>
-          <ChevronRight className={cn('ml-auto size-4', { 'rotate-90': isOpen })} />
+          <div className="mr-auto font-semibold">{title}</div>
+          {(isPending || isFetching) && <Spinner className="size-4 opacity-80" />}
+          {!isPending && <ChevronRight className={cn('size-4', { 'rotate-90': isOpen })} />}
           <span className="sr-only">Toggle {title}</span>
         </MenuItem>
       </CollapsibleTrigger>
@@ -135,16 +141,15 @@ function IngredientSection(props: IngredientListProps) {
   const { isPending, error, data, isFetching } = useIngredientList(barId);
   const navigate = useNavigate();
 
-  if (isPending) return <div>Loading...</div>;
   if (error) return <div>Error</div>;
 
   return (
-    <CollapsibleSection title="Ingredients">
+    <CollapsibleSection title="Ingredients" isPending={isPending} isFetching={isFetching}>
       <MenuItem onClick={() => navigate(`/bar/${barId}/ingredients`)}>
         <AtSign className="size-4" />
         <span>All</span>
       </MenuItem>
-      {data.map((ingr) => (
+      {data?.map((ingr) => (
         <MenuItem key={ingr.id} onClick={() => navigate(`/bar/${barId}/ingredients/${ingr.id}`)}>
           <Hash className="size-4" />
           <span>{ingr.name}</span>
@@ -160,16 +165,15 @@ function CocktailSection(props: CocktailListProps) {
   const { isPending, error, data, isFetching } = useCocktailList(barId);
   const navigate = useNavigate();
 
-  if (isPending) return <div>Loading...</div>;
   if (error) return <div>Error</div>;
 
   return (
-    <CollapsibleSection title="Cocktails">
+    <CollapsibleSection title="Cocktails" isPending={isPending} isFetching={isFetching}>
       <MenuItem onClick={() => navigate(`/bar/${barId}/cocktails`)}>
         <AtSign className="size-4" />
         <span>All</span>
       </MenuItem>
-      {data.map((cocktail) => (
+      {data?.map((cocktail) => (
         <MenuItem key={cocktail.id} onClick={() => navigate(`/bar/${barId}/cocktails/${cocktail.id}`)}>
           <Hash className="size-4" />
           <span>{cocktail.name}</span>

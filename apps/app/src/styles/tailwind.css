@@ -128,3 +128,7 @@
     @apply bg-background text-foreground;
   } */
 }
+
+.skeleton {
+  @apply animate-pulse rounded-md bg-slate-400/50 fill-transparent stroke-transparent text-transparent;
+}
