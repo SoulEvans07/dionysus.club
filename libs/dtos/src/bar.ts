@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { ImageDTO } from './image';
 import { TwBaseColor } from './colors';
 import { DynamicIcon } from './icons';
+import { UserWithImageDTO } from './user';
 
 export const BarType = z.enum(['public', 'private', 'personal']);
 export type BarType = z.infer<typeof BarType>;
@@ -25,10 +26,10 @@ export const BarDTO = z.object({
 });
 export type BarDTO = z.infer<typeof BarDTO>;
 
-export const MyBarListDTO = BarDTO.extend({
+export const BarWithRoleDTO = BarDTO.extend({
   role: BarRole,
 });
-export type MyBarListDTO = z.infer<typeof MyBarListDTO>;
+export type BarWithRoleDTO = z.infer<typeof BarWithRoleDTO>;
 
 export const CreateBarDTO = BarDTO.omit({ id: true, ownedBy: true, barType: true }).extend({
   barType: BarType.exclude(['personal']),
@@ -43,6 +44,12 @@ export const BarMemberDTO = z.object({
   role: BarRole,
 });
 export type BarMemberDTO = z.infer<typeof BarMemberDTO>;
+
+export const GetBarMemberDTO = BarMemberDTO.extend({
+  barId: z.string(),
+  user: UserWithImageDTO,
+});
+export type GetBarMemberDTO = z.infer<typeof GetBarMemberDTO>
 
 export const AddBarMemberDTO = BarMemberDTO.extend({
   role: BarRoleDAL,

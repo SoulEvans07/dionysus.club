@@ -28,10 +28,10 @@ export function BarIcon(props: BarIconProps) {
         {bar.barType !== 'personal' && bar.logoImage ? (
           <img src={bar.logoImage.url} className="absolute inset-0" />
         ) : (
-          <span className="text-2xl font-semibold">{bar.name[0]}</span>
+          <span className="text-2xl font-semibold">{bar.name[0].toUpperCase()}</span>
         )}
       </Sidebar.SquareButton>
-      <span className={cn('ml-2', { hidden: !open })}>{bar.name}</span>
+      <span className={cn('ml-2 overflow-hidden text-ellipsis whitespace-nowrap', { hidden: !open })}>{bar.name}</span>
     </div>
   );
 }

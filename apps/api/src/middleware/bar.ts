@@ -11,29 +11,32 @@ type Env = {
   };
 };
 
+type BarFieldsWith = NonNullable<Parameters<typeof db.query.bars.findFirst>[0]>['with'];
+
 // Resolves the bar a request applies to: the bar named by the `barId` route param,
 // or the requesting user's personal bar when no `barId` is present.
-export const getBar = createMiddleware<Env>(async (c, next) => {
-  const user = c.var.user;
-  const barId = c.req.param('barId');
+export const getBarWith = (withFields?: BarFieldsWith) => {
+  return createMiddleware<Env>(async (c, next) => {
+    const user = c.var.user;
+    const barId = c.req.param('barId');
 
-  const bar = barId
-    ? await db.query.bars.findFirst({ where: and(eq(bars.id, barId), isNull(bars.deletedAt)) })
-    : await db.query.bars.findFirst({
-        where: and(eq(bars.ownedBy, user.id), eq(bars.barType, 'personal'), isNull(bars.deletedAt)),
+    const condition = barId
+      ? and(eq(bars.id, barId), isNull(bars.deletedAt))
+      : and(eq(bars.ownedBy, user.id), eq(bars.barType, 'personal'), isNull(bars.deletedAt));
+    const bar = await db.query.bars.findFirst({ where: condition, with: withFields });
+
+    if (!bar) return c.json({ error: 'Not found' }, 404);
+
+    if (bar.ownedBy !== user.id) {
+      const membership = await db.query.barUsers.findFirst({
+        where: and(eq(barUsers.barId, bar.id), eq(barUsers.userId, user.id)),
       });
 
-  if (!bar) return c.json({ error: 'Not found' }, 404);
+      if (!membership) return c.json({ error: 'Unauthorized' }, 401);
+    }
 
-  if (bar.ownedBy !== user.id) {
-    const membership = await db.query.barUsers.findFirst({
-      where: and(eq(barUsers.barId, bar.id), eq(barUsers.userId, user.id)),
-    });
+    c.set('bar', bar);
 
-    if (!membership) return c.json({ error: 'Unauthorized' }, 401);
-  }
-
-  c.set('bar', bar);
-
-  return next();
-});
+    return next();
+  });
+};

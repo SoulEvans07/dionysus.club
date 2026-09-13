@@ -11,11 +11,11 @@ import { BarIcon } from './bar-icon';
 import { Sidebar } from './common';
 
 const sidebar = cva(
-  'absolute bottom-0 left-0 top-0 flex shrink-0 grow-0 select-none flex-col gap-2 bg-indigo-950 p-2.5',
+  'absolute bottom-0 left-0 top-0 z-10 flex shrink-0 grow-0 select-none flex-col gap-2 rounded-r-2xl bg-slate-400 p-2.5',
   {
     variants: {
       open: {
-        true: ['w-[calc(100%-4rem)]', 'lg:w-80'],
+        true: ['w-[calc(100%-6rem)]', 'lg:w-80'],
         false: ['w-18', 'lg:w-18'],
       },
     },
@@ -39,7 +39,7 @@ export function MainSidebar() {
     >
       <div className="flex h-full flex-col gap-2 overflow-y-auto">
         <Sidebar.GroupWrapper>
-          <BarIcon bar={data.personal} open={open} color="indigo" />
+          <BarIcon bar={data.personal} open={open} color="slate" />
         </Sidebar.GroupWrapper>
         {data.groups.map((group) => (
           <BarGroupFolder key={group.id} group={group} open={open} />
@@ -64,4 +64,4 @@ export function MainSidebar() {
 }
 
 const List = tw.div('flex flex-col gap-2');
-const Separator = tw.hr('mx-1 border-indigo-900');
+const Separator = tw.hr('mx-1 border-slate-900');

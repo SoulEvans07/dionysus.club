@@ -13,11 +13,11 @@ import {
 } from '@repo/dtos';
 import { db, menuGroups, menuItems, menus } from '~/database';
 import { getUser } from '~/auth/kinde';
-import { getBar } from '~/middleware/bar';
+import { getBarWith } from '~/middleware/bar';
 
 export const menuController = new Hono();
 
-menuController.get('/list', getUser, getBar, async (c) => {
+menuController.get('/list', getUser, getBarWith(), async (c) => {
   const bar = c.var.bar;
 
   const list = await db.query.menus.findMany({
@@ -27,7 +27,7 @@ menuController.get('/list', getUser, getBar, async (c) => {
   return c.json<MenuDTO[]>(MenuDTO.array().parse(list));
 });
 
-menuController.get('/:id', getUser, getBar, async (c) => {
+menuController.get('/:id', getUser, getBarWith(), async (c) => {
   const bar = c.var.bar;
   const id = c.req.param('id');
 
@@ -42,7 +42,7 @@ menuController.get('/:id', getUser, getBar, async (c) => {
   return c.json<MenuDetailDTO>(MenuDetailDTO.parse({ ...menu, items }));
 });
 
-menuController.post('/create', getUser, getBar, zValidator('json', CreateMenuDTO), async (c) => {
+menuController.post('/create', getUser, getBarWith(), zValidator('json', CreateMenuDTO), async (c) => {
   const user = c.var.user;
   const bar = c.var.bar;
   const body = c.req.valid('json');
@@ -55,7 +55,7 @@ menuController.post('/create', getUser, getBar, zValidator('json', CreateMenuDTO
   return c.json<MenuDTO>(MenuDTO.parse(item));
 });
 
-menuController.put('/:id', getUser, getBar, zValidator('json', UpdateMenuDTO), async (c) => {
+menuController.put('/:id', getUser, getBarWith(), zValidator('json', UpdateMenuDTO), async (c) => {
   const user = c.var.user;
   const bar = c.var.bar;
   const id = c.req.param('id');
@@ -75,7 +75,7 @@ menuController.put('/:id', getUser, getBar, zValidator('json', UpdateMenuDTO), a
   return c.json({ id });
 });
 
-menuController.delete('/:id', getUser, getBar, async (c) => {
+menuController.delete('/:id', getUser, getBarWith(), async (c) => {
   const user = c.var.user;
   const bar = c.var.bar;
   const id = c.req.param('id');
@@ -94,7 +94,7 @@ menuController.delete('/:id', getUser, getBar, async (c) => {
 menuController.post(
   '/:menuId/groups',
   getUser,
-  getBar,
+  getBarWith(),
   zValidator('json', CreateMenuGroupDTO),
   async (c) => {
     const bar = c.var.bar;
@@ -119,7 +119,7 @@ menuController.post(
 menuController.put(
   '/:menuId/groups/:groupId',
   getUser,
-  getBar,
+  getBarWith(),
   zValidator('json', UpdateMenuGroupDTO),
   async (c) => {
     const bar = c.var.bar;
@@ -140,7 +140,7 @@ menuController.put(
   }
 );
 
-menuController.delete('/:menuId/groups/:groupId', getUser, getBar, async (c) => {
+menuController.delete('/:menuId/groups/:groupId', getUser, getBarWith(), async (c) => {
   const bar = c.var.bar;
   const menuId = c.req.param('menuId');
   const groupId = c.req.param('groupId');
@@ -157,7 +157,7 @@ menuController.delete('/:menuId/groups/:groupId', getUser, getBar, async (c) => 
   return c.json({ success: true });
 });
 
-menuController.post('/:menuId/items', getUser, getBar, zValidator('json', AddMenuItemDTO), async (c) => {
+menuController.post('/:menuId/items', getUser, getBarWith(), zValidator('json', AddMenuItemDTO), async (c) => {
   const bar = c.var.bar;
   const menuId = c.req.param('menuId');
   const body = c.req.valid('json');
@@ -180,7 +180,7 @@ menuController.post('/:menuId/items', getUser, getBar, zValidator('json', AddMen
   return c.json(item);
 });
 
-menuController.delete('/:menuId/items/:cocktailId', getUser, getBar, async (c) => {
+menuController.delete('/:menuId/items/:cocktailId', getUser, getBarWith(), async (c) => {
   const bar = c.var.bar;
   const menuId = c.req.param('menuId');
   const cocktailId = c.req.param('cocktailId');

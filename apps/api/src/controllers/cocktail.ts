@@ -5,11 +5,11 @@ import { and, eq } from 'drizzle-orm';
 import { AddRecipeItemToCocktailDTO, CocktailDTO, CreateCocktailDTO } from '@repo/dtos';
 import { cocktails, db, ingredients, recipeItem } from '~/database';
 import { getUser } from '~/auth/kinde';
-import { getBar } from '~/middleware/bar';
+import { getBarWith } from '~/middleware/bar';
 
 export const cocktailController = new Hono();
 
-cocktailController.get('/list', getUser, getBar, async (c) => {
+cocktailController.get('/list', getUser, getBarWith(), async (c) => {
   const bar = c.var.bar;
 
   const list = await db.query.cocktails.findMany({
@@ -24,7 +24,7 @@ cocktailController.get('/list', getUser, getBar, async (c) => {
   return c.json<CocktailDTO[]>(validated);
 });
 
-cocktailController.get('/:id', getUser, getBar, async (c) => {
+cocktailController.get('/:id', getUser, getBarWith(), async (c) => {
   const bar = c.var.bar;
   const id = c.req.param('id');
 
@@ -41,7 +41,7 @@ cocktailController.get('/:id', getUser, getBar, async (c) => {
   return c.json<CocktailDTO>(validated);
 });
 
-cocktailController.post('/create', getUser, getBar, zValidator('json', CreateCocktailDTO), async (c) => {
+cocktailController.post('/create', getUser, getBarWith(), zValidator('json', CreateCocktailDTO), async (c) => {
   const user = c.var.user;
   const bar = c.var.bar;
   const body = c.req.valid('json');
@@ -57,7 +57,7 @@ cocktailController.post('/create', getUser, getBar, zValidator('json', CreateCoc
 cocktailController.post(
   '/:cocktailId/recipe/add',
   getUser,
-  getBar,
+  getBarWith(),
   zValidator('json', AddRecipeItemToCocktailDTO),
   async (c) => {
     const bar = c.var.bar;
@@ -89,7 +89,7 @@ cocktailController.post(
   }
 );
 
-cocktailController.delete('/:cocktailId/recipe/:ingredientId', getUser, getBar, async (c) => {
+cocktailController.delete('/:cocktailId/recipe/:ingredientId', getUser, getBarWith(), async (c) => {
   const bar = c.var.bar;
   const cocktailId = c.req.param('cocktailId');
   const ingredientId = c.req.param('ingredientId');

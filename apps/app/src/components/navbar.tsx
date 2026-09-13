@@ -25,7 +25,7 @@ export function NavBar(props: BottomNavBarProps) {
 
   return (
     <nav
-      className="relative grid w-full rounded-full border border-indigo-200 bg-indigo-100 p-0.5"
+      className="relative grid w-full rounded-full border border-slate-200 bg-slate-100 p-0.5"
       style={{
         ...styles.bottomNavbar,
         gridTemplateColumns: `repeat(${navItems.length}, minmax(0, 1fr))`,
@@ -38,7 +38,7 @@ export function NavBar(props: BottomNavBarProps) {
       {activeIndex !== -1 && (
         <div
           aria-hidden
-          className="z-10 rounded-full bg-indigo-200"
+          className="z-10 rounded-full bg-slate-200"
           style={
             {
               gridColumn: activeIndex + 1,
@@ -56,8 +56,8 @@ export function NavBar(props: BottomNavBarProps) {
 const navButton = cva('relative z-20 flex flex-col items-center justify-center', {
   variants: {
     active: {
-      false: 'fill-indigo-300 text-indigo-300',
-      true: 'fill-indigo-800 text-indigo-800',
+      false: 'fill-slate-300 text-slate-300',
+      true: 'fill-slate-800 text-slate-800',
     },
   },
   defaultVariants: {

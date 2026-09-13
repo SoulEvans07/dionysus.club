@@ -19,18 +19,34 @@ const supportedTags = [
 ] satisfies HTMLTag[];
 type SupportedTag = (typeof supportedTags)[number];
 
-function twElem<T extends SupportedTag>(tag: T, className: string): React.FC<JSX.IntrinsicElements[T]> {
+function twElem<T extends SupportedTag>(
+  tag: T,
+  className: string,
+  style?: React.CSSProperties
+): React.FC<JSX.IntrinsicElements[T]> {
   const Element: React.FC<JSX.IntrinsicElements[T]> = (props) => {
-    return React.createElement(tag, { ...props, className: cn(className, props.className) });
+    return React.createElement(tag, {
+      ...props,
+      className: cn(className, props.className),
+      style: { ...props.style, ...style },
+    });
   };
   Element.displayName = tag;
 
   return Element;
 }
 
-function twComp<P extends { className?: string }>(comp: React.FC<P>, className: string): React.FC<P> {
+function twComp<P extends { className?: string; style?: React.CSSProperties }>(
+  comp: React.FC<P>,
+  className: string,
+  style?: React.CSSProperties
+): React.FC<P> {
   const Element: React.FC<P> = (props) => {
-    return React.createElement(comp, { ...props, className: cn(className, props.className) });
+    return React.createElement(comp, {
+      ...props,
+      className: cn(className, props.className),
+      style: { ...props.style, ...style },
+    });
   };
   Element.displayName = comp.displayName;
 
@@ -38,10 +54,13 @@ function twComp<P extends { className?: string }>(comp: React.FC<P>, className: 
 }
 
 type TwElemCollection = {
-  [tag in SupportedTag]: (className: string) => ReturnType<typeof twElem<tag>>;
+  [tag in SupportedTag]: (className: string, style?: React.CSSProperties) => ReturnType<typeof twElem<tag>>;
 } & { comp: typeof twComp };
 
 export const tw = supportedTags.reduce(
-  (acc, curr) => ({ ...acc, [curr]: (className: string) => twElem(curr, className) }),
+  (acc, curr) => ({
+    ...acc,
+    [curr]: (className: string, style?: React.CSSProperties) => twElem(curr, className, style),
+  }),
   { comp: twComp } as TwElemCollection
 );

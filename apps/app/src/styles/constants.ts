@@ -8,16 +8,11 @@ const bottomNavbar: CSSProperties = {
   marginRight: '3rem',
 };
 
-const bottomNavbarGuard: CSSProperties = {
-  paddingBottom: `calc(${bottomNavbar.height} + 1.25 * ${bottomNavbar.marginBottom})`,
-};
-
-const mainSidebarGuard: CSSProperties = {
-  marginLeft: '4.5rem',
-};
-
 export const styles = {
   bottomNavbar,
-  bottomNavbarGuard,
-  mainSidebarGuard,
 } as const;
+
+export const sizes = {
+  bottomNavbarGuard: `calc(${bottomNavbar.height} + 1.25 * ${bottomNavbar.marginBottom})`,
+  mainSidebarGuard: '4.5rem',
+};

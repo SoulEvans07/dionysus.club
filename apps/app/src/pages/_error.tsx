@@ -1,7 +1,12 @@
+import { useEffect } from 'react';
 import { useRouteError } from 'react-router';
 
 export function ErrorBoundary() {
   const error = useRouteError();
+
+  useEffect(() => {
+    console.error(error);
+  }, [error]);
 
   return (
     <div role="alert">

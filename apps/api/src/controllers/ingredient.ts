@@ -5,11 +5,11 @@ import { and, eq } from 'drizzle-orm';
 import { IngredientDTO, CreateIngredientDTO, UpdateIngredientDTO } from '@repo/dtos';
 import { db, ingredients } from '~/database';
 import { getUser } from '~/auth/kinde';
-import { getBar } from '~/middleware/bar';
+import { getBarWith } from '~/middleware/bar';
 
 export const ingredientController = new Hono();
 
-ingredientController.get('/list', getUser, getBar, async (c) => {
+ingredientController.get('/list', getUser, getBarWith(), async (c) => {
   const bar = c.var.bar;
 
   const list = await db.query.ingredients.findMany({
@@ -19,7 +19,7 @@ ingredientController.get('/list', getUser, getBar, async (c) => {
   return c.json<IngredientDTO[]>(IngredientDTO.array().parse(list));
 });
 
-ingredientController.get('/:id', getUser, getBar, async (c) => {
+ingredientController.get('/:id', getUser, getBarWith(), async (c) => {
   const bar = c.var.bar;
   const id = c.req.param('id');
 
@@ -32,7 +32,7 @@ ingredientController.get('/:id', getUser, getBar, async (c) => {
   return c.json<IngredientDTO>(IngredientDTO.parse(item));
 });
 
-ingredientController.post('/create', getUser, getBar, zValidator('json', CreateIngredientDTO), async (c) => {
+ingredientController.post('/create', getUser, getBarWith(), zValidator('json', CreateIngredientDTO), async (c) => {
   const user = c.var.user;
   const bar = c.var.bar;
   const body = c.req.valid('json');
@@ -45,7 +45,7 @@ ingredientController.post('/create', getUser, getBar, zValidator('json', CreateI
   return c.json(item);
 });
 
-ingredientController.put('/update', getUser, getBar, zValidator('json', UpdateIngredientDTO), async (c) => {
+ingredientController.put('/update', getUser, getBarWith(), zValidator('json', UpdateIngredientDTO), async (c) => {
   const user = c.var.user;
   const bar = c.var.bar;
   const body = c.req.valid('json');

@@ -1,11 +1,12 @@
 import { z } from 'zod';
+import { ImageDTO } from './image';
 
 export const UserDTO = z.object({
   id: z.string(),
   kindeId: z.string(),
   username: z.string(),
   email: z.string(),
-  picture: z.string().nullable(),
+  // picture: z.string().nullable(),
   profileImageId: z.string().nullable(),
 });
 export type UserDTO = z.infer<typeof UserDTO>;
@@ -14,3 +15,8 @@ export const MeDTO = UserDTO.extend({
   personalBarId: z.string(),
 });
 export type MeDTO = z.infer<typeof MeDTO>;
+
+export const UserWithImageDTO = UserDTO.extend({
+  profileImage: ImageDTO.nullable(),
+});
+export type UserWithImageDTO = z.infer<typeof UserWithImageDTO>
