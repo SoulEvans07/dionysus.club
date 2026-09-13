@@ -9,3 +9,12 @@ export const cocktailListQuery = (barId: string) => ({
 export function useCocktailList(barId: string) {
   return useQuery({ ...cocktailListQuery(barId) });
 }
+
+export const cocktailGetQuery = (barId: string, id: string) => ({
+  queryKey: ['bars', barId, 'cocktails', id],
+  queryFn: () => api.cocktails.get(barId, id),
+});
+
+export function useCocktail(barId: string, id: string) {
+  return useQuery({ ...cocktailGetQuery(barId, id) });
+}

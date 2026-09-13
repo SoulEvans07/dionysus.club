@@ -9,3 +9,12 @@ export const ingredientListQuery = (barId: string) => ({
 export function useIngredientList(barId: string) {
   return useQuery({ ...ingredientListQuery(barId) });
 }
+
+export const ingredientGetQuery = (barId: string, id: string) => ({
+  queryKey: ['bars', barId, 'ingredients', id],
+  queryFn: () => api.ingredients.get(barId, id),
+});
+
+export function useIngredient(barId: string, id: string) {
+  return useQuery({ ...ingredientGetQuery(barId, id) });
+}
