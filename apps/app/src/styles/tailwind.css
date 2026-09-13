@@ -2,7 +2,8 @@
 
 @plugin "tailwindcss-animate";
 
-@custom-variant dark (&:is(.dark *));
+/* @custom-variant dark (&:is(.dark *)); */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --color-avocado-100: oklch(0.99 0 0);
@@ -121,12 +122,9 @@
 }
 
 @layer base {
-  /* * {
-    @apply border-border outline-ring/50;
-  }
   body {
     @apply bg-background text-foreground;
-  } */
+  }
 }
 
 .skeleton {
