@@ -1,5 +1,4 @@
 {
-  "$schema": "https://json.schemastore.org/web-manifest-combined.json",
   "start_url": "/",
   "short_name": "Dionysus",
   "name": "Dionysus Club",
