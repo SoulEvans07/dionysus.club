@@ -5,7 +5,7 @@ import { fullEntity } from '../entity';
 import { users } from './user';
 import { imageBlobs } from './image';
 
-export const barTypeEnum = pgEnum('bar_type', ['public', 'private', 'personal']);
+export const barTypeEnum = pgEnum('bar_type', ['public', 'private', 'personal', 'system']);
 
 export const bars = pgTable('bars', {
   ...fullEntity(),

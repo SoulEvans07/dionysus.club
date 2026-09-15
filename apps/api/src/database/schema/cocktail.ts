@@ -16,6 +16,7 @@ import { users } from './user';
 import { ingredients } from './ingredient';
 import { bars } from './bar';
 import { imageBlobs } from './image';
+import { tags } from './tag';
 
 export const cocktails = pgTable('cocktails', {
   ...fullEntity(),
@@ -24,7 +25,6 @@ export const cocktails = pgTable('cocktails', {
     .references((): AnyPgColumn => bars.id, { onDelete: 'cascade' }),
   name: varchar('name', { length: 256 }).notNull(),
   description: text('description').notNull().default(''),
-  tags: text('tags').notNull().default('[]'),
   iconImageId: uuid('icon_image_id').references((): AnyPgColumn => imageBlobs.id),
   cardImageId: uuid('card_image_id').references((): AnyPgColumn => imageBlobs.id),
 });
@@ -70,6 +70,24 @@ export const recipeStepRelations = relations(recipeSteps, ({ one }) => ({
   image: one(imageBlobs, { fields: [recipeSteps.imageId], references: [imageBlobs.id] }),
 }));
 
+export const cocktailTags = pgTable(
+  'cocktail_tags',
+  {
+    cocktailId: uuid('cocktail_id')
+      .notNull()
+      .references((): AnyPgColumn => cocktails.id, { onDelete: 'cascade' }),
+    tagId: uuid('tag_id')
+      .notNull()
+      .references((): AnyPgColumn => tags.id, { onDelete: 'cascade' }),
+  },
+  (t) => [primaryKey({ columns: [t.cocktailId, t.tagId] })]
+);
+
+export const cocktailTagRelations = relations(cocktailTags, ({ one }) => ({
+  cocktail: one(cocktails, { fields: [cocktailTags.cocktailId], references: [cocktails.id] }),
+  tag: one(tags, { fields: [cocktailTags.tagId], references: [tags.id] }),
+}));
+
 export const cocktailRelations = relations(cocktails, ({ one, many }) => ({
   createdBy: one(users, { fields: [cocktails.createdById], references: [users.id] }),
   updatedBy: one(users, { fields: [cocktails.updatedById], references: [users.id] }),
@@ -79,4 +97,5 @@ export const cocktailRelations = relations(cocktails, ({ one, many }) => ({
   steps: many(recipeSteps),
   iconImage: one(imageBlobs, { fields: [cocktails.iconImageId], references: [imageBlobs.id] }),
   cardImage: one(imageBlobs, { fields: [cocktails.cardImageId], references: [imageBlobs.id] }),
+  tags: many(cocktailTags),
 }));

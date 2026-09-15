@@ -4,7 +4,7 @@ import { TwBaseColor } from './colors';
 import { DynamicIcon } from './icons';
 import { UserWithImageDTO } from './user';
 
-export const BarType = z.enum(['public', 'private', 'personal']);
+export const BarType = z.enum(['public', 'private', 'personal', 'system']);
 export type BarType = z.infer<typeof BarType>;
 
 export const BarRoleDAL = z.enum(['admin', 'bartender', 'member', 'guest']);
@@ -32,7 +32,7 @@ export const BarWithRoleDTO = BarDTO.extend({
 export type BarWithRoleDTO = z.infer<typeof BarWithRoleDTO>;
 
 export const CreateBarDTO = BarDTO.omit({ id: true, ownedBy: true, barType: true }).extend({
-  barType: BarType.exclude(['personal']),
+  barType: BarType.exclude(['personal', 'system']),
 });
 export type CreateBarDTO = z.infer<typeof CreateBarDTO>;
 

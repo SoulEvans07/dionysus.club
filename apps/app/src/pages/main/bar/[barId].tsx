@@ -13,6 +13,7 @@ import {
   CircleUser,
   Globe,
   Lock,
+  Cog,
 } from 'lucide-react';
 
 import { BarType } from '@repo/dtos';
@@ -102,6 +103,7 @@ const typeIcons: Record<BarType, LucideIcon> = {
   personal: CircleUser,
   public: Globe,
   private: Lock,
+  system: Cog,
 };
 
 const NavbarGuard = tw.div('navbar-guard', { minHeight: sizes.bottomNavbarGuard });
