@@ -1,7 +1,6 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 import { reset } from 'drizzle-seed';
-import { ne } from 'drizzle-orm';
 
 import '~/env';
 import * as schema from '~/database/schema';
@@ -17,13 +16,27 @@ const imagesByName = new Map(images.map((image) => [image.name, image]));
 async function main() {
   const pool = new Pool({ connectionString: process.env.DATABASE_URL });
   const db = drizzle(pool, { schema });
+  await reset(db, schema);
 
-  // users/bars are reset separately below so the system user/bar (seeded by a migration,
-  // fixed ids in ~/database/constants) survive a reseed instead of being truncated away.
-  const { users: _users, bars: _bars, ...resettableSchema } = schema;
-  await reset(db, resettableSchema);
-  await db.delete(schema.bars).where(ne(schema.bars.id, SYSTEM_BAR_ID));
-  await db.delete(schema.users).where(ne(schema.users.id, SYSTEM_USER_ID));
+  // reset() truncates the system user/bar too - `users`/`bars` reference `imageBlobs`
+  // (profile/logo/banner image), and truncate CASCADE sweeps in any table referencing a
+  // truncated one, so excluding just users/bars from reset() isn't enough on its own.
+  // Recreate them with their fixed ids before anything below depends on them.
+  // (same rows as db/migrations/0003_seed_system_user_and_bar.sql)
+  await db.insert(schema.users).values({
+    id: SYSTEM_USER_ID,
+    kindeId: '_system',
+    email: 'system@dionysus.club',
+    username: '_system',
+  });
+  await db.insert(schema.bars).values({
+    id: SYSTEM_BAR_ID,
+    ownedBy: SYSTEM_USER_ID,
+    name: 'System',
+    barType: 'system',
+    createdById: SYSTEM_USER_ID,
+    updatedById: SYSTEM_USER_ID,
+  });
 
   await db.insert(schema.tags).values(
     defaultTags.map((tag) => ({
