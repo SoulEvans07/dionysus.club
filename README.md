@@ -1,84 +1,66 @@
-# Turborepo starter
+# dionysus.club
 
-This Turborepo starter is maintained by the Turborepo core team.
+A bar/cocktail management app: track bars, ingredients, cocktails, and menus, with role-based membership per bar.
 
-## Using this example
+## What's inside
 
-Run the following command:
+A pnpm/Turborepo monorepo:
+
+- **`apps/api`** (`api.dionysus.club`) - [Hono](https://hono.dev/) HTTP API on Node, [Drizzle ORM](https://orm.drizzle.team/) over Postgres, auth via [Kinde](https://kinde.com/).
+- **`apps/app`** (`app.dionysus.club`) - React 19 SPA built with Vite, react-router, TanStack Query, and Tailwind v4. Planned to be a PWA (only `public/manifest.json` exists so far, no service worker yet).
+- **`libs/dtos`** (`@repo/dtos`) - Zod schemas shared between the api and the app, used for request validation and response typing.
+- **`libs/tsconfig`** - shared base `tsconfig.json`.
+
+## Prerequisites
+
+- Node v24 (see `.nvmrc`)
+- pnpm 9 (`packageManager` in `package.json`)
+- Docker (for local Postgres)
+
+## Setup
 
 ```sh
-npx create-turbo@latest
+pnpm install
 ```
 
-## What's inside?
+Start local Postgres:
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+```sh
+docker compose -f docker/docker-compose.yml up -d
 ```
 
-### Develop
+This exposes Postgres on host port `7432` (db `dionysus_club`, user `dionysus`, password `postgres`).
 
-To develop all apps and packages, run the following command:
+Each app needs its own `.env` file - see `apps/api/README.md` and `apps/app/README.md` for the variables each one expects.
 
-```
-cd my-turborepo
-pnpm dev
-```
+Run migrations against the local database:
 
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
+```sh
+pnpm db:migr
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## Development
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
+```sh
+pnpm dev          # run both apps
+pnpm dev:api      # api only
+pnpm dev:app      # app only
 ```
-npx turbo link
+
+By default the app runs on `http://localhost:4000` and proxies `/api/*` to the api (`SERVER_URL` in `apps/app/.env`), which runs on `http://localhost:3000`.
+
+## Other commands
+
+```sh
+pnpm build            # build all packages
+pnpm lint             # eslint across all packages
+pnpm check-types      # tsc --noEmit across all packages
+pnpm format           # prettier --write on the whole repo
 ```
 
-## Useful Links
+There is no test runner configured in this repo yet.
 
-Learn more about the power of Turborepo:
+## Deployment
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+- **App** (frontend) - Vercel, with separate production and preview environments. `/api/*` requests are rewritten to the api's `SERVER_URL` via `vercel.ts` at the repo root (the same rewrite Vite's dev proxy does locally); every other path falls back to `index.html` for client-side routing.
+- **API + Postgres** - Railway, with separate production and preview environments.
