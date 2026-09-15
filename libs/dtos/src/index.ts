@@ -6,3 +6,4 @@ export * from './image';
 export * from './user';
 export * from './colors';
 export * from './icons';
+export * from './tag';

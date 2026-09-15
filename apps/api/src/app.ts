@@ -11,6 +11,7 @@ import { cocktailController } from './controllers/cocktail';
 import { barController } from './controllers/bar';
 import { menuController } from './controllers/menu';
 import { imageController } from './controllers/image';
+import { tagController } from './controllers/tag';
 
 export const app = new Hono().basePath('/api');
 
@@ -44,5 +45,8 @@ app.route('/cocktails', cocktailController);
 
 app.route('/bars/:barId/menus', menuController);
 app.route('/menus', menuController);
+
+app.route('/bars/:barId/tags', tagController);
+app.route('/tags', tagController);
 
 app.route('/images', imageController);

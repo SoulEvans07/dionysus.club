@@ -3,9 +3,10 @@ import { zValidator } from '@hono/zod-validator';
 import { and, eq } from 'drizzle-orm';
 
 import { AddRecipeItemToCocktailDTO, CocktailDTO, CreateCocktailDTO } from '@repo/dtos';
-import { cocktails, db, ingredients, recipeItem } from '~/database';
+import { cocktails, cocktailTags, db, ingredients, recipeItem } from '~/database';
 import { getUser } from '~/auth/kinde';
 import { getBarWith } from '~/middleware/bar';
+import { findAssignableTag } from './tag';
 
 export const cocktailController = new Hono();
 
@@ -14,11 +15,21 @@ cocktailController.get('/list', getUser, getBarWith(), async (c) => {
 
   const list = await db.query.cocktails.findMany({
     where: eq(cocktails.barId, bar.id),
-    with: { ingredients: { with: { ingredient: true } } },
+    with: {
+      ingredients: { with: { ingredient: { with: { tags: { with: { tag: true } } } } } },
+      tags: { with: { tag: true } },
+    },
   });
 
   const validated = CocktailDTO.array().parse(
-    list.map(({ ingredients: recipe, ...cocktail }) => ({ ...cocktail, recipe }))
+    list.map(({ ingredients: recipe, tags, ...cocktail }) => ({
+      ...cocktail,
+      tags: tags.map((t) => t.tag),
+      recipe: recipe.map(({ ingredient, ...item }) => ({
+        ...item,
+        ingredient: { ...ingredient, tags: ingredient.tags.map((t) => t.tag) },
+      })),
+    }))
   );
 
   return c.json<CocktailDTO[]>(validated);
@@ -30,13 +41,23 @@ cocktailController.get('/:id', getUser, getBarWith(), async (c) => {
 
   const item = await db.query.cocktails.findFirst({
     where: and(eq(cocktails.id, id), eq(cocktails.barId, bar.id)),
-    with: { ingredients: { with: { ingredient: true } } },
+    with: {
+      ingredients: { with: { ingredient: { with: { tags: { with: { tag: true } } } } } },
+      tags: { with: { tag: true } },
+    },
   });
 
   if (!item) return c.json({ error: 'Not found' }, 404);
 
-  const { ingredients: recipe, ...cocktail } = item;
-  const validated = CocktailDTO.parse({ ...cocktail, recipe });
+  const { ingredients: recipe, tags, ...cocktail } = item;
+  const validated = CocktailDTO.parse({
+    ...cocktail,
+    tags: tags.map((t) => t.tag),
+    recipe: recipe.map(({ ingredient, ...line }) => ({
+      ...line,
+      ingredient: { ...ingredient, tags: ingredient.tags.map((t) => t.tag) },
+    })),
+  });
 
   return c.json<CocktailDTO>(validated);
 });
@@ -113,6 +134,39 @@ cocktailController.delete('/:cocktailId/recipe/:ingredientId', getUser, getBarWi
   await db
     .delete(recipeItem)
     .where(and(eq(recipeItem.cocktailId, cocktailId), eq(recipeItem.ingredientId, ingredientId)));
+
+  return c.json({ success: true });
+});
+
+cocktailController.post('/:cocktailId/tags/:tagId', getUser, getBarWith(), async (c) => {
+  const bar = c.var.bar;
+  const cocktailId = c.req.param('cocktailId');
+  const tagId = c.req.param('tagId');
+
+  const cocktail = await db.query.cocktails.findFirst({
+    where: and(eq(cocktails.id, cocktailId), eq(cocktails.barId, bar.id)),
+  });
+  if (!cocktail) return c.json({ error: 'Unauthorized' }, 401);
+
+  const tag = await findAssignableTag(bar.id, tagId, ['cocktail', 'both']);
+  if (!tag) return c.json({ error: 'Unauthorized' }, 401);
+
+  await db.insert(cocktailTags).values({ cocktailId: cocktail.id, tagId: tag.id }).onConflictDoNothing();
+
+  return c.json({ success: true });
+});
+
+cocktailController.delete('/:cocktailId/tags/:tagId', getUser, getBarWith(), async (c) => {
+  const bar = c.var.bar;
+  const cocktailId = c.req.param('cocktailId');
+  const tagId = c.req.param('tagId');
+
+  const cocktail = await db.query.cocktails.findFirst({
+    where: and(eq(cocktails.id, cocktailId), eq(cocktails.barId, bar.id)),
+  });
+  if (!cocktail) return c.json({ error: 'Unauthorized' }, 401);
+
+  await db.delete(cocktailTags).where(and(eq(cocktailTags.cocktailId, cocktailId), eq(cocktailTags.tagId, tagId)));
 
   return c.json({ success: true });
 });

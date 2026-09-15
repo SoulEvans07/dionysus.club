@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { IngredientDTO } from './ingredient';
+import { TagDTO } from './tag';
 
 export const RecipeItemDTO = z.object({
   ingredient: IngredientDTO,
@@ -14,15 +15,14 @@ export const CocktailDTO = z.object({
   name: z.string(),
   description: z.string(),
   recipe: RecipeItemDTO.array(),
+  tags: TagDTO.array(),
 });
 export type CocktailDTO = z.infer<typeof CocktailDTO>;
 
-export const CreateCocktailDTO = CocktailDTO.omit({ id: true, recipe: true });
+export const CreateCocktailDTO = CocktailDTO.omit({ id: true, recipe: true, tags: true });
 export type CreateCocktailDTO = z.infer<typeof CreateCocktailDTO>;
 
-export const UpdateCocktailDTO = CocktailDTO.pick({ id: true }).merge(
-  CocktailDTO.omit({ id: true, recipe: true }).partial()
-);
+export const UpdateCocktailDTO = CocktailDTO.pick({ id: true }).extend(CreateCocktailDTO.partial().shape);
 export type UpdateCocktailDTO = z.infer<typeof UpdateCocktailDTO>;
 
 export const AddRecipeItemToCocktailDTO = z.object({
