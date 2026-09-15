@@ -20,7 +20,7 @@
       "idx": 2,
       "version": "7",
       "when": 1789509957923,
-      "tag": "0002_lovely_loners",
+      "tag": "0002_add_tag_table",
       "breakpoints": true
     }
   ]
