@@ -47,6 +47,7 @@ Schema lives in `src/database/schema/*`, aggregated in `src/database/schema/inde
 pnpm migr:gen       # generate a migration from schema changes
 pnpm migr:gen:mty   # generate an empty/custom migration
 pnpm db:migr        # run migrations
+pnpm db:migr:debug  # run migrations, printing full PG error fields on failure (drizzle-kit's own error output is unhelpful)
 pnpm db:push        # push schema directly to the db (no migration file)
 pnpm db:studio      # open Drizzle Studio
 pnpm db:seed        # run db/seed.ts

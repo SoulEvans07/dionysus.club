@@ -15,6 +15,7 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:migr": "drizzle-kit migrate",
+    "db:migr:debug": "tsx ./db/migrate.ts",
     "db:seed": "tsx --tsconfig ./tsconfig.db.json ./db/seed.ts",
     "db:test": "tsx --tsconfig ./tsconfig.db.json ./db/test.ts",
     "db:check": "drizzle-kit check",
