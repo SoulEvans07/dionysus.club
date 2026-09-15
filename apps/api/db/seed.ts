@@ -1,20 +1,38 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 import { reset } from 'drizzle-seed';
+import { ne } from 'drizzle-orm';
 
 import '~/env';
 import * as schema from '~/database/schema';
+import { SYSTEM_USER_ID, SYSTEM_BAR_ID } from '~/database/constants';
 import users from './seed/users.json';
 import ingredients from './seed/ingredients.json';
 import cocktailsData from './seed/cocktails.json';
 import images from './seed/images.json';
+import { defaultTags } from './seed/tags';
 
 const imagesByName = new Map(images.map((image) => [image.name, image]));
 
 async function main() {
   const pool = new Pool({ connectionString: process.env.DATABASE_URL });
   const db = drizzle(pool, { schema });
-  await reset(db, schema);
+
+  // users/bars are reset separately below so the system user/bar (seeded by a migration,
+  // fixed ids in ~/database/constants) survive a reseed instead of being truncated away.
+  const { users: _users, bars: _bars, ...resettableSchema } = schema;
+  await reset(db, resettableSchema);
+  await db.delete(schema.bars).where(ne(schema.bars.id, SYSTEM_BAR_ID));
+  await db.delete(schema.users).where(ne(schema.users.id, SYSTEM_USER_ID));
+
+  await db.insert(schema.tags).values(
+    defaultTags.map((tag) => ({
+      ...tag,
+      barId: SYSTEM_BAR_ID,
+      createdById: SYSTEM_USER_ID,
+      updatedById: SYSTEM_USER_ID,
+    }))
+  );
 
   async function seedImage(name: string, ownerId: string) {
     const image = imagesByName.get(name);
