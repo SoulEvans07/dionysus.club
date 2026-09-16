@@ -28,8 +28,32 @@ export function CocktailScreen() {
       <div>{id}</div>
       <div>{data.name}</div>
       <div>{data.description}</div>
+      <div>Tags</div>
+      <div>
+        {data.tags.map((tag) => (
+          <div key={tag.id} className="rounded-full" style={{ backgroundColor: tag.color }}>
+            [{tag.namespace}:{tag.key}] {tag.name}
+          </div>
+        ))}
+      </div>
+      <div>Recipe</div>
+      <div className="flex flex-col gap-2">
+        {data.recipe.map((item) => (
+          <div key={item.ingredient.id} className="flex flex-row gap-1">
+            <div
+              className="size-10 overflow-hidden rounded-md bg-slate-50 bg-cover bg-center"
+              style={{ backgroundImage: `url(${item.ingredient.iconImage?.url})` }}
+            />
+            <div>{item.ingredient.name}</div>
+            {item.isGarnish && <div className="text-muted">(garnish)</div>}
+            {item.isOptional && <div className="text-muted">(optional)</div>}
+            <div>{item.quantity}</div>
+            <div>{item.unit}</div>
+          </div>
+        ))}
+      </div>
     </Frame>
   );
 }
 
-const Frame = tw.div('z-200 absolute left-0 right-0 top-0 h-dvh w-dvw overflow-y-auto bg-white');
+const Frame = tw.div('z-200 absolute left-0 right-0 top-0 h-dvh w-dvw overflow-y-auto bg-slate-400');
