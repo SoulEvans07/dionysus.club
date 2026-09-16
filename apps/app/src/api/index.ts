@@ -3,6 +3,7 @@ import { SidebarAPI } from './sidebar';
 import { BarAPI } from './bar';
 import { IngredientAPI } from './ingredient';
 import { CocktailAPI } from './cocktail';
+import { TagAPI } from './tag';
 
 export const api = {
   auth: new AuthAPI(),
@@ -10,4 +11,5 @@ export const api = {
   bars: new BarAPI(),
   ingredients: new IngredientAPI(),
   cocktails: new CocktailAPI(),
+  tags: new TagAPI(),
 };

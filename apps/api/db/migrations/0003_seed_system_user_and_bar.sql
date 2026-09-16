@@ -1,7 +1,7 @@
 -- Custom SQL migration file, put your code below! --
 
 -- Well-known system user/bar used as the owner of global (bar-agnostic) tags.
--- Ids must match SYSTEM_USER_ID / SYSTEM_BAR_ID in apps/api/src/database/constants.ts.
+-- Ids must match SYSTEM_USER_ID / SYSTEM_BAR_ID in libs/dtos/src/constants.ts.
 INSERT INTO "users" ("id", "kinde_id", "email", "username")
 VALUES ('00000000-0000-0000-0000-000000000001', '_system', 'system@dionysus.club', '_system')
 ON CONFLICT ("id") DO NOTHING;

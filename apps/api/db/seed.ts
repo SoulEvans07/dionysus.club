@@ -2,9 +2,9 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 import { reset } from 'drizzle-seed';
 
+import { SYSTEM_USER_ID, SYSTEM_BAR_ID } from '@repo/dtos';
 import '~/env';
 import * as schema from '~/database/schema';
-import { SYSTEM_USER_ID, SYSTEM_BAR_ID } from '~/database/constants';
 import users from './seed/users.json';
 import ingredients from './seed/ingredients.json';
 import cocktailsData from './seed/cocktails.json';

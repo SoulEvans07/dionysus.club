@@ -1,4 +1,4 @@
-import { TOP_LEVEL_TAG_NAMESPACE } from '~/database/constants';
+import { TOP_LEVEL_TAG_NAMESPACE } from '@repo/dtos';
 import type { tagTypeEnum } from '~/database/schema';
 
 type DefaultTag = {
@@ -23,9 +23,9 @@ export const defaultTags: DefaultTag[] = [
   { type: 'both', namespace: 'taste', key: 'bitter', name: 'Bitter', color: '#78350F' },
   { type: 'both', namespace: 'taste', key: 'refreshing', name: 'Refreshing', color: '#5EEAD4' },
 
-  { type: 'cocktail', namespace: 'str', key: '1', name: 'Light', color: '#BBF7D0' },
-  { type: 'cocktail', namespace: 'str', key: '3', name: 'Medium', color: '#FDBA74' },
-  { type: 'cocktail', namespace: 'str', key: '5', name: 'Strong', color: '#F87171' },
+  { type: 'cocktail', namespace: 'str', key: 'light', name: 'Light', color: '#BBF7D0' },
+  { type: 'cocktail', namespace: 'str', key: 'medium', name: 'Medium', color: '#FDBA74' },
+  { type: 'cocktail', namespace: 'str', key: 'strong', name: 'Strong', color: '#F87171' },
 
   { type: 'both', namespace: TOP_LEVEL_TAG_NAMESPACE, key: 'vegan', name: 'Vegan', color: '#4ADE80' },
   { type: 'both', namespace: TOP_LEVEL_TAG_NAMESPACE, key: 'seasonal', name: 'Seasonal', color: '#C4B5FD' },

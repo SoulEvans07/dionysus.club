@@ -2,9 +2,8 @@ import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { and, eq, isNull, or } from 'drizzle-orm';
 
-import { CreateTagDTO, TagDTO, TagType, UpdateTagDTO } from '@repo/dtos';
+import { SYSTEM_BAR_ID, CreateTagDTO, TagDTO, TagType, UpdateTagDTO } from '@repo/dtos';
 import { cocktailTags, db, ingredientTags, tags } from '~/database';
-import { SYSTEM_BAR_ID } from '~/database/constants';
 import { getUser } from '~/auth/kinde';
 import { getBarWith } from '~/middleware/bar';
 

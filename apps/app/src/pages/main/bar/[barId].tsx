@@ -18,14 +18,14 @@ import {
 
 import { BarType } from '@repo/dtos';
 import { useBar, useBarMembers } from '~/queries/bar';
-import { useCocktailList } from '~/queries/cocktail';
-import { useIngredientList } from '~/queries/ingredient';
+import { useCocktailTagList, useIngredientTagList } from '~/queries/tag';
 import { tw } from '~/utils/twElem';
 import { H1 } from '~/components/common';
 import { sizes } from '~/styles/constants';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/shadcn/collapsible';
 import { cn } from '~/utils/classnames';
 import { Spinner } from '~/components/shadcn/spinner';
+import { tagFullKeyUI } from '~/utils/tags';
 
 const Params = z.object({ barId: z.string() });
 
@@ -120,7 +120,7 @@ type CollapsibleSectionProps = PropsWithChildren & {
 };
 function CollapsibleSection(props: CollapsibleSectionProps) {
   const { children, title, isPending, isFetching } = props;
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className="flex flex-col">
@@ -140,7 +140,7 @@ function CollapsibleSection(props: CollapsibleSectionProps) {
 type IngredientListProps = { barId: string };
 function IngredientSection(props: IngredientListProps) {
   const { barId } = props;
-  const { isPending, error, data, isFetching } = useIngredientList(barId);
+  const { isPending, error, data, isFetching } = useIngredientTagList(barId);
   const navigate = useNavigate();
 
   if (error) return <div>Error</div>;
@@ -151,10 +151,11 @@ function IngredientSection(props: IngredientListProps) {
         <AtSign className="size-4" />
         <span>All</span>
       </MenuItem>
-      {data?.map((ingr) => (
-        <MenuItem key={ingr.id} onClick={() => navigate(`/bar/${barId}/ingredients/${ingr.id}`)}>
+      {data?.map((tag) => (
+        <MenuItem key={tag.id}>
           <Hash className="size-4" />
-          <span>{ingr.name}</span>
+          <span>{tag.name}</span>
+          <span className="ml-auto text-slate-400">[{tagFullKeyUI(tag)}]</span>
         </MenuItem>
       ))}
     </CollapsibleSection>
@@ -164,7 +165,7 @@ function IngredientSection(props: IngredientListProps) {
 type CocktailListProps = { barId: string };
 function CocktailSection(props: CocktailListProps) {
   const { barId } = props;
-  const { isPending, error, data, isFetching } = useCocktailList(barId);
+  const { isPending, error, data, isFetching } = useCocktailTagList(barId);
   const navigate = useNavigate();
 
   if (error) return <div>Error</div>;
@@ -175,10 +176,11 @@ function CocktailSection(props: CocktailListProps) {
         <AtSign className="size-4" />
         <span>All</span>
       </MenuItem>
-      {data?.map((cocktail) => (
-        <MenuItem key={cocktail.id} onClick={() => navigate(`/bar/${barId}/cocktails/${cocktail.id}`)}>
+      {data?.map((tag) => (
+        <MenuItem key={tag.id}>
           <Hash className="size-4" />
-          <span>{cocktail.name}</span>
+          <span>{tag.name}</span>
+          <span className="ml-auto text-slate-400">[{tagFullKeyUI(tag)}]</span>
         </MenuItem>
       ))}
     </CollapsibleSection>
