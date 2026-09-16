@@ -16,7 +16,17 @@ cocktailController.get('/list', getUser, getBarWith(), async (c) => {
   const list = await db.query.cocktails.findMany({
     where: eq(cocktails.barId, bar.id),
     with: {
-      ingredients: { with: { ingredient: { with: { tags: { with: { tag: true } } } } } },
+      ingredients: {
+        with: {
+          ingredient: {
+            with: {
+              iconImage: true,
+              cardImage: true,
+              tags: { with: { tag: true } },
+            },
+          },
+        },
+      },
       tags: { with: { tag: true } },
     },
   });
@@ -42,7 +52,17 @@ cocktailController.get('/:id', getUser, getBarWith(), async (c) => {
   const item = await db.query.cocktails.findFirst({
     where: and(eq(cocktails.id, id), eq(cocktails.barId, bar.id)),
     with: {
-      ingredients: { with: { ingredient: { with: { tags: { with: { tag: true } } } } } },
+      ingredients: {
+        with: {
+          ingredient: {
+            with: {
+              iconImage: true,
+              cardImage: true,
+              tags: { with: { tag: true } },
+            },
+          },
+        },
+      },
       tags: { with: { tag: true } },
     },
   });

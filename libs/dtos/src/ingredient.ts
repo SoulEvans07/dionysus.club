@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { TagDTO } from './tag';
+import { ImageDTO } from './image';
 
 export const IngredientDTO = z.object({
   id: z.string(),
@@ -7,6 +8,8 @@ export const IngredientDTO = z.object({
   description: z.string(),
   available: z.boolean(),
   tags: TagDTO.array(),
+  iconImage: ImageDTO.nullable(),
+  cardImage: ImageDTO.nullable(),
 });
 export type IngredientDTO = z.infer<typeof IngredientDTO>;
 

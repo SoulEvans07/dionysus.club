@@ -15,7 +15,11 @@ ingredientController.get('/list', getUser, getBarWith(), async (c) => {
 
   const list = await db.query.ingredients.findMany({
     where: eq(ingredients.barId, bar.id),
-    with: { tags: { with: { tag: true } } },
+    with: {
+      iconImage: true,
+      cardImage: true,
+      tags: { with: { tag: true } },
+    },
   });
 
   const validated = IngredientDTO.array().parse(
@@ -31,7 +35,11 @@ ingredientController.get('/:id', getUser, getBarWith(), async (c) => {
 
   const item = await db.query.ingredients.findFirst({
     where: and(eq(ingredients.id, id), eq(ingredients.barId, bar.id)),
-    with: { tags: { with: { tag: true } } },
+    with: {
+      iconImage: true,
+      cardImage: true,
+      tags: { with: { tag: true } },
+    },
   });
 
   if (!item) return c.json({ error: 'Not found' }, 404);
