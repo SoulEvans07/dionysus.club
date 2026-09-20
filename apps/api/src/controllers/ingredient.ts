@@ -1,20 +1,57 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
-import { and, eq } from 'drizzle-orm';
+import { and, or, eq, exists, sql } from 'drizzle-orm';
 
-import { IngredientDTO, CreateIngredientDTO, UpdateIngredientDTO } from '@repo/dtos';
-import { db, ingredients, ingredientTags } from '~/database';
+import {
+  IngredientDTO,
+  CreateIngredientDTO,
+  UpdateIngredientDTO,
+  IngredientListQueryParams,
+  SYSTEM_BAR_ID,
+} from '@repo/dtos';
+import { db, ingredients, ingredientTags, tags } from '~/database';
 import { getUser } from '~/auth/kinde';
 import { getBarWith } from '~/middleware/bar';
 import { findAssignableTag } from './tag';
+import { splitToTagParts, type TagNSKey } from '~/utils/tag';
 
 export const ingredientController = new Hono();
 
-ingredientController.get('/list', getUser, getBarWith(), async (c) => {
+function tagsMatch(wanted: TagNSKey[]) {
+  return or(...wanted.map((t) => and(eq(tags.namespace, t.namespace), eq(tags.key, t.key))));
+}
+
+function tagExists(barId: string, wanted: TagNSKey[], mode: 'AND' | 'OR' = 'AND') {
+  const sub = db
+    .select({ n: sql`1` })
+    .from(ingredientTags)
+    .innerJoin(tags, eq(tags.id, ingredientTags.tagId))
+    .where(
+      and(
+        eq(ingredientTags.ingredientId, ingredients.id), // correlate to outer ingredient
+        or(eq(tags.barId, barId), eq(tags.barId, SYSTEM_BAR_ID)),
+        tagsMatch(wanted)
+      )
+    );
+
+  return exists(
+    mode === 'AND'
+      ? sub
+          .groupBy(ingredientTags.ingredientId)
+          .having(sql`count(distinct ${tags.namespace} || ':' || ${tags.key}) = ${wanted.length}`)
+      : sub
+  );
+}
+
+ingredientController.get('/list', getUser, getBarWith(), zValidator('query', IngredientListQueryParams), async (c) => {
   const bar = c.var.bar;
+  const { tag } = c.req.valid('query');
+
+  const conditions = [eq(ingredients.barId, bar.id)];
+  if (tag) conditions.push(tagExists(bar.id, [splitToTagParts(tag)], 'AND'));
 
   const list = await db.query.ingredients.findMany({
-    where: eq(ingredients.barId, bar.id),
+    where: and(...conditions),
     with: {
       iconImage: true,
       cardImage: true,
