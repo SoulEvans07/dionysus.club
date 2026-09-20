@@ -1,20 +1,57 @@
 import { Hono } from 'hono';
+import { and, or, eq, exists, sql } from 'drizzle-orm';
 import { zValidator } from '@hono/zod-validator';
-import { and, eq } from 'drizzle-orm';
 
-import { AddRecipeItemToCocktailDTO, CocktailDTO, CreateCocktailDTO } from '@repo/dtos';
-import { cocktails, cocktailTags, db, ingredients, recipeItem } from '~/database';
+import {
+  AddRecipeItemToCocktailDTO,
+  CocktailDTO,
+  CocktailListQueryParams,
+  CreateCocktailDTO,
+  SYSTEM_BAR_ID,
+} from '@repo/dtos';
+import { cocktails, cocktailTags, tags, db, ingredients, recipeItem } from '~/database';
 import { getUser } from '~/auth/kinde';
 import { getBarWith } from '~/middleware/bar';
 import { findAssignableTag } from './tag';
+import { splitToTagParts, type TagNSKey } from '~/utils/tag';
 
 export const cocktailController = new Hono();
 
-cocktailController.get('/list', getUser, getBarWith(), async (c) => {
+function tagsMatch(wanted: TagNSKey[]) {
+  return or(...wanted.map((t) => and(eq(tags.namespace, t.namespace), eq(tags.key, t.key))));
+}
+
+function tagExists(barId: string, wanted: TagNSKey[], mode: 'AND' | 'OR' = 'AND') {
+  const sub = db
+    .select({ n: sql`1` })
+    .from(cocktailTags)
+    .innerJoin(tags, eq(tags.id, cocktailTags.tagId))
+    .where(
+      and(
+        eq(cocktailTags.cocktailId, cocktails.id), // correlate to outer cocktail
+        or(eq(tags.barId, barId), eq(tags.barId, SYSTEM_BAR_ID)),
+        tagsMatch(wanted)
+      )
+    );
+
+  return exists(
+    mode === 'AND'
+      ? sub
+          .groupBy(cocktailTags.cocktailId)
+          .having(sql`count(distinct ${tags.namespace} || ':' || ${tags.key}) = ${wanted.length}`)
+      : sub
+  );
+}
+
+cocktailController.get('/list', getUser, getBarWith(), zValidator('query', CocktailListQueryParams), async (c) => {
   const bar = c.var.bar;
+  const { tag } = c.req.valid('query');
+
+  const conditions = [eq(cocktails.barId, bar.id)];
+  if (tag) conditions.push(tagExists(bar.id, [splitToTagParts(tag)], 'AND'));
 
   const list = await db.query.cocktails.findMany({
-    where: eq(cocktails.barId, bar.id),
+    where: and(...conditions),
     with: {
       ingredients: {
         with: {

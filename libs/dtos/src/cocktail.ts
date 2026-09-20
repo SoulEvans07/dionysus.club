@@ -33,3 +33,9 @@ export const AddRecipeItemToCocktailDTO = z.object({
   isGarnish: z.boolean().default(false),
 });
 export type AddRecipeItemToCocktailDTO = z.infer<typeof AddRecipeItemToCocktailDTO>;
+
+
+export const CocktailListQueryParams = z.object({
+  tag: z.string().optional(),
+});
+export type CocktailListQueryParams = z.infer<typeof CocktailListQueryParams>;

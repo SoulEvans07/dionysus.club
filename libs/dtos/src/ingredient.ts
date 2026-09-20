@@ -18,3 +18,8 @@ export type CreateIngredientDTO = z.infer<typeof CreateIngredientDTO>;
 
 export const UpdateIngredientDTO = IngredientDTO.pick({ id: true }).extend(CreateIngredientDTO.partial().shape);
 export type UpdateIngredientDTO = z.infer<typeof UpdateIngredientDTO>;
+
+export const IngredientListQueryParams = z.object({
+  tag: z.string().optional(),
+});
+export type IngredientListQueryParams = z.infer<typeof IngredientListQueryParams>;

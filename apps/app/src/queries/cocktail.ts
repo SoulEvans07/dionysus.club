@@ -1,15 +1,16 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
 import { api } from '~/api';
+import { QueryParams } from '~/types/url';
 
-export const cocktailListQuery = (barId: string) => {
+export const cocktailListQuery = (barId: string, query?: QueryParams) => {
   return queryOptions({
-    queryKey: ['bars', barId, 'cocktails', 'list'],
-    queryFn: () => api.cocktails.list(barId),
+    queryKey: ['bars', barId, 'cocktails', 'list', query],
+    queryFn: () => api.cocktails.list(barId, query),
   });
 };
 
-export function useCocktailList(barId: string) {
-  return useQuery({ ...cocktailListQuery(barId) });
+export function useCocktailList(barId: string, query?: QueryParams) {
+  return useQuery({ ...cocktailListQuery(barId, query) });
 }
 
 export const cocktailGetQuery = (barId: string, id: string) => {

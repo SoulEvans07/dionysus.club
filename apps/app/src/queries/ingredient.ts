@@ -1,15 +1,16 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
 import { api } from '~/api';
+import { QueryParams } from '~/types/url';
 
-export const ingredientListQuery = (barId: string) => {
+export const ingredientListQuery = (barId: string, query?: QueryParams) => {
   return queryOptions({
-    queryKey: ['bars', barId, 'ingredients', 'list'],
-    queryFn: () => api.ingredients.list(barId),
+    queryKey: ['bars', barId, 'ingredients', 'list', query],
+    queryFn: () => api.ingredients.list(barId, query),
   });
 };
 
-export function useIngredientList(barId: string) {
-  return useQuery({ ...ingredientListQuery(barId) });
+export function useIngredientList(barId: string, query?: QueryParams) {
+  return useQuery({ ...ingredientListQuery(barId, query) });
 }
 
 export const ingredientGetQuery = (barId: string, id: string) => {

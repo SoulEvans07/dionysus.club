@@ -25,7 +25,7 @@ import { sizes } from '~/styles/constants';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/shadcn/collapsible';
 import { cn } from '~/utils/classnames';
 import { Spinner } from '~/components/shadcn/spinner';
-import { tagFullKeyUI } from '~/utils/tags';
+import { tagFullKey, tagFullKeyUI } from '~/utils/tags';
 
 const Params = z.object({ barId: z.string() });
 
@@ -142,17 +142,21 @@ function IngredientSection(props: IngredientListProps) {
   const { barId } = props;
   const { isPending, error, data, isFetching } = useIngredientTagList(barId);
   const navigate = useNavigate();
+  const navToList = (tag?: string) => () => {
+    if (tag) return navigate(`/bar/${barId}/ingredients?tag=${tag}`);
+    return navigate(`/bar/${barId}/ingredients`);
+  };
 
   if (error) return <div>Error</div>;
 
   return (
     <CollapsibleSection title="Ingredients" isPending={isPending} isFetching={isFetching}>
-      <MenuItem onClick={() => navigate(`/bar/${barId}/ingredients`)}>
+      <MenuItem onClick={navToList()}>
         <AtSign className="size-4" />
         <span>All</span>
       </MenuItem>
       {data?.map((tag) => (
-        <MenuItem key={tag.id}>
+        <MenuItem key={tag.id} onClick={navToList(tagFullKey(tag))}>
           <Hash className="size-4" />
           <span>{tag.name}</span>
           <span className="ml-auto text-slate-400">[{tagFullKeyUI(tag)}]</span>
@@ -167,17 +171,21 @@ function CocktailSection(props: CocktailListProps) {
   const { barId } = props;
   const { isPending, error, data, isFetching } = useCocktailTagList(barId);
   const navigate = useNavigate();
+  const navToList = (tag?: string) => () => {
+    if (tag) return navigate(`/bar/${barId}/cocktails?tag=${tag}`);
+    return navigate(`/bar/${barId}/cocktails`);
+  };
 
   if (error) return <div>Error</div>;
 
   return (
     <CollapsibleSection title="Cocktails" isPending={isPending} isFetching={isFetching}>
-      <MenuItem onClick={() => navigate(`/bar/${barId}/cocktails`)}>
+      <MenuItem onClick={navToList()}>
         <AtSign className="size-4" />
         <span>All</span>
       </MenuItem>
       {data?.map((tag) => (
-        <MenuItem key={tag.id}>
+        <MenuItem key={tag.id} onClick={navToList(tagFullKey(tag))}>
           <Hash className="size-4" />
           <span>{tag.name}</span>
           <span className="ml-auto text-slate-400">[{tagFullKeyUI(tag)}]</span>

@@ -1,20 +1,24 @@
 import { useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams, useSearchParams } from 'react-router';
 import { z } from 'zod';
 
 import { useCocktailList } from '~/queries/cocktail';
 import { tw } from '~/utils/twElem';
 
 const Params = z.object({ barId: z.string() });
+const QueryParams = z.object({ tag: z.string().optional() });
 
 export function CocktailListScreen() {
   const params = useParams();
   const { barId } = useMemo(() => Params.parse(params), [params]);
+  const [query] = useSearchParams();
+  const { tag } = useMemo(() => QueryParams.parse(Object.fromEntries(query.entries())), [query]);
 
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
 
-  const { isPending, error, data, isFetching } = useCocktailList(barId);
+  const { isPending, error, data } = useCocktailList(barId, { tag });
+
   if (isPending) return <Frame>Loading...</Frame>;
   if (error) return <Frame>Error</Frame>;
 
