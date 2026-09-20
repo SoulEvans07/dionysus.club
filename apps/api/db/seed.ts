@@ -9,7 +9,7 @@ import users from './seed/users.json';
 import ingredients from './seed/ingredients.json';
 import cocktailsData from './seed/cocktails.json';
 import images from './seed/images.json';
-import { defaultTags } from './seed/tags';
+import { defaultTags, getCocktailTagRefs, getIngredientTagRefs, tagRef } from './seed/tags';
 
 const imagesByName = new Map(images.map((image) => [image.name, image]));
 
@@ -38,14 +38,25 @@ async function main() {
     updatedById: SYSTEM_USER_ID,
   });
 
-  await db.insert(schema.tags).values(
-    defaultTags.map((tag) => ({
-      ...tag,
-      barId: SYSTEM_BAR_ID,
-      createdById: SYSTEM_USER_ID,
-      updatedById: SYSTEM_USER_ID,
-    }))
-  );
+  const seededTags = await db
+    .insert(schema.tags)
+    .values(
+      defaultTags.map((tag) => ({
+        ...tag,
+        barId: SYSTEM_BAR_ID,
+        createdById: SYSTEM_USER_ID,
+        updatedById: SYSTEM_USER_ID,
+      }))
+    )
+    .returning();
+
+  const tagIdByRef = new Map(seededTags.map((tag) => [tagRef(tag), tag.id]));
+  const resolveTagIds = (refs: string[]) =>
+    refs.map((ref) => {
+      const id = tagIdByRef.get(ref);
+      if (!id) throw new Error(`Unknown seed tag: ${ref}`);
+      return id;
+    });
 
   async function seedImage(name: string, ownerId: string) {
     const image = imagesByName.get(name);
@@ -91,6 +102,11 @@ async function main() {
         .returning();
 
       ingredientIdByName.set(ingredient.name, row.id);
+
+      const tagIds = resolveTagIds(getIngredientTagRefs(ingredient.name));
+      if (tagIds.length) {
+        await db.insert(schema.ingredientTags).values(tagIds.map((tagId) => ({ ingredientId: row.id, tagId })));
+      }
     }
 
     const [menu] = await db
@@ -114,6 +130,16 @@ async function main() {
           updatedById: user.id,
         })
         .returning();
+
+      const cocktailTagIds = resolveTagIds(
+        getCocktailTagRefs(
+          cocktail.name,
+          cocktail.recipe.map((item) => item.ingredient)
+        )
+      );
+      if (cocktailTagIds.length) {
+        await db.insert(schema.cocktailTags).values(cocktailTagIds.map((tagId) => ({ cocktailId: row.id, tagId })));
+      }
 
       await db.insert(schema.recipeItem).values(
         cocktail.recipe.map((item, index) => ({
