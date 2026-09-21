@@ -43,6 +43,41 @@ function tagExists(barId: string, wanted: TagNSKey[], mode: 'AND' | 'OR' = 'AND'
   );
 }
 
+const cocktailWith = {
+  iconImage: true,
+  cardImage: true,
+  ingredients: {
+    orderBy: (item, { asc }) => asc(item.index),
+    with: {
+      ingredient: {
+        with: {
+          iconImage: true,
+          cardImage: true,
+          tags: { with: { tag: true } },
+        },
+      },
+    },
+  },
+  steps: {
+    orderBy: (step, { asc }) => asc(step.index),
+    with: { image: true },
+  },
+  tags: { with: { tag: true } },
+} satisfies NonNullable<Parameters<typeof db.query.cocktails.findFirst>[0]>['with'];
+
+type CocktailRow = NonNullable<Awaited<ReturnType<typeof db.query.cocktails.findFirst<{ with: typeof cocktailWith }>>>>;
+
+function toCocktailDTO({ ingredients: recipe, tags, ...cocktail }: CocktailRow) {
+  return {
+    ...cocktail,
+    tags: tags.map((t) => t.tag),
+    recipe: recipe.map(({ ingredient, ...item }) => ({
+      ...item,
+      ingredient: { ...ingredient, tags: ingredient.tags.map((t) => t.tag) },
+    })),
+  };
+}
+
 cocktailController.get('/list', getUser, getBarWith(), zValidator('query', CocktailListQueryParams), async (c) => {
   const bar = c.var.bar;
   const { tag } = c.req.valid('query');
@@ -52,32 +87,10 @@ cocktailController.get('/list', getUser, getBarWith(), zValidator('query', Cockt
 
   const list = await db.query.cocktails.findMany({
     where: and(...conditions),
-    with: {
-      ingredients: {
-        with: {
-          ingredient: {
-            with: {
-              iconImage: true,
-              cardImage: true,
-              tags: { with: { tag: true } },
-            },
-          },
-        },
-      },
-      tags: { with: { tag: true } },
-    },
+    with: cocktailWith,
   });
 
-  const validated = CocktailDTO.array().parse(
-    list.map(({ ingredients: recipe, tags, ...cocktail }) => ({
-      ...cocktail,
-      tags: tags.map((t) => t.tag),
-      recipe: recipe.map(({ ingredient, ...item }) => ({
-        ...item,
-        ingredient: { ...ingredient, tags: ingredient.tags.map((t) => t.tag) },
-      })),
-    }))
-  );
+  const validated = CocktailDTO.array().parse(list.map(toCocktailDTO));
 
   return c.json<CocktailDTO[]>(validated);
 });
@@ -88,33 +101,12 @@ cocktailController.get('/:id', getUser, getBarWith(), async (c) => {
 
   const item = await db.query.cocktails.findFirst({
     where: and(eq(cocktails.id, id), eq(cocktails.barId, bar.id)),
-    with: {
-      ingredients: {
-        with: {
-          ingredient: {
-            with: {
-              iconImage: true,
-              cardImage: true,
-              tags: { with: { tag: true } },
-            },
-          },
-        },
-      },
-      tags: { with: { tag: true } },
-    },
+    with: cocktailWith,
   });
 
   if (!item) return c.json({ error: 'Not found' }, 404);
 
-  const { ingredients: recipe, tags, ...cocktail } = item;
-  const validated = CocktailDTO.parse({
-    ...cocktail,
-    tags: tags.map((t) => t.tag),
-    recipe: recipe.map(({ ingredient, ...line }) => ({
-      ...line,
-      ingredient: { ...ingredient, tags: ingredient.tags.map((t) => t.tag) },
-    })),
-  });
+  const validated = CocktailDTO.parse(toCocktailDTO(item));
 
   return c.json<CocktailDTO>(validated);
 });
