@@ -153,6 +153,12 @@ async function main() {
         }))
       );
 
+      if (cocktail.steps.length) {
+        await db
+          .insert(schema.recipeSteps)
+          .values(cocktail.steps.map((description, index) => ({ cocktailId: row.id, index, description })));
+      }
+
       let groupId = groupIdByName.get(cocktail.group);
       if (!groupId) {
         const [group] = await db

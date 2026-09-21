@@ -8,6 +8,11 @@
       { "ingredient": "Simple syrup", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Angostura bitters", "quantity": 2, "unit": "dash", "isOptional": false, "isGarnish": false },
       { "ingredient": "Orange twist", "quantity": 1, "unit": "pcs", "isOptional": true, "isGarnish": true }
+    ],
+    "steps": [
+      "Add the simple syrup and bitters to a rocks glass and stir.",
+      "Add the bourbon and one large ice cube, then stir for 20 seconds.",
+      "Express an orange twist over the glass and drop it in."
     ]
   },
   {
@@ -19,6 +24,12 @@
       { "ingredient": "Campari", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Red vermouth", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Orange twist", "quantity": 1, "unit": "pcs", "isOptional": true, "isGarnish": true }
+    ],
+    "steps": [
+      "Add the gin, Campari and red vermouth to a mixing glass filled with ice.",
+      "Stir for 30 seconds until well chilled.",
+      "Strain over one large ice cube in a rocks glass.",
+      "Express an orange twist over the drink and drop it in."
     ]
   },
   {
@@ -29,6 +40,12 @@
       { "ingredient": "Gin", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Dry vermouth", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Lemon twist", "quantity": 1, "unit": "pcs", "isOptional": true, "isGarnish": true }
+    ],
+    "steps": [
+      "Chill a martini glass with ice water.",
+      "Add the gin and dry vermouth to a mixing glass filled with ice and stir for 30 seconds.",
+      "Strain into the chilled glass.",
+      "Express a lemon twist over the drink and drop it in."
     ]
   },
   {
@@ -39,6 +56,11 @@
       { "ingredient": "White rum", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Lime juice", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Simple syrup", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add the rum, lime juice and simple syrup to a shaker filled with ice.",
+      "Shake hard for 12 seconds.",
+      "Double strain into a chilled coupe."
     ]
   },
   {
@@ -50,6 +72,11 @@
       { "ingredient": "Lemon juice", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Simple syrup", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Egg white", "quantity": 15, "unit": "ml", "isOptional": true, "isGarnish": false }
+    ],
+    "steps": [
+      "If using egg white, add everything to a shaker without ice and shake for 10 seconds.",
+      "Add ice and shake hard for 12 seconds.",
+      "Strain into a rocks glass over fresh ice."
     ]
   },
   {
@@ -61,6 +88,11 @@
       { "ingredient": "Triple Sec", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Lime juice", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Salt", "quantity": 1, "unit": "pinch", "isOptional": true, "isGarnish": true }
+    ],
+    "steps": [
+      "If you want a salted rim, wet half the rim of a rocks glass with lime and dip it in salt.",
+      "Add the tequila, triple sec and lime juice to a shaker filled with ice and shake for 12 seconds.",
+      "Strain over fresh ice."
     ]
   },
   {
@@ -73,6 +105,11 @@
       { "ingredient": "Sugar", "quantity": 2, "unit": "tsp", "isOptional": false, "isGarnish": false },
       { "ingredient": "Mint", "quantity": 8, "unit": "pcs", "isOptional": false, "isGarnish": false },
       { "ingredient": "Sparkling Water", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Gently press the mint with the sugar and lime juice in a highball glass.",
+      "Add the rum and fill the glass with crushed ice, then stir to dissolve the sugar.",
+      "Top with the sparkling water and stir gently to lift the mint."
     ]
   },
   {
@@ -83,6 +120,11 @@
       { "ingredient": "Rye whisky", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Red vermouth", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Angostura bitters", "quantity": 2, "unit": "dash", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add the rye, red vermouth and bitters to a mixing glass filled with ice.",
+      "Stir for 30 seconds until well chilled.",
+      "Strain into a chilled coupe."
     ]
   },
   {
@@ -94,6 +136,11 @@
       { "ingredient": "Maraschino liqueur", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Lemon juice", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Violet syrup", "quantity": 5, "unit": "ml", "isOptional": true, "isGarnish": false }
+    ],
+    "steps": [
+      "Add the gin, maraschino liqueur, lemon juice and violet syrup to a shaker filled with ice.",
+      "Shake hard for 12 seconds.",
+      "Double strain into a chilled coupe."
     ]
   },
   {
@@ -104,6 +151,11 @@
       { "ingredient": "Brandy", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Cointreau", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Lemon juice", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add the brandy, Cointreau and lemon juice to a shaker filled with ice.",
+      "Shake hard for 12 seconds.",
+      "Strain into a chilled coupe."
     ]
   },
   {
@@ -115,6 +167,11 @@
       { "ingredient": "Cointreau", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Lemon juice", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Egg white", "quantity": 15, "unit": "ml", "isOptional": true, "isGarnish": false }
+    ],
+    "steps": [
+      "If using egg white, add everything to a shaker without ice and shake for 10 seconds.",
+      "Add ice and shake hard for 12 seconds.",
+      "Double strain into a chilled coupe."
     ]
   },
   {
@@ -124,6 +181,10 @@
     "recipe": [
       { "ingredient": "Vodka", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Coffee liqueur", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Fill a rocks glass with ice.",
+      "Add the vodka and coffee liqueur and stir gently."
     ]
   },
   {
@@ -134,6 +195,11 @@
       { "ingredient": "Vodka", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Coffee liqueur", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Heavy cream", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Fill a rocks glass with ice.",
+      "Add the vodka and coffee liqueur and stir.",
+      "Float the cream on top and give it one light stir."
     ]
   },
   {
@@ -145,6 +211,12 @@
       { "ingredient": "Coffee liqueur", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Coffee", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Simple syrup", "quantity": 10, "unit": "ml", "isOptional": true, "isGarnish": false }
+    ],
+    "steps": [
+      "Brew the coffee and let it cool for a minute.",
+      "Add the vodka, coffee liqueur, coffee and simple syrup to a shaker filled with ice.",
+      "Shake hard for 15 seconds to build a foam.",
+      "Double strain into a chilled coupe."
     ]
   },
   {
@@ -157,6 +229,11 @@
       { "ingredient": "Lime juice", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Sparkling Water", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Salt", "quantity": 1, "unit": "pinch", "isOptional": true, "isGarnish": true }
+    ],
+    "steps": [
+      "If you want a salted rim, wet half the rim of a highball glass with lime and dip it in salt.",
+      "Fill the glass with ice and add the tequila, grapefruit juice and lime juice.",
+      "Top with the sparkling water and stir gently."
     ]
   },
   {
@@ -167,6 +244,11 @@
       { "ingredient": "Gin", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Honey syrup", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Lemon juice", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Stir the honey syrup and lemon juice together in a shaker until combined.",
+      "Add the gin and ice and shake hard for 12 seconds.",
+      "Double strain into a chilled coupe."
     ]
   },
   {
@@ -178,6 +260,11 @@
       { "ingredient": "Lime juice", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Simple syrup", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Mint", "quantity": 6, "unit": "pcs", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Lightly press the mint with the simple syrup in a shaker.",
+      "Add the gin, lime juice and ice and shake hard for 12 seconds.",
+      "Double strain into a chilled coupe."
     ]
   },
   {
@@ -188,6 +275,11 @@
       { "ingredient": "Tequila", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Orange juice", "quantity": 90, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Grenadine", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Fill a highball glass with ice.",
+      "Add the tequila and orange juice and stir.",
+      "Pour the grenadine slowly down the side of the glass so it sinks. Do not stir."
     ]
   },
   {
@@ -198,6 +290,11 @@
       { "ingredient": "White rum", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Creme of Coconut", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Pinapple juice", "quantity": 90, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add the rum, creme of coconut, pineapple juice and a scoop of crushed ice to a blender.",
+      "Blend until smooth.",
+      "Pour into a chilled hurricane glass."
     ]
   },
   {
@@ -208,6 +305,11 @@
       { "ingredient": "Dark rum", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Ginger beer", "quantity": 120, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Lime juice", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Fill a highball glass with ice.",
+      "Add the lime juice and ginger beer.",
+      "Float the dark rum on top."
     ]
   }
 ]
