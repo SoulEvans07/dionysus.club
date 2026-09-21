@@ -5,6 +5,19 @@
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+
+/* Disable rubber-banding and scroll chaining, but only where something really scrolls.
+   On a universal selector this also hits overflow-hidden boxes (image frames, truncated text),
+   which then swallow wheel/swipe gestures instead of passing them to the scroller behind them. */
+html,
+body,
+.overflow-auto,
+.overflow-x-auto,
+.overflow-y-auto,
+.overflow-scroll,
+.overflow-x-scroll,
+.overflow-y-scroll {
   overscroll-behavior: none;
 }
 
