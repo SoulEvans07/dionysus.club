@@ -4,6 +4,7 @@ import { Check, Martini } from 'lucide-react';
 import { z } from 'zod';
 
 import type { CocktailDTO } from '@repo/dtos';
+import { NewLink } from '~/components/catalog/action-links';
 import { BackButton } from '~/components/catalog/back-button';
 import { focusRing, ScreenFrame } from '~/components/catalog/common';
 import { SearchField, Segmented, TagFilter } from '~/components/catalog/filters';
@@ -58,6 +59,7 @@ export function CocktailListScreen() {
                 {visible.length} {pluralize(visible.length, 'drink')}
               </span>
             )}
+            <NewLink to={`/bar/${barId}/cocktails/new`} label="New cocktail" className={list.data ? '' : 'ml-auto'} />
           </div>
           {tag && <TagFilter barId={barId} tagKey={tag} clearTo={`/bar/${barId}/cocktails`} />}
           <div className="flex items-center gap-2">

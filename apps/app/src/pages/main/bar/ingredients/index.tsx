@@ -4,6 +4,7 @@ import { Wine } from 'lucide-react';
 import { z } from 'zod';
 
 import type { IngredientDTO } from '@repo/dtos';
+import { NewLink } from '~/components/catalog/action-links';
 import { BackButton } from '~/components/catalog/back-button';
 import { focusRing, ScreenFrame } from '~/components/catalog/common';
 import { SearchField, Segmented, TagFilter } from '~/components/catalog/filters';
@@ -62,6 +63,11 @@ export function IngredientListScreen() {
                 {visible.length} {pluralize(visible.length, 'item')}
               </span>
             )}
+            <NewLink
+              to={`/bar/${barId}/ingredients/new`}
+              label="New ingredient"
+              className={list.data ? '' : 'ml-auto'}
+            />
           </div>
           {tag && <TagFilter barId={barId} tagKey={tag} clearTo={`/bar/${barId}/ingredients`} />}
           <div className="flex items-center gap-2">

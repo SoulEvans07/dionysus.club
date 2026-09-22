@@ -4,6 +4,7 @@ import { Check, Martini, Wine } from 'lucide-react';
 import { z } from 'zod';
 
 import type { CocktailDTO } from '@repo/dtos';
+import { EditLink } from '~/components/catalog/action-links';
 import { BackButton } from '~/components/catalog/back-button';
 import { focusRing, ScreenFrame } from '~/components/catalog/common';
 import { Photo } from '~/components/catalog/photo';
@@ -48,6 +49,13 @@ export function CocktailScreen() {
             fallback={`/bar/${barId}/cocktails`}
             className="absolute left-3 top-[max(0.75rem,env(safe-area-inset-top))]"
           />
+          {data && (
+            <EditLink
+              to={`/bar/${barId}/cocktails/${id}/edit`}
+              label="Edit cocktail"
+              className="absolute right-3 top-[max(0.75rem,env(safe-area-inset-top))]"
+            />
+          )}
         </div>
 
         <div className="px-4 pb-20 pt-6 md:px-0 md:pt-2">

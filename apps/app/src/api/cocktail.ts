@@ -1,4 +1,5 @@
-import { CocktailDTO } from '@repo/dtos';
+import { CocktailDTO, type CreateCocktailDTO, type UpdateCocktailDTO } from '@repo/dtos';
+import { sendJson } from './http';
 import { QueryParams } from '~/types/url';
 import { UrlUtils } from '~/utils/url';
 
@@ -18,5 +19,13 @@ export class CocktailAPI {
 
     const data = await resp.json();
     return CocktailDTO.parse(data);
+  }
+
+  public async create(barId: string, body: CreateCocktailDTO) {
+    return sendJson(`/api/bars/${barId}/cocktails/create`, 'POST', body, 'Failed to create cocktail');
+  }
+
+  public async update(barId: string, body: UpdateCocktailDTO) {
+    return sendJson(`/api/bars/${barId}/cocktails/update`, 'PUT', body, 'Failed to update cocktail');
   }
 }

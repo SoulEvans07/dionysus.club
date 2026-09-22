@@ -1,4 +1,5 @@
-import { IngredientDTO } from '@repo/dtos';
+import { IngredientDTO, type CreateIngredientDTO, type UpdateIngredientDTO } from '@repo/dtos';
+import { sendJson } from './http';
 import type { QueryParams } from '~/types/url';
 import { UrlUtils } from '~/utils/url';
 
@@ -18,5 +19,13 @@ export class IngredientAPI {
 
     const data = await resp.json();
     return IngredientDTO.parse(data);
+  }
+
+  public async create(barId: string, body: CreateIngredientDTO) {
+    return sendJson(`/api/bars/${barId}/ingredients/create`, 'POST', body, 'Failed to create ingredient');
+  }
+
+  public async update(barId: string, body: UpdateIngredientDTO) {
+    return sendJson(`/api/bars/${barId}/ingredients/update`, 'PUT', body, 'Failed to update ingredient');
   }
 }
