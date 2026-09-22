@@ -10,8 +10,8 @@ import { focusRing, ScreenFrame } from '~/components/catalog/common';
 import { SearchField, Segmented, TagFilter } from '~/components/catalog/filters';
 import { Photo } from '~/components/catalog/photo';
 import { EmptyState, ErrorState } from '~/components/catalog/state';
-import { StockStatus } from '~/components/catalog/stock-status';
-import { useIngredientList } from '~/queries/ingredient';
+import { Switch } from '~/components/shadcn/switch';
+import { useIngredientList, useSetIngredientAvailability } from '~/queries/ingredient';
 import { cn } from '~/utils/classnames';
 import { pluralize } from '~/utils/recipe';
 
@@ -120,28 +120,37 @@ function IngredientRow(props: IngredientRowProps) {
   const { barId, ingredient } = props;
   const detail = ingredient.description || ingredient.tags.map((t) => t.name).join(', ');
 
+  const setAvailability = useSetIngredientAvailability(barId);
+
   return (
-    <Link
-      to={`/bar/${barId}/ingredients/${ingredient.id}`}
-      className={cn(
-        'flex items-center gap-3 px-3 py-2.5 transition-colors hover:bg-slate-50 active:bg-slate-100',
-        focusRing,
-        'focus-visible:ring-inset focus-visible:ring-offset-0'
-      )}
-    >
-      <Photo
-        image={ingredient.iconImage}
-        Fallback={Wine}
-        fit="contain"
-        dim={!ingredient.available}
-        className="size-12 shrink-0 rounded-xl border border-slate-100"
+    <div className="flex items-center gap-3 px-3 py-2.5 transition-colors hover:bg-slate-50 active:bg-slate-100">
+      <Link
+        to={`/bar/${barId}/ingredients/${ingredient.id}`}
+        className={cn(
+          'flex min-w-0 flex-1 items-center gap-3',
+          focusRing,
+          'focus-visible:ring-inset focus-visible:ring-offset-0'
+        )}
+      >
+        <Photo
+          image={ingredient.iconImage}
+          Fallback={Wine}
+          fit="contain"
+          dim={!ingredient.available}
+          className="size-12 shrink-0 rounded-xl border border-slate-100"
+        />
+        <div className="min-w-0 flex-1">
+          <div className="truncate font-medium">{ingredient.name}</div>
+          {detail && <div className="truncate text-sm text-slate-500">{detail}</div>}
+        </div>
+      </Link>
+      <Switch
+        checked={ingredient.available}
+        disabled={setAvailability.isPending}
+        onCheckedChange={(available) => setAvailability.mutate({ id: ingredient.id, available })}
+        aria-label={`Mark ${ingredient.name} as ${ingredient.available ? 'out of stock' : 'in stock'}`}
       />
-      <div className="min-w-0 flex-1">
-        <div className="truncate font-medium">{ingredient.name}</div>
-        {detail && <div className="truncate text-sm text-slate-500">{detail}</div>}
-      </div>
-      <StockStatus available={ingredient.available} />
-    </Link>
+    </div>
   );
 }
 

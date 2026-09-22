@@ -28,4 +28,13 @@ export class IngredientAPI {
   public async update(barId: string, body: UpdateIngredientDTO) {
     return sendJson(`/api/bars/${barId}/ingredients/update`, 'PUT', body, 'Failed to update ingredient');
   }
+
+  public async setAvailability(barId: string, id: string, available: boolean) {
+    return sendJson(
+      `/api/bars/${barId}/ingredients/${id}/availability`,
+      'PUT',
+      { available },
+      'Failed to update ingredient availability'
+    );
+  }
 }

@@ -1,5 +1,5 @@
 import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { CreateIngredientDTO } from '@repo/dtos';
+import type { CreateIngredientDTO, IngredientDTO } from '@repo/dtos';
 import { api } from '~/api';
 import { QueryParams } from '~/types/url';
 
@@ -48,5 +48,31 @@ export function useUpdateIngredient(barId: string, id: string) {
   return useMutation({
     mutationFn: (data: CreateIngredientDTO) => api.ingredients.update(barId, { ...data, id }),
     onSuccess: invalidate,
+  });
+}
+
+// Optimistic so toggling from the list feels instant instead of waiting on a round-trip.
+export function useSetIngredientAvailability(barId: string) {
+  const client = useQueryClient();
+  const invalidate = useInvalidateIngredients(barId);
+  const listKey = ['bars', barId, 'ingredients', 'list'];
+
+  return useMutation({
+    mutationFn: ({ id, available }: { id: string; available: boolean }) =>
+      api.ingredients.setAvailability(barId, id, available),
+    onMutate: async ({ id, available }) => {
+      await client.cancelQueries({ queryKey: listKey });
+
+      const previous = client.getQueriesData<IngredientDTO[]>({ queryKey: listKey });
+      client.setQueriesData<IngredientDTO[]>({ queryKey: listKey }, (old) =>
+        old?.map((ingredient) => (ingredient.id === id ? { ...ingredient, available } : ingredient))
+      );
+
+      return { previous };
+    },
+    onError: (_err, _vars, context) => {
+      context?.previous.forEach(([key, data]) => client.setQueryData(key, data));
+    },
+    onSettled: invalidate,
   });
 }
