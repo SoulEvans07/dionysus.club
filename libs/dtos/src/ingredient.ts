@@ -25,6 +25,11 @@ export type CreateIngredientDTO = z.infer<typeof CreateIngredientDTO>;
 export const UpdateIngredientDTO = IngredientDTO.pick({ id: true }).extend(CreateIngredientDTO.partial().shape);
 export type UpdateIngredientDTO = z.infer<typeof UpdateIngredientDTO>;
 
+export const SetIngredientAvailabilityDTO = z.object({
+  available: z.boolean(),
+});
+export type SetIngredientAvailabilityDTO = z.infer<typeof SetIngredientAvailabilityDTO>;
+
 export const IngredientListQueryParams = z.object({
   tag: z.string().optional(),
 });

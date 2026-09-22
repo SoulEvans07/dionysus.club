@@ -6,6 +6,7 @@ import {
   IngredientDTO,
   CreateIngredientDTO,
   UpdateIngredientDTO,
+  SetIngredientAvailabilityDTO,
   IngredientListQueryParams,
   SYSTEM_BAR_ID,
 } from '@repo/dtos';
@@ -148,6 +149,31 @@ ingredientController.put('/update', getUser, getBarWith(), zValidator('json', Up
 
   return c.json({ id });
 });
+
+ingredientController.put(
+  '/:id/availability',
+  getUser,
+  getBarWith(),
+  zValidator('json', SetIngredientAvailabilityDTO),
+  async (c) => {
+    const user = c.var.user;
+    const bar = c.var.bar;
+    const id = c.req.param('id');
+    const { available } = c.req.valid('json');
+
+    const item = await db.query.ingredients.findFirst({
+      where: and(eq(ingredients.id, id), eq(ingredients.barId, bar.id)),
+    });
+    if (!item) return c.json({ error: 'Not found' }, 404);
+
+    await db
+      .update(ingredients)
+      .set({ available, updatedById: user.id, updatedAt: new Date() })
+      .where(eq(ingredients.id, id));
+
+    return c.json({ id, available });
+  }
+);
 
 ingredientController.post('/:id/tags/:tagId', getUser, getBarWith(), async (c) => {
   const bar = c.var.bar;
