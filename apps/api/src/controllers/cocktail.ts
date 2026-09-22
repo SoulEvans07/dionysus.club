@@ -1,18 +1,19 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
-import { and, or, eq, exists, sql } from 'drizzle-orm';
+import { and, or, eq, exists, inArray, isNull, sql } from 'drizzle-orm';
 
 import {
   AddRecipeItemToCocktailDTO,
   CocktailDTO,
   CocktailListQueryParams,
   CreateCocktailDTO,
+  UpdateCocktailDTO,
   SYSTEM_BAR_ID,
 } from '@repo/dtos';
-import { cocktails, cocktailTags, tags, db, ingredients, recipeItem } from '~/database';
+import { cocktails, cocktailTags, tags, db, ingredients, recipeItem, recipeSteps, imageBlobs } from '~/database';
 import { getUser } from '~/auth/kinde';
 import { getBarWith } from '~/middleware/bar';
-import { findAssignableTag } from './tag';
+import { findAssignableTag, findUnassignableTagIds } from './tag';
 import { splitToTagParts, type TagNSKey } from '~/utils/tag';
 
 export const cocktailController = new Hono();
@@ -111,17 +112,103 @@ cocktailController.get('/:id', getUser, getBarWith(), async (c) => {
   return c.json<CocktailDTO>(validated);
 });
 
+type Relations = Partial<Pick<CreateCocktailDTO, 'tagIds' | 'recipe' | 'steps'>>;
+type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
+
+// Returns a message for the first thing in the payload that doesn't belong to this bar, or null.
+async function findInvalidReference(barId: string, { tagIds, recipe, steps }: Relations) {
+  if (tagIds && (await findUnassignableTagIds(barId, tagIds, ['cocktail', 'both'])).length) return 'Unknown tag';
+
+  if (recipe?.length) {
+    const wanted = [...new Set(recipe.map((item) => item.ingredientId))];
+    const found = await db.query.ingredients.findMany({
+      columns: { id: true },
+      where: and(inArray(ingredients.id, wanted), eq(ingredients.barId, barId), isNull(ingredients.deletedAt)),
+    });
+    if (found.length !== wanted.length) return 'Unknown ingredient';
+  }
+
+  const imageIds = [...new Set((steps ?? []).flatMap((step) => (step.imageId ? [step.imageId] : [])))];
+  if (imageIds.length) {
+    const found = await db.query.imageBlobs.findMany({
+      columns: { id: true },
+      where: inArray(imageBlobs.id, imageIds),
+    });
+    if (found.length !== imageIds.length) return 'Unknown image';
+  }
+
+  return null;
+}
+
+// Each part that is present replaces what the cocktail had before; absent parts are left alone.
+async function replaceRelations(tx: Tx, cocktailId: string, { tagIds, recipe, steps }: Relations) {
+  if (tagIds) {
+    await tx.delete(cocktailTags).where(eq(cocktailTags.cocktailId, cocktailId));
+    if (tagIds.length) {
+      await tx.insert(cocktailTags).values([...new Set(tagIds)].map((tagId) => ({ cocktailId, tagId })));
+    }
+  }
+
+  if (recipe) {
+    await tx.delete(recipeItem).where(eq(recipeItem.cocktailId, cocktailId));
+    if (recipe.length) {
+      await tx.insert(recipeItem).values(recipe.map((item, index) => ({ ...item, cocktailId, index })));
+    }
+  }
+
+  if (steps) {
+    await tx.delete(recipeSteps).where(eq(recipeSteps.cocktailId, cocktailId));
+    if (steps.length) {
+      await tx.insert(recipeSteps).values(steps.map((step, index) => ({ ...step, cocktailId, index })));
+    }
+  }
+}
+
 cocktailController.post('/create', getUser, getBarWith(), zValidator('json', CreateCocktailDTO), async (c) => {
   const user = c.var.user;
   const bar = c.var.bar;
-  const body = c.req.valid('json');
+  const { tagIds, recipe, steps, ...fields } = c.req.valid('json');
 
-  const [item] = await db
-    .insert(cocktails)
-    .values({ ...body, barId: bar.id, createdById: user.id, updatedById: user.id })
-    .returning();
+  const problem = await findInvalidReference(bar.id, { tagIds, recipe, steps });
+  if (problem) return c.json({ error: problem }, 400);
+
+  const item = await db.transaction(async (tx) => {
+    const [created] = await tx
+      .insert(cocktails)
+      .values({ ...fields, barId: bar.id, createdById: user.id, updatedById: user.id })
+      .returning();
+
+    await replaceRelations(tx, created.id, { tagIds, recipe, steps });
+
+    return created;
+  });
 
   return c.json(item);
+});
+
+cocktailController.put('/update', getUser, getBarWith(), zValidator('json', UpdateCocktailDTO), async (c) => {
+  const user = c.var.user;
+  const bar = c.var.bar;
+  const { id, tagIds, recipe, steps, ...fields } = c.req.valid('json');
+
+  const item = await db.query.cocktails.findFirst({
+    where: and(eq(cocktails.id, id), eq(cocktails.barId, bar.id)),
+  });
+  if (!item) return c.json({ error: 'Not found' }, 404);
+
+  const problem = await findInvalidReference(bar.id, { tagIds, recipe, steps });
+  if (problem) return c.json({ error: problem }, 400);
+
+  await db.transaction(async (tx) => {
+    await tx
+      .update(cocktails)
+      .set({ ...fields, updatedById: user.id, updatedAt: new Date() })
+      .where(eq(cocktails.id, id));
+
+    await replaceRelations(tx, id, { tagIds, recipe, steps });
+  });
+
+  return c.json({ id });
 });
 
 cocktailController.post(

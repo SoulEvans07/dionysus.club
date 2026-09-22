@@ -13,7 +13,13 @@ export const IngredientDTO = z.object({
 });
 export type IngredientDTO = z.infer<typeof IngredientDTO>;
 
-export const CreateIngredientDTO = IngredientDTO.omit({ id: true, tags: true });
+// Images aren't part of create/update yet - they'll come with the upload flow.
+export const CreateIngredientDTO = z.object({
+  name: z.string().trim().min(1, 'Name is required').max(256),
+  description: z.string().trim().max(2000),
+  available: z.boolean(),
+  tagIds: z.guid().array(),
+});
 export type CreateIngredientDTO = z.infer<typeof CreateIngredientDTO>;
 
 export const UpdateIngredientDTO = IngredientDTO.pick({ id: true }).extend(CreateIngredientDTO.partial().shape);

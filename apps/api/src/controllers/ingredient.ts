@@ -12,7 +12,7 @@ import {
 import { db, ingredients, ingredientTags, tags } from '~/database';
 import { getUser } from '~/auth/kinde';
 import { getBarWith } from '~/middleware/bar';
-import { findAssignableTag } from './tag';
+import { findAssignableTag, findUnassignableTagIds } from './tag';
 import { splitToTagParts, type TagNSKey } from '~/utils/tag';
 
 export const ingredientController = new Hono();
@@ -90,12 +90,25 @@ ingredientController.get('/:id', getUser, getBarWith(), async (c) => {
 ingredientController.post('/create', getUser, getBarWith(), zValidator('json', CreateIngredientDTO), async (c) => {
   const user = c.var.user;
   const bar = c.var.bar;
-  const body = c.req.valid('json');
+  const { tagIds, ...fields } = c.req.valid('json');
 
-  const [item] = await db
-    .insert(ingredients)
-    .values({ ...body, barId: bar.id, createdById: user.id, updatedById: user.id })
-    .returning();
+  const badTags = await findUnassignableTagIds(bar.id, tagIds, ['ingredient', 'both']);
+  if (badTags.length) return c.json({ error: 'Unknown tag' }, 400);
+
+  const item = await db.transaction(async (tx) => {
+    const [created] = await tx
+      .insert(ingredients)
+      .values({ ...fields, barId: bar.id, createdById: user.id, updatedById: user.id })
+      .returning();
+
+    if (tagIds.length) {
+      await tx
+        .insert(ingredientTags)
+        .values([...new Set(tagIds)].map((tagId) => ({ ingredientId: created.id, tagId })));
+    }
+
+    return created;
+  });
 
   return c.json(item);
 });
@@ -103,22 +116,37 @@ ingredientController.post('/create', getUser, getBarWith(), zValidator('json', C
 ingredientController.put('/update', getUser, getBarWith(), zValidator('json', UpdateIngredientDTO), async (c) => {
   const user = c.var.user;
   const bar = c.var.bar;
-  const body = c.req.valid('json');
+  const { id, tagIds, ...fields } = c.req.valid('json');
 
   const item = await db.query.ingredients.findFirst({
-    where: and(eq(ingredients.id, body.id), eq(ingredients.barId, bar.id)),
+    where: and(eq(ingredients.id, id), eq(ingredients.barId, bar.id)),
   });
 
   if (!item) {
-    return c.json({ error: 'Unauthorized' }, 401);
+    return c.json({ error: 'Not found' }, 404);
   }
 
-  await db
-    .update(ingredients)
-    .set({ ...body, updatedById: user.id })
-    .where(eq(ingredients.id, body.id));
+  if (tagIds) {
+    const badTags = await findUnassignableTagIds(bar.id, tagIds, ['ingredient', 'both']);
+    if (badTags.length) return c.json({ error: 'Unknown tag' }, 400);
+  }
 
-  return c.json({ id: body.id });
+  await db.transaction(async (tx) => {
+    await tx
+      .update(ingredients)
+      .set({ ...fields, updatedById: user.id, updatedAt: new Date() })
+      .where(eq(ingredients.id, id));
+
+    // A tag set replaces the previous one as a whole; omitting it leaves tags untouched.
+    if (tagIds) {
+      await tx.delete(ingredientTags).where(eq(ingredientTags.ingredientId, id));
+      if (tagIds.length) {
+        await tx.insert(ingredientTags).values([...new Set(tagIds)].map((tagId) => ({ ingredientId: id, tagId })));
+      }
+    }
+  });
+
+  return c.json({ id });
 });
 
 ingredientController.post('/:id/tags/:tagId', getUser, getBarWith(), async (c) => {

@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
-import { and, eq, isNull, or } from 'drizzle-orm';
+import { and, eq, inArray, isNull, or } from 'drizzle-orm';
 
 import { SYSTEM_BAR_ID, CreateTagDTO, TagDTO, TagType, UpdateTagDTO } from '@repo/dtos';
 import { cocktailTags, db, ingredientTags, tags } from '~/database';
@@ -31,6 +31,21 @@ export async function findAssignableTag(barId: string, tagId: string, allowedTyp
   if (!tag || !allowedTypes.includes(tag.type)) return null;
 
   return tag;
+}
+
+// Batch form of findAssignableTag, for saving a whole tag set at once: returns the ids that
+// can't be attached (unknown, not visible to the bar, deleted, or the wrong type).
+export async function findUnassignableTagIds(barId: string, tagIds: string[], allowedTypes: TagType[]) {
+  const wanted = [...new Set(tagIds)];
+  if (wanted.length === 0) return [];
+
+  const found = await db.query.tags.findMany({
+    columns: { id: true },
+    where: and(inArray(tags.id, wanted), inArray(tags.type, allowedTypes), visibleToBar(barId), isNull(tags.deletedAt)),
+  });
+
+  const assignable = new Set(found.map((t) => t.id));
+  return wanted.filter((id) => !assignable.has(id));
 }
 
 tagController.get('/list', getUser, getBarWith(), async (c) => {
