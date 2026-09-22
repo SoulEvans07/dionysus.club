@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "lint": "eslint .",
+    "check-types": "tsc -b",
     "dev": "vite",
     "clear": "shx rm -r ./dist",
     "build": "tsc -b && vite build",

@@ -1,6 +1,6 @@
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import prettier from 'eslint-config-prettier';
+import prettier from 'eslint-plugin-prettier';
 import prettierConfig from 'eslint-config-prettier';
 import hono from 'eslint-plugin-hono';
 import drizzle from 'eslint-plugin-drizzle';
@@ -20,11 +20,12 @@ export default tseslint.config(
     },
     rules: {
       // Hono Rules
-      'hono/no-unnecessary-middleware': 'warn',
-      'hono/no-invalid-routing': 'error',
+      ...hono.configs.recommended.rules,
 
       // TypeScript Rules
       '@typescript-eslint/no-empty-object-type': 'off',
+      // allows `declare global { namespace NodeJS { ... } }` augmentation (see src/env.ts)
+      '@typescript-eslint/no-namespace': ['error', { allowDeclarations: true }],
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-unused-vars': [
@@ -38,7 +39,14 @@ export default tseslint.config(
 
       // General Code Style
       'prettier/prettier': 'warn',
-      'no-console': 'warn',
+      'no-console': ['warn', { allow: ['info', 'warn', 'error'] }],
+    },
+  },
+  {
+    // standalone CLI scripts (migrate, seed, ...) report progress via the console
+    files: ['db/**/*.ts'],
+    rules: {
+      'no-console': 'off',
     },
   }
 );
