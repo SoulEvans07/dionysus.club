@@ -91,30 +91,24 @@ menuController.delete('/:id', getUser, getBarWith(), async (c) => {
   return c.json({ success: true });
 });
 
-menuController.post(
-  '/:menuId/groups',
-  getUser,
-  getBarWith(),
-  zValidator('json', CreateMenuGroupDTO),
-  async (c) => {
-    const bar = c.var.bar;
-    const menuId = c.req.param('menuId');
-    const body = c.req.valid('json');
+menuController.post('/:menuId/groups', getUser, getBarWith(), zValidator('json', CreateMenuGroupDTO), async (c) => {
+  const bar = c.var.bar;
+  const menuId = c.req.param('menuId');
+  const body = c.req.valid('json');
 
-    const menu = await db.query.menus.findFirst({
-      where: and(eq(menus.id, menuId), eq(menus.barId, bar.id), isNull(menus.deletedAt)),
-    });
+  const menu = await db.query.menus.findFirst({
+    where: and(eq(menus.id, menuId), eq(menus.barId, bar.id), isNull(menus.deletedAt)),
+  });
 
-    if (!menu) return c.json({ error: 'Not found' }, 404);
+  if (!menu) return c.json({ error: 'Not found' }, 404);
 
-    const [group] = await db
-      .insert(menuGroups)
-      .values({ ...body, menuId: menu.id })
-      .returning();
+  const [group] = await db
+    .insert(menuGroups)
+    .values({ ...body, menuId: menu.id })
+    .returning();
 
-    return c.json(group);
-  }
-);
+  return c.json(group);
+});
 
 menuController.put(
   '/:menuId/groups/:groupId',
@@ -191,9 +185,7 @@ menuController.delete('/:menuId/items/:cocktailId', getUser, getBarWith(), async
 
   if (!menu) return c.json({ error: 'Not found' }, 404);
 
-  await db
-    .delete(menuItems)
-    .where(and(eq(menuItems.menuId, menuId), eq(menuItems.cocktailId, cocktailId)));
+  await db.delete(menuItems).where(and(eq(menuItems.menuId, menuId), eq(menuItems.cocktailId, cocktailId)));
 
   return c.json({ success: true });
 });

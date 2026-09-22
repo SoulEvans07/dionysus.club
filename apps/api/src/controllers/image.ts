@@ -59,10 +59,7 @@ imageController.delete('/:id', getUser, async (c) => {
     return c.json({ error: 'Unauthorized' }, 401);
   }
 
-  await db
-    .update(imageBlobs)
-    .set({ deletedAt: new Date(), deletedById: user.id })
-    .where(eq(imageBlobs.id, id));
+  await db.update(imageBlobs).set({ deletedAt: new Date(), deletedById: user.id }).where(eq(imageBlobs.id, id));
 
   return c.json({ success: true });
 });

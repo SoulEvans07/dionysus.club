@@ -17,7 +17,7 @@ export function IngredientScreen() {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
 
-  const { isPending, error, data, isFetching } = useIngredient(barId, id);
+  const { isPending, error, data } = useIngredient(barId, id);
   if (isPending) return <Frame>Loading {id}...</Frame>;
   if (error) return <Frame>Error</Frame>;
 

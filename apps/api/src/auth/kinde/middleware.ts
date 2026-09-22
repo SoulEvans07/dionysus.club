@@ -6,7 +6,7 @@ import { db, users } from '~/database';
 import { sessionManager } from './session';
 import { kindeAuthClient } from './client';
 
-export type AuthedUser = UserDTO
+export type AuthedUser = UserDTO;
 
 type Env = {
   Variables: {

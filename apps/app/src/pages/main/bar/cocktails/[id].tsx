@@ -17,7 +17,7 @@ export function CocktailScreen() {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
 
-  const { isPending, error, data, isFetching } = useCocktail(barId, id);
+  const { isPending, error, data } = useCocktail(barId, id);
   if (isPending) return <Frame>Loading {id}...</Frame>;
   if (error) return <Frame>Error</Frame>;
 

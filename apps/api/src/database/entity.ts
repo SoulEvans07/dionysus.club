@@ -4,7 +4,7 @@ import { users } from './schema';
 export function identifiable() {
   return {
     id: uuid('id').primaryKey().defaultRandom(),
-  }
+  };
 }
 
 // NOTE: https://github.com/drizzle-team/drizzle-orm/pull/1509

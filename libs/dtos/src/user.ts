@@ -19,4 +19,4 @@ export type MeDTO = z.infer<typeof MeDTO>;
 export const UserWithImageDTO = UserDTO.extend({
   profileImage: ImageDTO.nullable(),
 });
-export type UserWithImageDTO = z.infer<typeof UserWithImageDTO>
+export type UserWithImageDTO = z.infer<typeof UserWithImageDTO>;

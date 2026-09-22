@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, timestamp, primaryKey, pgEnum, type AnyPgColumn } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, timestamp, primaryKey, pgEnum, type AnyPgColumn } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm/relations';
 
 import { identifiable } from '../entity';

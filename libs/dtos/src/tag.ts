@@ -4,7 +4,10 @@ export const TagType = z.enum(['cocktail', 'ingredient', 'both']);
 export type TagType = z.infer<typeof TagType>;
 
 // Lowercase slug: no whitespace, matches what's typed to reference a tag (e.g. "spirit:vodka").
-const TagSlug = z.string().min(1).regex(/^[a-z0-9_-]+$/);
+const TagSlug = z
+  .string()
+  .min(1)
+  .regex(/^[a-z0-9_-]+$/);
 
 export const TagDTO = z.object({
   id: z.string(),

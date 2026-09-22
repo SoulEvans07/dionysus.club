@@ -49,7 +49,7 @@ export const GetBarMemberDTO = BarMemberDTO.extend({
   barId: z.string(),
   user: UserWithImageDTO,
 });
-export type GetBarMemberDTO = z.infer<typeof GetBarMemberDTO>
+export type GetBarMemberDTO = z.infer<typeof GetBarMemberDTO>;
 
 export const AddBarMemberDTO = BarMemberDTO.extend({
   role: BarRoleDAL,

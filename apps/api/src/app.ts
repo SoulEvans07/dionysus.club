@@ -30,8 +30,8 @@ app.get('/health', async (c) => {
 
 app.route('/auth', kindeAuthController);
 
-app.get('/test', getUser, async c => c.json({ user: c.var.user }));
-app.get('/ping', getUser, async c => c.json({ ping: 'pong' }));
+app.get('/test', getUser, async (c) => c.json({ user: c.var.user }));
+app.get('/ping', getUser, async (c) => c.json({ ping: 'pong' }));
 
 app.route('/sidebar', sidebarController);
 
