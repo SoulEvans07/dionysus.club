@@ -20,7 +20,7 @@ import { BarType } from '@repo/dtos';
 import { useBar, useBarMembers } from '~/queries/bar';
 import { useCocktailTagList, useIngredientTagList } from '~/queries/tag';
 import { tw } from '~/utils/twElem';
-import { H1 } from '~/components/common';
+import { H1 } from '~/components/typography';
 import { sizes } from '~/styles/constants';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/shadcn/collapsible';
 import { cn } from '~/utils/classnames';

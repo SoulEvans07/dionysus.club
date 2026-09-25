@@ -1,4 +1,4 @@
-import { H1 } from '~/components/common';
+import { H1 } from '~/components/typography';
 import { useCurrentUser } from '~/queries/auth';
 
 export function ProfileScreen() {
