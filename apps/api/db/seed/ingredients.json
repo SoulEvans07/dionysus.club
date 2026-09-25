@@ -2,581 +2,649 @@
   {
     "id": "amaretto",
     "name": "Amaretto",
-    "description": "",
+    "description": "Sweet Italian liqueur with a distinct almond flavour, traditionally made from apricot kernels.",
     "image": {
       "url": "amaretto.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "angostura-bitters",
     "name": "Angostura bitters",
-    "description": "",
+    "description": "Concentrated aromatic bitters from Trinidad with notes of clove, cinnamon and gentian. Used by the dash.",
     "image": {
       "url": "angostura-bitters.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "benedictine",
     "name": "Benedictine",
-    "description": "",
+    "description": "French herbal liqueur made from a secret blend of 27 herbs and spices, sweetened with honey.",
     "image": {
       "url": "benedictine.jpg",
       "icon": {}
     },
     "tagIds": [],
     "possibleUnitIds": [],
-    "missing": true
+    "available": true
   },
   {
     "id": "blue-curacao",
     "name": "Blue curacao",
-    "description": "",
+    "description": "Bright blue orange liqueur flavoured with the dried peel of the Laraha orange.",
     "image": {
       "url": "blue-curacao.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "bourbon-whisky",
     "name": "Bourbon whisky",
-    "description": "",
+    "description": "American whiskey made from at least 51% corn and aged in new charred oak barrels. Sweet, with vanilla and caramel notes.",
     "image": {
       "url": "bourbon-whisky.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "brandy",
     "name": "Brandy",
-    "description": "",
+    "description": "Spirit distilled from wine, usually grape, and aged in wooden casks.",
     "image": {
       "url": "brandy.jpg",
       "icon": {}
     },
     "tagIds": [],
     "possibleUnitIds": [],
-    "missing": false
+    "available": true
   },
   {
     "id": "campari",
     "name": "Campari",
-    "description": "",
+    "description": "Bright red Italian bitter aperitivo with notes of orange peel, herbs and a pronounced bitterness.",
     "image": {
       "url": "campari.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
+  },
+  {
+    "id": "cinnamon",
+    "name": "Cinnamon",
+    "description": "Warm, sweet spice from the inner bark of the cinnamon tree. Grated fresh over drinks as an aromatic garnish.",
+    "image": {
+      "url": "cinnamon.jpg",
+      "icon": {}
+    },
+    "tagIds": [],
+    "possibleUnitIds": [],
+    "available": false
   },
   {
     "id": "champagne",
     "name": "Champagne",
-    "description": "",
+    "description": "Sparkling wine from the Champagne region of France, made using the traditional method.",
     "image": {
       "url": "champagne.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": false
   },
   {
     "id": "coffee",
     "name": "Coffee",
-    "description": "",
+    "description": "Freshly brewed espresso or strong coffee, best used hot and fresh for a good crema.",
     "image": {
       "url": "coffee.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "coffee-liqueur",
     "name": "Coffee liqueur",
-    "description": "",
+    "description": "Sweet liqueur made with coffee, rum and sugar, such as Kahlua.",
     "image": {
       "url": "khalua.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "cointreau",
     "name": "Cointreau",
-    "description": "",
+    "description": "Premium French triple sec made from sweet and bitter orange peels. Crisp and less sweet than most orange liqueurs.",
     "image": {
       "url": "cointreau.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "creme-of-coconut",
     "name": "Creme of Coconut",
-    "description": "",
+    "description": "Thick, sweetened coconut cream used in tropical drinks like the Pina Colada.",
     "image": {
       "url": "creme-of-coconut.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": false
   },
   {
     "id": "cucumber",
     "name": "Cucumber",
-    "description": "",
+    "description": "Fresh cucumber, used muddled or sliced for a cool, vegetal freshness.",
     "image": {
       "url": "cucumber.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": false
   },
   {
     "id": "dark-rum",
     "name": "Dark rum",
-    "description": "",
+    "description": "Rum aged longer in charred barrels, with rich molasses, caramel and spice notes.",
     "image": {
       "url": "dark-rum.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "demerara-syrup",
     "name": "Demerara syrup",
-    "description": "",
+    "description": "Rich syrup made from demerara sugar and water, with a deeper, caramel-like flavour than simple syrup.",
     "image": {
       "url": "demerara-syrup.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "dry-vermouth",
     "name": "Dry vermouth",
-    "description": "",
+    "description": "Pale, dry fortified wine aromatised with botanicals. Keep it refrigerated after opening.",
     "image": {
       "url": "dry-vermouth.jpg",
       "icon": {}
     },
     "tagIds": [],
     "possibleUnitIds": [],
-    "missing": true
+    "available": false
   },
   {
     "id": "egg-white",
     "name": "Egg white",
-    "description": "",
+    "description": "Adds a silky texture and a foamy head to sours when dry shaken.",
     "image": {
       "url": "egg-white.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "elderflower-liqueur",
     "name": "Elderflower liqueur",
-    "description": "",
+    "description": "Sweet, floral liqueur made from elderflower blossoms, such as St-Germain.",
     "image": {
       "url": "elderflower-liqueur.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "gin",
     "name": "Gin",
-    "description": "",
+    "description": "Neutral spirit flavoured with juniper and other botanicals. London dry is the default style for most cocktails.",
     "image": {
       "url": "gin.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "ginger-beer",
     "name": "Ginger beer",
-    "description": "",
+    "description": "Spicy, carbonated ginger soft drink with more bite than ginger ale.",
     "image": {
       "url": "ginger-beer.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "grapefruit-juice",
     "name": "Grapefruit juice",
-    "description": "",
+    "description": "Freshly squeezed grapefruit juice, tart and slightly bitter.",
     "image": {
       "url": "grapefruit-juice.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "grenadine",
     "name": "Grenadine",
-    "description": "",
+    "description": "Sweet, red pomegranate syrup used for colour and fruity sweetness.",
     "image": {
       "url": "grenadine.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": false
   },
   {
     "id": "guinness",
     "name": "Guinness",
-    "description": "",
+    "description": "Irish dry stout with roasted coffee and chocolate notes and a creamy head.",
     "image": {
       "url": "guinness.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "heavy-cream",
     "name": "Heavy cream",
-    "description": "",
+    "description": "High-fat cream that adds richness and body to creamy cocktails.",
     "image": {
       "url": "heavy-cream.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "honey-syrup",
     "name": "Honey syrup",
-    "description": "",
+    "description": "Honey thinned with warm water, usually in a 1:1 or 3:1 ratio, so it mixes easily into cold drinks.",
     "image": {
       "url": "honey-syrup.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": false
   },
   {
     "id": "kevert",
     "name": "Kevert",
-    "description": "",
+    "description": "A cheap, sweet Hungarian spirit made from rectified spirit, water, sugar and artificial aromas, mostly rum and pear. Usually 24-30% ABV. A staple of Kadar-era pubs and espressos from the 1960s, and an icon of Hungarian retro pub culture to this day.",
     "image": {
       "url": "kevert.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": false
   },
   {
     "id": "lemon-juice",
     "name": "Lemon juice",
-    "description": "",
+    "description": "Freshly squeezed lemon juice, the backbone of most sours.",
     "image": {
       "url": "lemon-juice.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "lemon-twist",
     "name": "Lemon twist",
-    "description": "",
+    "description": "A strip of lemon peel, expressed over the drink for its aromatic oils.",
     "image": {
       "url": "lemon-twist.jpeg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "lime-juice",
     "name": "Lime juice",
-    "description": "",
+    "description": "Freshly squeezed lime juice, essential for daiquiris, margaritas and most tropical drinks.",
     "image": {
       "url": "lime-juice.jpeg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "malibu",
     "name": "Coconut liqueur",
-    "description": "",
+    "description": "Sweet rum-based liqueur flavoured with coconut, such as Malibu.",
     "image": {
       "url": "coconut-liqueur.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "maraschino-liqueur",
     "name": "Maraschino liqueur",
-    "description": "",
+    "description": "Clear, dry-ish Italian liqueur distilled from Marasca cherries, with a funky, floral flavour.",
     "image": {
       "url": "maraschino-liqueur.png",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "mint",
     "name": "Mint",
-    "description": "",
+    "description": "Fresh mint leaves, gently muddled or slapped to release their aroma.",
     "image": {
       "url": "mint.jpg",
       "icon": {}
     },
     "tagIds": [],
     "possibleUnitIds": [],
-    "missing": true
+    "available": true
   },
   {
     "id": "orange-bitters",
     "name": "Orange bitters",
-    "description": "",
+    "description": "Aromatic bitters with a bright orange peel character.",
     "image": {
       "url": "orange-bitters.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "orange-juice",
     "name": "Orange juice",
-    "description": "",
+    "description": "Freshly squeezed orange juice.",
     "image": {
       "url": "orange-juice.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": false
   },
   {
     "id": "orange-twist",
     "name": "Orange twist",
-    "description": "",
+    "description": "A strip of orange peel, expressed over the drink for its aromatic oils.",
     "image": {
       "url": "orange-twist.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": false
   },
   {
     "id": "orgeat",
     "name": "Orgeat",
-    "description": "",
+    "description": "Sweet almond syrup with a hint of orange flower water, a tiki staple.",
     "image": {
       "url": "orgeat.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "pinapple-juice",
     "name": "Pinapple juice",
-    "description": "",
+    "description": "Sweet and tangy pineapple juice that gives a nice foam when shaken.",
     "image": {
       "url": "pinapple-juice.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "red-vermouth",
     "name": "Red vermouth",
-    "description": "",
+    "description": "Sweet, red fortified wine aromatised with botanicals and spices. Keep it refrigerated after opening.",
     "image": {
       "url": "red-vermouth.jpg",
       "icon": {}
     },
     "tagIds": [],
     "possibleUnitIds": [],
-    "missing": false
+    "available": false
   },
   {
     "id": "rye-whisky",
     "name": "Rye whisky",
-    "description": "",
+    "description": "American whiskey made from at least 51% rye, spicier and drier than bourbon.",
     "image": {
       "url": "rye-whisky.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "salt",
     "name": "Salt",
-    "description": "",
+    "description": "Used to rim glasses or as a pinch to brighten and balance flavours.",
     "image": {
       "url": "salt.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "sugar",
     "name": "Sugar",
-    "description": "",
+    "description": "White or cane sugar, used as is or dissolved into drinks.",
     "image": {
       "url": "sugar.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "simple-syrup",
     "name": "Simple syrup",
-    "description": "",
+    "description": "Equal parts sugar and water, the standard sweetener for cocktails.",
     "image": {
       "url": "simple-syrup.jpeg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "soda",
     "name": "Sparkling Water",
-    "description": "",
+    "description": "Carbonated water, used to lengthen drinks and add fizz.",
     "image": {
       "url": "sparkling-water.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "tea-infused-gin",
     "name": "Tea Infused Gin",
-    "description": "",
+    "description": "Gin infused with Earl Grey tea: steep a tablespoon of dried Earl Grey leaves in half a litre of gin for 1-2 hours, then strain. Slightly tangy and bitter, used in the Earl Grey MarTEAni.",
     "image": {
       "url": "tea-infused-gin.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "tequila",
     "name": "Tequila",
-    "description": "",
+    "description": "Mexican spirit distilled from blue agave. Blanco is the go-to for most cocktails.",
     "image": {
       "url": "tequila.jpg",
       "icon": {}
     },
     "tagIds": [],
     "possibleUnitIds": [],
-    "missing": true
+    "available": false
   },
   {
     "id": "the-spice-syrup",
     "name": "The Spice syrup",
-    "description": "",
+    "description": "A richer, more complex take on cinnamon syrup, used in Dune-inspired cocktails. Recipe from the How To Drink YouTube channel.",
     "image": {
       "url": "the-spice-syrup.jpg",
       "icon": {}
     },
     "tagIds": [],
     "possibleUnitIds": [],
-    "missing": true
+    "available": false
+  },
+  {
+    "id": "tonka-bean",
+    "name": "Tonka Bean",
+    "description": "Wrinkled black seed with an intense aroma of vanilla, almond and cherry. Grated sparingly over drinks.",
+    "image": {
+      "url": "tonka-bean.jpeg",
+      "icon": {}
+    },
+    "tagIds": [],
+    "possibleUnitIds": [],
+    "available": false
   },
   {
     "id": "triple-sec",
     "name": "Triple Sec",
-    "description": "",
+    "description": "Clear, sweet orange liqueur made from dried orange peels.",
     "image": {
       "url": "triple-sec.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "violet-syrup",
     "name": "Violet syrup",
-    "description": "",
+    "description": "Floral syrup made from violets, giving drinks like the Aviation their lilac hue.",
     "image": {
       "url": "violet-syrup.jpg",
       "icon": {}
     },
     "tagIds": [],
     "possibleUnitIds": [],
-    "missing": true
+    "available": false
   },
   {
     "id": "vodka",
     "name": "Vodka",
-    "description": "",
+    "description": "Clear, neutral spirit, typically distilled from grain or potatoes.",
     "image": {
       "url": "vodka.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "whipped-cream",
     "name": "Whipped cream",
-    "description": "",
+    "description": "Lightly whipped cream used to top warm or dessert-style drinks.",
     "image": {
       "url": "whipped-cream.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": false
   },
   {
     "id": "whisky",
     "name": "Whisky",
-    "description": "",
+    "description": "Spirit distilled from fermented grain mash and aged in wooden casks. A blended Scotch works well for most cocktails.",
     "image": {
       "url": "whisky.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   },
   {
     "id": "white-rum",
     "name": "White rum",
-    "description": "",
+    "description": "Light, unaged or lightly aged rum, clean and slightly sweet.",
     "image": {
       "url": "white-rum.jpg",
       "icon": {}
     },
     "tagIds": [],
-    "possibleUnitIds": []
+    "possibleUnitIds": [],
+    "available": true
   }
 ]

@@ -1,29 +1,31 @@
 [
   {
     "name": "Old Fashioned",
+    "description": "The original cocktail: whisky, sugar, bitters and a twist of orange. Simple, spirit-forward and timeless.",
     "image": "old-fashioned.jpg",
     "group": "Whisky",
     "recipe": [
       { "ingredient": "Bourbon whisky", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Simple syrup", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Demerara syrup", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Angostura bitters", "quantity": 2, "unit": "dash", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Orange twist", "quantity": 1, "unit": "pcs", "isOptional": true, "isGarnish": true }
+      { "ingredient": "Orange twist", "quantity": 1, "unit": "pcs", "isOptional": false, "isGarnish": true }
     ],
     "steps": [
-      "Add the simple syrup and bitters to a rocks glass and stir.",
+      "Add the demerara syrup and bitters to a rocks glass and stir.",
       "Add the bourbon and one large ice cube, then stir for 20 seconds.",
       "Express an orange twist over the glass and drop it in."
     ]
   },
   {
     "name": "Negroni",
+    "description": "Equal parts gin, Campari and red vermouth. A bittersweet Italian aperitivo classic.",
     "image": "negroni.jpg",
     "group": "Gin",
     "recipe": [
-      { "ingredient": "Gin", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Campari", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Gin", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Red vermouth", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Orange twist", "quantity": 1, "unit": "pcs", "isOptional": true, "isGarnish": true }
+      { "ingredient": "Orange twist", "quantity": 1, "unit": "pcs", "isOptional": false, "isGarnish": true }
     ],
     "steps": [
       "Add the gin, Campari and red vermouth to a mixing glass filled with ice.",
@@ -34,76 +36,80 @@
   },
   {
     "name": "Martini",
+    "description": "Gin and dry vermouth with a couple dashes of orange bitters, stirred ice cold. The king of cocktails.",
     "image": "martini.jpg",
     "group": "Gin",
     "recipe": [
       { "ingredient": "Gin", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Dry vermouth", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Lemon twist", "quantity": 1, "unit": "pcs", "isOptional": true, "isGarnish": true }
+      { "ingredient": "Dry vermouth", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Orange bitters", "quantity": 2, "unit": "dash", "isOptional": false, "isGarnish": false }
     ],
     "steps": [
       "Chill a martini glass with ice water.",
-      "Add the gin and dry vermouth to a mixing glass filled with ice and stir for 30 seconds.",
-      "Strain into the chilled glass.",
-      "Express a lemon twist over the drink and drop it in."
+      "Add the gin, dry vermouth and orange bitters to a mixing glass filled with ice and stir for 30 seconds.",
+      "Strain into the chilled glass."
     ]
   },
   {
     "name": "Daiquiri",
+    "description": "White rum, lemon and sugar shaken hard. A Cuban classic and a benchmark for any bartender.",
     "image": "daiquiri.jpg",
     "group": "Rum",
     "recipe": [
       { "ingredient": "White rum", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Lime juice", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Simple syrup", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false }
+      { "ingredient": "Lemon juice", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Simple syrup", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false }
     ],
     "steps": [
-      "Add the rum, lime juice and simple syrup to a shaker filled with ice.",
+      "Add the rum, lemon juice and simple syrup to a shaker filled with ice.",
       "Shake hard for 12 seconds.",
       "Double strain into a chilled coupe."
     ]
   },
   {
     "name": "Whisky Sour",
+    "description": "Whisky, lemon and sugar, shaken with egg white for a silky foam.",
     "image": "whisky-sour.jpg",
     "group": "Whisky",
     "recipe": [
-      { "ingredient": "Whisky", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Lemon juice", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Simple syrup", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Egg white", "quantity": 15, "unit": "ml", "isOptional": true, "isGarnish": false }
+      { "ingredient": "Whisky", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lemon juice", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Simple syrup", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Egg white", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false }
     ],
     "steps": [
-      "If using egg white, add everything to a shaker without ice and shake for 10 seconds.",
+      "Add everything to a shaker without ice and dry shake for 10 seconds to build the foam.",
       "Add ice and shake hard for 12 seconds.",
       "Strain into a rocks glass over fresh ice."
     ]
   },
   {
     "name": "Margarita",
+    "description": "Tequila, orange liqueur and lime served in a salt-rimmed glass. Bright, tart and refreshing.",
     "image": "margarita.jpg",
     "group": "Tequila",
     "recipe": [
-      { "ingredient": "Tequila", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Triple Sec", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Lime juice", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Salt", "quantity": 1, "unit": "pinch", "isOptional": true, "isGarnish": true }
+      { "ingredient": "Tequila", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lime juice", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Triple Sec", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Salt", "quantity": 0.5, "unit": "pinch", "isOptional": false, "isGarnish": true }
     ],
     "steps": [
-      "If you want a salted rim, wet half the rim of a rocks glass with lime and dip it in salt.",
+      "Wet half the rim of a rocks glass with lime and dip it in salt.",
       "Add the tequila, triple sec and lime juice to a shaker filled with ice and shake for 12 seconds.",
       "Strain over fresh ice."
     ]
   },
   {
     "name": "Mojito",
+    "description": "Cuban highball of white rum, lime, sugar and fresh mint, topped with soda water.",
     "image": "mojito.png",
     "group": "Rum",
     "recipe": [
       { "ingredient": "White rum", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Lime juice", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Sugar", "quantity": 2, "unit": "tsp", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Mint", "quantity": 8, "unit": "pcs", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Mint", "quantity": 8, "unit": "leaf", "isOptional": false, "isGarnish": false },
       { "ingredient": "Sparkling Water", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false }
     ],
     "steps": [
@@ -114,6 +120,7 @@
   },
   {
     "name": "Manhattan",
+    "description": "Rye whisky and red vermouth with a dash of bitters, stirred and served up. Rich and elegant.",
     "image": "manhattan.jpg",
     "group": "Whisky",
     "recipe": [
@@ -129,13 +136,14 @@
   },
   {
     "name": "Aviation",
+    "description": "Pre-Prohibition gin sour with maraschino and violet, named for its pale sky-blue colour.",
     "image": "aviation.jpg",
     "group": "Gin",
     "recipe": [
-      { "ingredient": "Gin", "quantity": 45, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Maraschino liqueur", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Gin", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Lemon juice", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Violet syrup", "quantity": 5, "unit": "ml", "isOptional": true, "isGarnish": false }
+      { "ingredient": "Violet syrup", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Maraschino liqueur", "quantity": 7.5, "unit": "ml", "isOptional": false, "isGarnish": false }
     ],
     "steps": [
       "Add the gin, maraschino liqueur, lemon juice and violet syrup to a shaker filled with ice.",
@@ -145,42 +153,52 @@
   },
   {
     "name": "Sidecar",
+    "description": "Brandy, Cointreau and lemon. A 1920s classic sour with a sugared rim tradition.",
     "image": "sidecar.jpg",
     "group": "Brandy",
     "recipe": [
       { "ingredient": "Brandy", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Cointreau", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Lemon juice", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false }
+      { "ingredient": "Cointreau", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lemon juice", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Sugar", "quantity": 1, "unit": "pinch", "isOptional": false, "isGarnish": true },
+      { "ingredient": "Lemon twist", "quantity": 1, "unit": "pcs", "isOptional": false, "isGarnish": true }
     ],
     "steps": [
+      "Wet the rim of a coupe with lemon and dip it in sugar.",
       "Add the brandy, Cointreau and lemon juice to a shaker filled with ice.",
       "Shake hard for 12 seconds.",
-      "Strain into a chilled coupe."
+      "Strain into the sugar-rimmed coupe.",
+      "Express a lemon twist over the drink and drop it in."
     ]
   },
   {
     "name": "White Lady",
+    "description": "Gin, triple sec and lemon, optionally shaken with egg white. Crisp, citrusy and smooth.",
     "image": "white-lady.jpg",
     "group": "Gin",
     "recipe": [
       { "ingredient": "Gin", "quantity": 45, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Cointreau", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Triple Sec", "quantity": 25, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Lemon juice", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Egg white", "quantity": 15, "unit": "ml", "isOptional": true, "isGarnish": false }
+      { "ingredient": "Simple syrup", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Egg white", "quantity": 30, "unit": "ml", "isOptional": true, "isGarnish": false },
+      { "ingredient": "Sugar", "quantity": 1, "unit": "pinch", "isOptional": false, "isGarnish": true }
     ],
     "steps": [
+      "Wet the rim of a coupe with lemon and dip it in sugar.",
       "If using egg white, add everything to a shaker without ice and shake for 10 seconds.",
       "Add ice and shake hard for 12 seconds.",
-      "Double strain into a chilled coupe."
+      "Double strain into the sugar-rimmed coupe."
     ]
   },
   {
     "name": "Black Russian",
+    "description": "Vodka and coffee liqueur over ice. Simple, strong and sweet.",
     "image": "black-russian.jpg",
     "group": "Vodka",
     "recipe": [
-      { "ingredient": "Vodka", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Coffee liqueur", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false }
+      { "ingredient": "Coffee liqueur", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Vodka", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false }
     ],
     "steps": [
       "Fill a rocks glass with ice.",
@@ -189,12 +207,13 @@
   },
   {
     "name": "White Russian",
+    "description": "A Black Russian topped with cream, made famous by The Big Lebowski.",
     "image": "white-russian.jpg",
     "group": "Vodka",
     "recipe": [
-      { "ingredient": "Vodka", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Coffee liqueur", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Heavy cream", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false }
+      { "ingredient": "Coffee liqueur", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Vodka", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Heavy cream", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false }
     ],
     "steps": [
       "Fill a rocks glass with ice.",
@@ -204,6 +223,7 @@
   },
   {
     "name": "Espresso Martini",
+    "description": "Vodka, coffee liqueur and fresh espresso shaken to a velvety foam. Wakes you up, then messes you up.",
     "image": "espresso-martini.jpg",
     "group": "Vodka",
     "recipe": [
@@ -221,6 +241,7 @@
   },
   {
     "name": "Paloma",
+    "description": "Mexico's favourite tequila highball, with grapefruit, lime and a pinch of salt.",
     "image": "paloma.jpg",
     "group": "Tequila",
     "recipe": [
@@ -238,12 +259,13 @@
   },
   {
     "name": "Bees Knees",
+    "description": "A Prohibition-era gin sour sweetened with honey.",
     "image": "bees-knees.jpg",
     "group": "Gin",
     "recipe": [
       { "ingredient": "Gin", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Honey syrup", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Lemon juice", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false }
+      { "ingredient": "Honey syrup", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lemon juice", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false }
     ],
     "steps": [
       "Stir the honey syrup and lemon juice together in a shaker until combined.",
@@ -253,13 +275,14 @@
   },
   {
     "name": "Southside",
+    "description": "Gin, lime, sugar and mint shaken and served up. Think of a mojito made with gin.",
     "image": "southside.jpg",
     "group": "Gin",
     "recipe": [
       { "ingredient": "Gin", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Lime juice", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Simple syrup", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Mint", "quantity": 6, "unit": "pcs", "isOptional": false, "isGarnish": false }
+      { "ingredient": "Simple syrup", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Mint", "quantity": 4, "unit": "leaf", "isOptional": false, "isGarnish": false }
     ],
     "steps": [
       "Lightly press the mint with the simple syrup in a shaker.",
@@ -269,12 +292,13 @@
   },
   {
     "name": "Tequila Sunrise",
+    "description": "Tequila and orange juice with grenadine sinking to the bottom for a sunrise effect.",
     "image": "tequila-sunrise.jpg",
     "group": "Tequila",
     "recipe": [
-      { "ingredient": "Tequila", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Orange juice", "quantity": 90, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Grenadine", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false }
+      { "ingredient": "Tequila", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Grenadine", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Orange juice", "quantity": 120, "unit": "ml", "isOptional": false, "isGarnish": false }
     ],
     "steps": [
       "Fill a highball glass with ice.",
@@ -284,12 +308,13 @@
   },
   {
     "name": "Pina Colada",
+    "description": "Rum, coconut cream and pineapple. The tropical vacation in a glass from Puerto Rico.",
     "image": "pina-colada.jpg",
     "group": "Rum",
     "recipe": [
-      { "ingredient": "White rum", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Creme of Coconut", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Pinapple juice", "quantity": 90, "unit": "ml", "isOptional": false, "isGarnish": false }
+      { "ingredient": "White rum", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Pinapple juice", "quantity": 120, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Creme of Coconut", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false }
     ],
     "steps": [
       "Add the rum, creme of coconut, pineapple juice and a scoop of crushed ice to a blender.",
@@ -299,17 +324,403 @@
   },
   {
     "name": "Dark 'n' Stormy",
+    "description": "Dark rum floated over spicy ginger beer with a squeeze of lime.",
     "image": "dark-n-stormy.jpg",
     "group": "Rum",
     "recipe": [
+      { "ingredient": "Ginger beer", "quantity": 100, "unit": "ml", "isOptional": false, "isGarnish": false },
       { "ingredient": "Dark rum", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Ginger beer", "quantity": 120, "unit": "ml", "isOptional": false, "isGarnish": false },
-      { "ingredient": "Lime juice", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false }
+      { "ingredient": "Demerara syrup", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lime juice", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false }
     ],
     "steps": [
       "Fill a highball glass with ice.",
-      "Add the lime juice and ginger beer.",
+      "Add the lime juice, demerara syrup and ginger beer, then stir.",
       "Float the dark rum on top."
+    ]
+  },
+  {
+    "name": "B&B",
+    "description": "Brandy and Benedictine in equal parts. A smooth, honeyed after-dinner sipper.",
+    "image": "bnb.jpg",
+    "group": "Brandy",
+    "recipe": [
+      { "ingredient": "Brandy", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Benedictine", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add the brandy and Benedictine to a mixing glass filled with ice.",
+      "Stir until chilled and strain into a rocks glass over fresh ice."
+    ]
+  },
+  {
+    "name": "Earl Grey MarTEAni",
+    "description": "Earl Grey infused gin shaken with lemon, demerara and egg white. A silky, tea-scented sour from Audrey Saunders.",
+    "image": "earl-grey-marteani.jpg",
+    "group": "Gin",
+    "recipe": [
+      { "ingredient": "Tea Infused Gin", "quantity": 45, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Demerara syrup", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lemon juice", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Egg white", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add all ingredients to a shaker and dry shake without ice to build the foam.",
+      "Add ice and shake hard until well chilled.",
+      "Double strain into a chilled coupe."
+    ]
+  },
+  {
+    "name": "Coffee Martini",
+    "description": "Vodka, coffee liqueur and fresh coffee shaken to a frothy finish. A no-sugar-added cousin of the Espresso Martini.",
+    "image": "coffee-martini.jpg",
+    "group": "Vodka",
+    "recipe": [
+      { "ingredient": "Vodka", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Coffee liqueur", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Coffee", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add all ingredients to a shaker filled with ice.",
+      "Shake hard until a thick foam forms.",
+      "Double strain into a chilled coupe."
+    ]
+  },
+  {
+    "name": "Toasted Almond",
+    "description": "Amaretto, coffee liqueur and cream, with optional vodka for extra kick. Tastes like a nutty iced latte.",
+    "image": "roasted-toasted-almond.jpg",
+    "group": "Vodka",
+    "recipe": [
+      { "ingredient": "Vodka", "quantity": 30, "unit": "ml", "isOptional": true, "isGarnish": false },
+      { "ingredient": "Amaretto", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Coffee liqueur", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Heavy cream", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add all ingredients to a shaker filled with ice.",
+      "Shake until well chilled.",
+      "Strain into a rocks glass over fresh ice."
+    ]
+  },
+  {
+    "name": "Blue Hawaii",
+    "description": "Rum, vodka, blue curacao and pineapple. A bright blue tiki classic from the Hilton Hawaiian Village.",
+    "image": "blue-hawaii.jpg",
+    "group": "Rum",
+    "recipe": [
+      { "ingredient": "White rum", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Vodka", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Blue curacao", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Simple syrup", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lemon juice", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Pinapple juice", "quantity": 90, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add all ingredients to a shaker filled with ice.",
+      "Shake until well chilled.",
+      "Strain into a hurricane glass over crushed ice."
+    ]
+  },
+  {
+    "name": "Blue Hawaiian",
+    "description": "Rum, coconut liqueur, blue curacao and pineapple. A blue, coconutty spin on the Pina Colada.",
+    "image": "blue-hawaiian.jpg",
+    "group": "Rum",
+    "recipe": [
+      { "ingredient": "White rum", "quantity": 40, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Coconut liqueur", "quantity": 40, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Blue curacao", "quantity": 40, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Pinapple juice", "quantity": 40, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add all ingredients to a shaker filled with ice.",
+      "Shake until well chilled.",
+      "Strain into a hurricane glass over crushed ice."
+    ]
+  },
+  {
+    "name": "Blue Lagoon",
+    "description": "Vodka and blue curacao with lemon, lengthened with soda. Electric blue and easy drinking.",
+    "image": "blue-lagoon.jpg",
+    "group": "Vodka",
+    "recipe": [
+      { "ingredient": "Vodka", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Blue curacao", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Simple syrup", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lemon juice", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Sparkling Water", "quantity": 100, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add the vodka, blue curacao, simple syrup and lemon juice to a highball glass filled with ice.",
+      "Top with sparkling water and stir gently."
+    ]
+  },
+  {
+    "name": "Blue Ocean",
+    "description": "Vodka and blue curacao balanced with grapefruit. Tart, slightly bitter and very blue.",
+    "image": "blue-ocean.png",
+    "group": "Vodka",
+    "recipe": [
+      { "ingredient": "Vodka", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Blue curacao", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Simple syrup", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Grapefruit juice", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add all ingredients to a shaker filled with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe."
+    ]
+  },
+  {
+    "name": "Blue Kamikaze",
+    "description": "Equal parts vodka, blue curacao and lime. A sharp, sweet-and-sour party drink.",
+    "image": "blue-kamikaze.jpg",
+    "group": "Vodka",
+    "recipe": [
+      { "ingredient": "Vodka", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Blue curacao", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lime juice", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add all ingredients to a shaker filled with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe or shot glasses."
+    ]
+  },
+  {
+    "name": "Godfather",
+    "description": "Scotch softened with amaretto. A simple, nutty two-ingredient sipper.",
+    "image": "godfather.jpg",
+    "group": "Whisky",
+    "recipe": [
+      { "ingredient": "Whisky", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Amaretto", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add the whisky and amaretto to a rocks glass with one large ice cube.",
+      "Stir gently until chilled."
+    ]
+  },
+  {
+    "name": "Godmother",
+    "description": "The Godfather with vodka instead of whisky. Sweet, smooth and almondy.",
+    "image": "godmother.jpg",
+    "group": "Vodka",
+    "recipe": [
+      { "ingredient": "Vodka", "quantity": 45, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Amaretto", "quantity": 45, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add the vodka and amaretto to a rocks glass with one large ice cube.",
+      "Stir gently until chilled."
+    ]
+  },
+  {
+    "name": "Trinidad Sour",
+    "description": "A full ounce of Angostura bitters as the base, tamed with orgeat, lemon and a splash of whisky. Bold, spicy and surprisingly balanced.",
+    "image": "trinidad-sour.jpg",
+    "group": "Other",
+    "recipe": [
+      { "ingredient": "Angostura bitters", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Orgeat", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Whisky", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lemon juice", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Mint", "quantity": 3, "unit": "leaf", "isOptional": false, "isGarnish": true }
+    ],
+    "steps": [
+      "Add all ingredients except the mint to a shaker filled with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe and garnish with mint leaves."
+    ]
+  },
+  {
+    "name": "Kevert soda (microwaved)",
+    "description": "A house meme: a shot of Kevert and sparkling water in a plastic cup, microwaved for half a minute. Do not try this at home. Or do.",
+    "image": "kevert-soda.jpeg",
+    "group": "Other",
+    "recipe": [
+      { "ingredient": "Kevert", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Sparkling Water", "quantity": 50, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Pour the Kevert and sparkling water into a plastic cup.",
+      "Microwave for 30 seconds.",
+      "Serve immediately, with no regrets."
+    ]
+  },
+  {
+    "name": "Mai Tai",
+    "description": "Rum, lime, orgeat and orange liqueur. The definitive tiki cocktail from Trader Vic.",
+    "image": "mai-tai.jpg",
+    "group": "Rum",
+    "recipe": [
+      { "ingredient": "Dark rum", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lime juice", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Orgeat", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Triple Sec", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Simple syrup", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Mint", "quantity": 2, "unit": "leaf", "isOptional": false, "isGarnish": true }
+    ],
+    "steps": [
+      "Add all ingredients except the mint to a shaker filled with ice.",
+      "Shake until well chilled.",
+      "Strain into a rocks glass over crushed ice and garnish with mint."
+    ]
+  },
+  {
+    "name": "Vodka Paloma",
+    "description": "A Paloma made with vodka: grapefruit, lime and soda for a light, tart highball.",
+    "image": "paloma.jpg",
+    "group": "Vodka",
+    "recipe": [
+      { "ingredient": "Vodka", "quantity": 45, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Grapefruit juice", "quantity": 100, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lime juice", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Simple syrup", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Sparkling Water", "quantity": 100, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add the vodka, grapefruit juice, lime juice and simple syrup to a highball glass filled with ice.",
+      "Top with sparkling water and stir gently."
+    ]
+  },
+  {
+    "name": "Dark Daiquiri",
+    "description": "A Daiquiri made with dark rum and demerara syrup. Richer, rounder and more molasses-forward.",
+    "image": "dark-daiquiri.png",
+    "group": "Rum",
+    "recipe": [
+      { "ingredient": "Dark rum", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lemon juice", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Demerara syrup", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add all ingredients to a shaker filled with ice.",
+      "Shake hard until well chilled.",
+      "Double strain into a chilled coupe."
+    ]
+  },
+  {
+    "name": "Ivy Gimlet",
+    "description": "Vodka, lime and sugar shaken with fresh mint. Bright, green and refreshing.",
+    "image": "ivy-gimlet.jpg",
+    "group": "Vodka",
+    "recipe": [
+      { "ingredient": "Vodka", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lime juice", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Simple syrup", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Mint", "quantity": 4, "unit": "leaf", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Gently muddle the mint with the simple syrup in a shaker.",
+      "Add the vodka, lime juice and ice, then shake until well chilled.",
+      "Double strain into a chilled coupe."
+    ]
+  },
+  {
+    "name": "Eastside",
+    "description": "A Southside with muddled cucumber. Cool, herbal and crisp.",
+    "image": "eastside.jpg",
+    "group": "Gin",
+    "recipe": [
+      { "ingredient": "Gin", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lime juice", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Simple syrup", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Cucumber", "quantity": 3, "unit": "slice", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Mint", "quantity": 4, "unit": "leaf", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Muddle the cucumber slices in a shaker, then add the mint and press gently.",
+      "Add the gin, lime juice, simple syrup and ice, then shake until well chilled.",
+      "Double strain into a chilled coupe."
+    ]
+  },
+  {
+    "name": "Hades' Ambrosia",
+    "description": "Dark rum sweetened with honey, elderflower and Benedictine, finished with grated cinnamon and tonka bean. Rich, warm and aromatic.",
+    "image": "ambrosia.jpg",
+    "group": "Rum",
+    "recipe": [
+      { "ingredient": "Dark rum", "quantity": 60, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Honey syrup", "quantity": 15, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Elderflower liqueur", "quantity": 1, "unit": "bsp", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Benedictine", "quantity": 2, "unit": "bsp", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lemon juice", "quantity": 1, "unit": "bsp", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Cinnamon", "quantity": 1, "unit": "pinch", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Tonka Bean", "quantity": 1, "unit": "pinch", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add the rum, honey syrup, elderflower liqueur, Benedictine and lemon juice to a mixing glass filled with ice.",
+      "Stir until well chilled and strain into a rocks glass over one large ice cube.",
+      "Grate cinnamon and tonka bean over the top."
+    ]
+  },
+  {
+    "name": "Dune's Spice Coffee",
+    "description": "Hot coffee spiked with rye and coffee liqueur, sweetened with the spice syrup and topped with whipped cream. The spice must flow.",
+    "image": "dune-spice-coffee.png",
+    "group": "Whisky",
+    "recipe": [
+      { "ingredient": "Coffee", "quantity": 90, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Coffee liqueur", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Rye whisky", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "The Spice syrup", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Whipped cream", "quantity": 30, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add the rye whisky, coffee liqueur and spice syrup to a warmed glass mug.",
+      "Top with hot coffee and stir.",
+      "Float the whipped cream on top."
+    ]
+  },
+  {
+    "name": "Between the Sheets",
+    "description": "A Sidecar with a splash of white rum. Boozy, citrusy and a little cheeky.",
+    "image": "between-the-sheets.jpg",
+    "group": "Brandy",
+    "recipe": [
+      { "ingredient": "Brandy", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "White rum", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Triple Sec", "quantity": 20, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Lemon juice", "quantity": 10, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Add all ingredients to a shaker filled with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe."
+    ]
+  },
+  {
+    "name": "Champagne Cocktail",
+    "description": "A bitters-soaked sugar cube topped with champagne and an optional splash of brandy. Elegant and effervescent.",
+    "image": "champagne-cocktail.jpg",
+    "group": "Other",
+    "recipe": [
+      { "ingredient": "Champagne", "quantity": 200, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Brandy", "quantity": 40, "unit": "ml", "isOptional": true, "isGarnish": false },
+      { "ingredient": "Angostura bitters", "quantity": 6, "unit": "dash", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Sugar", "quantity": 1, "unit": "cube", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Place the sugar cube in a champagne flute and soak it with the bitters.",
+      "Add the brandy, if using.",
+      "Slowly top with chilled champagne."
+    ]
+  },
+  {
+    "name": "Black Velvet",
+    "description": "Guinness and champagne layered in equal parts. Dark, creamy and dry.",
+    "image": "black-velvet.jpg",
+    "group": "Other",
+    "recipe": [
+      { "ingredient": "Champagne", "quantity": 100, "unit": "ml", "isOptional": false, "isGarnish": false },
+      { "ingredient": "Guinness", "quantity": 100, "unit": "ml", "isOptional": false, "isGarnish": false }
+    ],
+    "steps": [
+      "Pour the champagne into a flute.",
+      "Slowly layer the Guinness on top over the back of a spoon."
     ]
   }
 ]

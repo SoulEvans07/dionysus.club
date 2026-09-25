@@ -94,6 +94,8 @@ async function main() {
         .values({
           barId: personalBar.id,
           name: ingredient.name,
+          description: ingredient.description,
+          available: ingredient.available,
           iconImageId: imageId,
           cardImageId: imageId,
           createdById: user.id,
@@ -124,6 +126,7 @@ async function main() {
         .values({
           barId: personalBar.id,
           name: cocktail.name,
+          description: cocktail.description,
           iconImageId: imageId,
           cardImageId: imageId,
           createdById: user.id,
