@@ -1,21 +1,21 @@
 {
   "terminals": [
     {
-      "name": "server",
+      "name": "dev/server",
       "icon": "server",
       "color": "terminal.ansiRed",
       "commands": ["cd apps/api", "pnpm dev"],
       "execute": true,
-      "split": "app"
+      "split": "dev/app"
     },
     {
-      "name": "app",
+      "name": "dev/app",
       "icon": "preview",
       "color": "terminal.ansiBlue",
       "commands": ["cd apps/app", "pnpm dev"],
       "focus": true,
       "execute": false,
-      "split": "server"
+      "split": "dev/server"
     },
     {
       "name": "db",

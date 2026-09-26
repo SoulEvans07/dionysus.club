@@ -112,15 +112,15 @@ function styleWindow(win) {
     'pane-border-format',
     `#[fg=#{@color}]#{?pane_active,#[bold],} #{@icon} ${PANE_NAME} #[default]`
   );
-  // Tabs take the active pane's icon and color, so split windows follow focus
-  tmux('set-option', '-w', '-t', win, 'window-status-format', '#[fg=#{@color}] #{@icon} #W #[default]');
+  // Tabs take the active pane's name, icon and color, so split windows follow focus
+  tmux('set-option', '-w', '-t', win, 'window-status-format', `#[fg=#{@color}] #{@icon} ${PANE_NAME} #[default]`);
   tmux(
     'set-option',
     '-w',
     '-t',
     win,
     'window-status-current-format',
-    '#[fg=black,bg=#{@color},bold] #{@icon} #W #[default]'
+    `#[fg=black,bg=#{@color},bold] #{@icon} ${PANE_NAME} #[default]`
   );
 }
 
@@ -172,7 +172,8 @@ const panes = new Map(); // terminal name -> pane id
 let first = true;
 
 for (const group of groupBySplit(own)) {
-  const windowName = group.map((m) => m.terminal.name).join('/');
+  // Only used for targeting (e.g. `tmux select-window -t`); tabs show the active pane's name
+  const windowName = group[0].terminal.name;
   let windowId;
 
   for (const { terminal: t, parent } of group) {
