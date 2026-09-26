@@ -1,20 +1,20 @@
 {
   "terminals": [
     {
-      "name": "server",
+      "name": "dev/server",
       "icon": "server",
       "color": "terminal.ansiRed",
       "commands": ["cd apps/api", "pnpm dev"],
-      "focus": true,
-      "execute": true
+      "execute": true,
+      "split": "dev/app"
     },
     {
-      "name": "app",
+      "name": "dev/app",
       "icon": "preview",
       "color": "terminal.ansiBlue",
       "commands": ["cd apps/app", "pnpm dev"],
-      "focus": true,
-      "execute": true
+      "execute": true,
+      "focus": true
     },
     {
       "name": "db",
@@ -26,7 +26,6 @@
       "icon": "library",
       "color": "terminal.ansiMagenta",
       "commands": ["cd libs"],
-      "focus": true,
       "execute": true
     },
     {
