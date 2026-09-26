@@ -26,13 +26,19 @@ attach() {
   fi
 }
 
-# Tag a pane with a title, icon and color (read by the border/status formats below).
+# Tag a pane with a name, icon and color (read by the border/status formats below).
 # Window tabs resolve these from the window's active pane, so "dev" follows focus.
+# @name rather than the pane title, since shells and programs can overwrite titles.
 tag_pane() {
-  tmux select-pane -t "$1" -T "$2"
+  tmux set-option -p -t "$1" @name "$2"
   tmux set-option -p -t "$1" @icon "$3"
   tmux set-option -p -t "$1" @color "$4"
 }
+
+# Pane name, falling back to the running command for panes split by hand
+PANE_NAME="#{?@name,#{@name},#{pane_current_command}}"
+# Window name, plus the active pane's name when the window is split (e.g. dev/server)
+TAB_LABEL="#{?#{e|>:#{window_panes},1},#W/$PANE_NAME,#W}"
 
 if tmux has-session -t "$SESSION" 2>/dev/null; then
   attach
@@ -61,16 +67,16 @@ tag_pane "$SESSION:cmd.0" cmd "$ICON_CMD" green
 # These are window options, so they have to be set on each window
 # (setting them against the session only hits the current window)
 for win in dev db libs cmd; do
-  # Pane titles: colored icon + name in the top border, bold when active
+  # Pane borders: colored icon + name at the top, bold when active
   tmux set-option -w -t "$SESSION:$win" pane-border-status top
   tmux set-option -w -t "$SESSION:$win" pane-border-format \
-    "#[fg=#{@color}]#{?pane_active,#[bold],} #{@icon} #{pane_title} #[default]"
+    "#[fg=#{@color}]#{?pane_active,#[bold],} #{@icon} $PANE_NAME #[default]"
 
   # Status bar: active pane's icon in its color, current window filled
   tmux set-option -w -t "$SESSION:$win" window-status-format \
-    "#[fg=#{@color}] #{@icon} #W #[default]"
+    "#[fg=#{@color}] #{@icon} $TAB_LABEL #[default]"
   tmux set-option -w -t "$SESSION:$win" window-status-current-format \
-    "#[fg=black,bg=#{@color},bold] #{@icon} #W #[default]"
+    "#[fg=black,bg=#{@color},bold] #{@icon} $TAB_LABEL #[default]"
 done
 
 tmux select-window -t "$SESSION:dev"
