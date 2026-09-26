@@ -5,8 +5,8 @@
       "icon": "server",
       "color": "terminal.ansiRed",
       "commands": ["cd apps/api", "pnpm dev"],
-      "focus": true,
-      "execute": true
+      "execute": true,
+      "split": "app"
     },
     {
       "name": "app",
@@ -14,7 +14,8 @@
       "color": "terminal.ansiBlue",
       "commands": ["cd apps/app", "pnpm dev"],
       "focus": true,
-      "execute": true
+      "execute": false,
+      "split": "server"
     },
     {
       "name": "db",
@@ -26,7 +27,6 @@
       "icon": "library",
       "color": "terminal.ansiMagenta",
       "commands": ["cd libs"],
-      "focus": true,
       "execute": true
     },
     {
