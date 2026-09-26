@@ -33,10 +33,11 @@ tag_pane() {
   tmux set-option -p -t "$1" @color "$4"
 }
 
-# Tag a window with an icon and color for the status bar
+# Tag a window with an icon and color for the status bar.
+# Separate names from the pane options, since formats resolve pane options first.
 tag_window() {
-  tmux set-option -w -t "$1" @icon "$2"
-  tmux set-option -w -t "$1" @color "$3"
+  tmux set-option -w -t "$1" @win_icon "$2"
+  tmux set-option -w -t "$1" @win_color "$3"
 }
 
 if tmux has-session -t "$SESSION" 2>/dev/null; then
@@ -68,16 +69,20 @@ tmux new-window -d -t "$SESSION" -n cmd -c "$ROOT"
 tag_pane "$SESSION:cmd.0" cmd "$ICON_CMD" green
 tag_window "$SESSION:cmd" "$ICON_CMD" green
 
-# Pane titles: colored icon + name in the top border, bold when active
-tmux set-option -t "$SESSION" pane-border-status top
-tmux set-option -t "$SESSION" pane-border-format \
-  "#[fg=#{@color}]#{?pane_active,#[bold],} #{@icon} #{pane_title} #[default]"
+# These are window options, so they have to be set on each window
+# (setting them against the session only hits the current window)
+for win in dev db libs cmd; do
+  # Pane titles: colored icon + name in the top border, bold when active
+  tmux set-option -w -t "$SESSION:$win" pane-border-status top
+  tmux set-option -w -t "$SESSION:$win" pane-border-format \
+    "#[fg=#{@color}]#{?pane_active,#[bold],} #{@icon} #{pane_title} #[default]"
 
-# Status bar: each window shows its icon in its color, current one reversed
-tmux set-option -t "$SESSION" window-status-format \
-  "#[fg=#{@color}] #{@icon} #W #[default]"
-tmux set-option -t "$SESSION" window-status-current-format \
-  "#[fg=black,bg=#{@color},bold] #{@icon} #W #[default]"
+  # Status bar: each window shows its icon in its color, current one filled
+  tmux set-option -w -t "$SESSION:$win" window-status-format \
+    "#[fg=#{@win_color}] #{@win_icon} #W #[default]"
+  tmux set-option -w -t "$SESSION:$win" window-status-current-format \
+    "#[fg=black,bg=#{@win_color},bold] #{@win_icon} #W #[default]"
+done
 
 tmux select-window -t "$SESSION:dev"
 tmux select-pane -t "$SESSION:dev.0"
