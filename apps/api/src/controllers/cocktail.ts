@@ -88,6 +88,7 @@ cocktailController.get('/list', getUser, getBarWith(), zValidator('query', Cockt
 
   const list = await db.query.cocktails.findMany({
     where: and(...conditions),
+    orderBy: (o, { asc }) => [asc(o.name)],
     with: cocktailWith,
   });
 

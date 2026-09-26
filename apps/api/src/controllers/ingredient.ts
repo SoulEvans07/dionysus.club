@@ -52,6 +52,7 @@ ingredientController.get('/list', getUser, getBarWith(), zValidator('query', Ing
 
   const list = await db.query.ingredients.findMany({
     where: and(...conditions),
+    orderBy: (o, { asc }) => [asc(o.name)],
     with: {
       iconImage: true,
       cardImage: true,
