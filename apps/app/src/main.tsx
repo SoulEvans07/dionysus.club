@@ -6,6 +6,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import '~/styles/reset.css';
 import '~/styles/base.css';
 import '~/styles/tailwind.css';
+import '~/styles/custom.css';
 
 import '~/env';
 import { appRoutes } from './pages/_router';

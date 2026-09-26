@@ -52,16 +52,16 @@ export function BarScreen() {
         style={banner}
       />
       <div className="flex flex-col gap-0.5 px-3">
-        <H1 className={cn('mb-0', { skeleton })}>{bar.data?.name ?? 'Bar'}</H1>
+        <H1 className={cn('mb-0 rounded-md', { skeleton })}>{bar.data?.name ?? 'Bar'}</H1>
         <div className="flex flex-row items-center gap-2">
-          <div className={cn('flex flex-row items-center gap-1', { skeleton })}>
+          <div className={cn('flex flex-row items-center gap-1 rounded-md', { skeleton })}>
             <TypeIcon className="size-4" />
             <span>{type}</span>
           </div>
           {type !== 'personal' && (
             <>
               <span>|</span>
-              <span className={cn({ skeleton })}>
+              <span className={cn('rounded-md', { skeleton })}>
                 {membersCount} {membersCount > 1 ? 'members' : 'member'}
               </span>
             </>
