@@ -29,8 +29,8 @@ export function CocktailListScreen() {
   if (list.error) return <ScreenFrame className="z-100">Error</ScreenFrame>;
 
   return (
-    <ScreenFrame className="z-100">
-      <header className="sticky top-0 z-10 bg-slate-300/80 backdrop-blur">
+    <ScreenFrame className="z-100 border-l-8 border-slate-300 bg-slate-200">
+      <header className="sticky top-0 z-10 border-slate-300/80 bg-slate-200/80 backdrop-blur">
         <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 pb-3 pt-3">
           <div className="flex items-center gap-3">
             <BackButton fallback={`/bar/${barId}`} />
