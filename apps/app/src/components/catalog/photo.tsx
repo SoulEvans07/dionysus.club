@@ -28,7 +28,7 @@ export function Photo(props: PhotoProps) {
         />
       ) : (
         <div className="grid size-full place-items-center text-slate-400">
-          <Fallback className="size-1/3 min-h-4 min-w-4" strokeWidth={1.5} />
+          <Fallback className="size-1/2 min-h-4 min-w-4" strokeWidth={1.5} />
         </div>
       )}
     </div>

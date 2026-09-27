@@ -1,9 +1,20 @@
 import { useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { Link, useParams } from 'react-router';
+import { Check, Martini, BottleWine } from 'lucide-react';
 import { z } from 'zod';
 
+import { CocktailDTO } from '@repo/dtos';
+import { cn } from '~/utils/classnames';
+import { tagFullKey } from '~/utils/tags';
+import { formatAmount, missingIngredients, recipeItemNote } from '~/utils/recipe';
+import { pluralize } from '~/utils/locale';
 import { useCocktail } from '~/queries/cocktail';
-import { tw } from '~/utils/twElem';
+import { focusRing, ScreenFrame } from '~/components/common';
+import { ErrorState } from '~/components/catalog/state-message';
+import { Photo } from '~/components/catalog/photo';
+import { BackButton } from '~/components/back-button';
+import { EditLink } from '~/components/catalog/action-links';
+import { TagChip } from '~/components/catalog/tag-chip';
 
 const Params = z.object({
   barId: z.string(),
@@ -14,46 +25,267 @@ export function CocktailScreen() {
   const params = useParams();
   const { barId, id } = useMemo(() => Params.parse(params), [params]);
 
-  const navigate = useNavigate();
-  const goBack = () => navigate(-1);
-
-  const { isPending, error, data } = useCocktail(barId, id);
-  if (isPending) return <Frame>Loading {id}...</Frame>;
-  if (error) return <Frame>Error</Frame>;
+  const { isPending, error, data, refetch } = useCocktail(barId, id);
+  const cocktail = isPending ? placeholderCocktail : data;
 
   return (
-    <Frame>
-      <button onClick={goBack}>Back</button>
-      <h1>Cocktail</h1>
-      <div>{id}</div>
-      <div>{data.name}</div>
-      <div>{data.description}</div>
-      <div>Tags</div>
-      <div>
-        {data.tags.map((tag) => (
-          <div key={tag.id} className="rounded-full" style={{ backgroundColor: tag.color }}>
-            [{tag.namespace}:{tag.key}] {tag.name}
-          </div>
-        ))}
-      </div>
-      <div>Recipe</div>
-      <div className="flex flex-col gap-2">
-        {data.recipe.map((item) => (
-          <div key={item.ingredient.id} className="flex flex-row gap-1">
-            <div
-              className="size-10 overflow-hidden rounded-md bg-slate-50 bg-cover bg-center"
-              style={{ backgroundImage: `url(${item.ingredient.iconImage?.url})` }}
+    <ScreenFrame className="z-200 bg-slate-100">
+      <div className="mx-auto grid max-w-5xl md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:gap-10 md:px-6 md:py-6">
+        <div className="relative md:sticky md:top-6 md:self-start">
+          <Photo
+            image={cocktail?.cardImage}
+            alt={cocktail?.name}
+            fallback={Martini}
+            className={cn('aspect-5/4 md:aspect-square md:rounded-3xl')}
+          />
+          <BackButton
+            floating
+            fallback={`/bar/${barId}/cocktails`}
+            className="absolute left-3 top-[max(0.75rem,env(safe-area-inset-top))]"
+          />
+          {data && (
+            <EditLink
+              to={`/bar/${barId}/cocktails/${id}/edit`}
+              label="Edit cocktail"
+              className="absolute right-3 top-[max(0.75rem,env(safe-area-inset-top))]"
             />
-            <div>{item.ingredient.name}</div>
-            {item.isGarnish && <div className="text-muted">(garnish)</div>}
-            {item.isOptional && <div className="text-muted">(optional)</div>}
-            <div>{item.quantity}</div>
-            <div>{item.unit}</div>
-          </div>
-        ))}
+          )}
+        </div>
+
+        <div className="px-4 pb-20 pt-6 md:px-0 md:pt-2">
+          {error && <ErrorState what="this cocktail" onRetry={() => refetch()} />}
+          {cocktail && <CocktailDetail barId={barId} cocktail={cocktail} isPending={isPending} />}
+        </div>
       </div>
-    </Frame>
+    </ScreenFrame>
   );
 }
 
-const Frame = tw.div('z-200 absolute left-0 right-0 top-0 h-dvh w-dvw overflow-y-auto bg-slate-400');
+type CocktailDetailProps = { barId: string; cocktail: CocktailDTO; isPending?: boolean };
+function CocktailDetail(props: CocktailDetailProps) {
+  const { barId, cocktail, isPending: skeleton } = props;
+  const missing = missingIngredients(cocktail);
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-3">
+        <h1 className={cn('rounded-md font-serif text-4xl leading-none tracking-tight', { skeleton })}>
+          {cocktail.name}
+        </h1>
+        {cocktail.tags.length > 0 && (
+          <ul className="flex flex-wrap gap-2">
+            {cocktail.tags.map((tag) => (
+              <li key={tag.id}>
+                <TagChip
+                  name={tag.name}
+                  className={cn({ skeleton })}
+                  to={`/bar/${barId}/cocktails?tag=${tagFullKey(tag)}`}
+                />
+              </li>
+            ))}
+          </ul>
+        )}
+        {cocktail.description && (
+          <p className={cn('max-w-prose rounded-md font-serif text-lg leading-relaxed text-slate-700', { skeleton })}>
+            {cocktail.description}
+          </p>
+        )}
+      </div>
+
+      {cocktail.recipe.length > 0 && <Availability missing={missing} skeleton={skeleton} />}
+
+      <section aria-labelledby="recipe-heading" className="flex flex-col gap-1">
+        <h2 id="recipe-heading" className="font-serif text-2xl tracking-tight">
+          Recipe
+        </h2>
+        {cocktail.recipe.length === 0 ? (
+          <p className="text-sm text-slate-500">No ingredients added yet.</p>
+        ) : (
+          <ul className="flex flex-col">
+            {cocktail.recipe.map((item) => (
+              <RecipeLine key={item.ingredient.id} barId={barId} item={item} skeleton={skeleton} />
+            ))}
+          </ul>
+        )}
+      </section>
+
+      {cocktail.steps.length > 0 && (
+        <section aria-labelledby="method-heading" className="flex flex-col gap-3">
+          <h2 id="method-heading" className="font-serif text-2xl tracking-tight">
+            Method
+          </h2>
+          <ol className="flex flex-col gap-5">
+            {cocktail.steps.map((step) => (
+              <RecipeStep key={step.index} step={step} skeleton={skeleton} />
+            ))}
+          </ol>
+        </section>
+      )}
+    </div>
+  );
+}
+
+type AvailabilityProps = {
+  missing: { id: string; name: string }[];
+  skeleton?: boolean;
+};
+function Availability(props: AvailabilityProps) {
+  const { missing, skeleton } = props;
+
+  if (missing.length === 0) {
+    return (
+      <div className={cn('flex items-center gap-3 rounded-2xl bg-slate-900 px-4 py-3 text-white', { skeleton })}>
+        <Check className="size-5 shrink-0" strokeWidth={2.5} />
+        <p className="font-medium">You have everything for this one</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className={cn('rounded-2xl border border-slate-300 px-4 py-3', { skeleton })}>
+      <p className="font-medium">
+        Missing {missing.length} {pluralize(missing.length, 'ingredient')}
+      </p>
+      <p className="text-sm text-slate-600">{missing.map((m) => m.name).join(', ')}</p>
+    </div>
+  );
+}
+
+type RecipeLineProps = {
+  barId: string;
+  item: CocktailDTO['recipe'][number];
+  skeleton?: boolean;
+};
+function RecipeLine(props: RecipeLineProps) {
+  const { barId, item, skeleton } = props;
+  const { ingredient } = item;
+  const notes = [recipeItemNote(item), ingredient.available ? null : 'Out of stock'].filter(Boolean).join(', ');
+
+  return (
+    <li>
+      <Link
+        to={`/bar/${barId}/ingredients/${ingredient.id}`}
+        className={cn('-mx-2 flex items-center gap-3 rounded-xl px-2 py-2 hover:bg-slate-200/60', focusRing)}
+      >
+        <Photo
+          image={ingredient.iconImage}
+          fallback={BottleWine}
+          fit="contain"
+          dim={!ingredient.available}
+          className={cn('size-11 shrink-0 rounded-lg')}
+        />
+        <div className="flex min-w-0 flex-1 flex-col">
+          <div className="flex items-baseline gap-2">
+            <span className={cn('rounded-md font-medium', { skeleton })}>{ingredient.name}</span>
+            <span aria-hidden className="min-w-4 flex-1 border-b-2 border-dotted border-slate-300" />
+            <span className={cn('whitespace-nowrap rounded-md font-medium tabular-nums', { skeleton })}>
+              {formatAmount(item)}
+            </span>
+          </div>
+          {notes && <span className="text-sm text-slate-500">{notes}</span>}
+        </div>
+      </Link>
+    </li>
+  );
+}
+
+type RecipeStepProps = {
+  step: CocktailDTO['steps'][number];
+  skeleton?: boolean;
+};
+function RecipeStep(props: RecipeStepProps) {
+  const { step, skeleton } = props;
+
+  return (
+    <li key={step.index} className="flex gap-4">
+      <span aria-hidden className="w-6 shrink-0 text-right font-serif text-2xl leading-tight text-slate-400">
+        {step.index + 1}.
+      </span>
+      <div className="flex min-w-0 flex-1 flex-col gap-3">
+        <p className={cn('max-w-prose rounded-md leading-relaxed', { skeleton })}>{step.description}</p>
+        {step.image && <Photo image={step.image} fallback={Martini} className="aspect-4/3 w-full rounded-2xl" />}
+      </div>
+    </li>
+  );
+}
+
+const placeholderCocktail: CocktailDTO = {
+  id: 'placeholder-cocktail',
+  name: 'Classic Old Fashioned',
+  description:
+    'A timeless cocktail made with bourbon, bitters, and a touch of sweetness, finished with an orange twist.',
+  tags: [
+    {
+      id: 'placeholder-tag-1',
+      namespace: 'style',
+      key: 'classic',
+      name: 'Classic',
+      color: '#e8c78a',
+      barId: 'placeholder-bar',
+      type: 'cocktail',
+    },
+    {
+      id: 'placeholder-tag-2',
+      namespace: 'spirit',
+      key: 'whiskey',
+      name: 'Whiskey',
+      color: '#b77b56',
+      barId: 'placeholder-bar',
+      type: 'cocktail',
+    },
+  ],
+  recipe: [
+    {
+      ingredient: {
+        id: 'placeholder-ingredient-1',
+        name: 'Bourbon whiskey',
+        description: '',
+        available: true,
+        tags: [],
+        iconImage: null,
+        cardImage: null,
+      },
+      quantity: 60,
+      unit: 'ml',
+      isGarnish: false,
+      isOptional: false,
+    },
+    {
+      ingredient: {
+        id: 'placeholder-ingredient-2',
+        name: 'Angostura bitters',
+        description: '',
+        available: true,
+        tags: [],
+        iconImage: null,
+        cardImage: null,
+      },
+      quantity: 2,
+      unit: 'dashes',
+      isGarnish: false,
+      isOptional: false,
+    },
+    {
+      ingredient: {
+        id: 'placeholder-ingredient-3',
+        name: 'Orange peel',
+        description: '',
+        available: true,
+        tags: [],
+        iconImage: null,
+        cardImage: null,
+      },
+      quantity: 1,
+      unit: 'twist',
+      isGarnish: false,
+      isOptional: false,
+    },
+  ],
+  steps: [
+    { index: 0, description: 'Add the demerara syrup and bitters to a rocks glass and stir.', image: null },
+    { index: 1, description: 'Add the bourbon and one large ice cube, then stir for 20 seconds.', image: null },
+    { index: 2, description: 'Express an orange twist over the glass and drop it in.', image: null },
+  ],
+  iconImage: null,
+  cardImage: null,
+};

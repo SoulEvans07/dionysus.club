@@ -10,6 +10,7 @@ export const RecipeItemDTO = z.object({
   isOptional: z.boolean(),
   isGarnish: z.boolean(),
 });
+export type RecipeItemDTO = z.infer<typeof RecipeItemDTO>;
 
 export const RecipeStepDTO = z.object({
   index: z.number(),
