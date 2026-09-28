@@ -1,19 +1,19 @@
 import { useMemo } from 'react';
-import { Link, Navigate, useParams, useSearchParams } from 'react-router';
+import { Link, useParams, useSearchParams } from 'react-router';
 import { Martini } from 'lucide-react';
 import { z } from 'zod';
 
 import { CocktailDTO } from '@repo/dtos';
 import { cn } from '~/utils/classnames';
 import { useCocktailList } from '~/queries/cocktail';
-import { focusWithinRing, ScreenFrame } from '~/components/common';
-import { BackButton } from '~/components/back-button';
+import { placeholders } from '~/data/placeholders';
 import { pluralize } from '~/utils/locale';
+import { ScreenFrame, focusRing } from '~/components/common';
+import { BackButton } from '~/components/back-button';
 import { NewLink } from '~/components/catalog/action-links';
-import { useTagList } from '~/queries/tag';
-import { tagFullKey } from '~/utils/tags';
 import { Photo } from '~/components/catalog/photo';
 import { TagSubtitle } from '~/components/catalog/tag-subtitle';
+import { EmptyState, ErrorState } from '~/components/catalog/state-message';
 
 const Params = z.object({ barId: z.string() });
 const QueryParams = z.object({ tag: z.string().optional() });
@@ -25,9 +25,10 @@ export function CocktailListScreen() {
   const { tag } = useMemo(() => QueryParams.parse(Object.fromEntries(query.entries())), [query]);
 
   const list = useCocktailList(barId, { tag });
-
-  if (list.isPending) return <ScreenFrame className="z-100">Loading...</ScreenFrame>;
-  if (list.error) return <ScreenFrame className="z-100">Error</ScreenFrame>;
+  const visible = useMemo(() => {
+    if (list.isPending) return placeholders.cocktails.list;
+    return list.data ?? [];
+  }, [list.isPending, list.data]);
 
   return (
     <ScreenFrame className="z-100 border-l-8 border-slate-300 bg-slate-200">
@@ -49,13 +50,19 @@ export function CocktailListScreen() {
         </div>
       </header>
       <main className="mx-auto max-w-5xl px-4 pb-4 pt-2">
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {list.data.map((cocktail) => (
-            <li key={cocktail.id} className={cn('rounded-lg', focusWithinRing)}>
-              <CocktailCard barId={barId} cocktail={cocktail} />
-            </li>
-          ))}
-        </ul>
+        {list.isError && <ErrorState what="cocktails" onRetry={() => list.refetch()} />}
+        {list.isSuccess && visible.length === 0 && (
+          <EmptyState title="No cocktails here yet">Cocktails added to this bar will show up here.</EmptyState>
+        )}
+        {visible.length > 0 && (
+          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {visible.map((cocktail) => (
+              <li key={cocktail.id} className="rounded-lg">
+                <CocktailCard barId={barId} cocktail={cocktail} isPending={list.isPending} />
+              </li>
+            ))}
+          </ul>
+        )}
       </main>
     </ScreenFrame>
   );
@@ -64,17 +71,20 @@ export function CocktailListScreen() {
 type CocktailCardProps = {
   barId: string;
   cocktail: CocktailDTO;
+  isPending?: boolean;
 };
 export function CocktailCard(props: CocktailCardProps) {
-  const { barId, cocktail } = props;
+  const { barId, cocktail, isPending: skeleton } = props;
 
   return (
     <Link
       to={`/bar/${barId}/cocktails/${cocktail.id}`}
-      className={cn('aspect-3/4 relative rounded-lg text-left outline-none')}
+      className={cn('aspect-3/4 relative flex rounded-lg text-left outline-none', focusRing, { skeleton })}
     >
       <Photo
-        className="aspect-3/4 rounded-lg bg-cover bg-no-repeat transition-transform group-active:scale-[0.98]"
+        className={cn(
+          'aspect-3/4 rounded-lg bg-transparent bg-cover bg-no-repeat transition-transform group-active:scale-[0.98]'
+        )}
         image={cocktail.cardImage}
         fallback={Martini}
       />
