@@ -1,11 +1,8 @@
 import { SidebarDTO } from '@repo/dtos';
+import { Styx } from '~/utils/request';
 
 export class SidebarAPI {
   public async get() {
-    const resp = await fetch('/api/sidebar');
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}: Failed to fetch sidebar`);
-
-    const data = await resp.json();
-    return SidebarDTO.parse(data);
+    return await Styx.get('/api/sidebar', SidebarDTO.parse);
   }
 }
