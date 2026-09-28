@@ -1,33 +1,35 @@
-import { QueryParams } from '~/types/url';
+type Primitive = boolean | number | string;
+type QueryParams = Record<string, Primitive | Primitive[] | undefined | null>;
 
-export class UrlUtils {
+export class Ariadne {
   public static merge(url: string, query?: QueryParams): string {
+    if (!query) return url;
+
     const params = this.buildParams(query);
     if (!params) return url;
-    return `${url}?${params}`;
+
+    const bridge = url.includes('?') ? '&' : '?';
+    return `${url}${bridge}${params}`;
   }
 
-  private static buildParams(query?: QueryParams): URLSearchParams | undefined {
-    if (query === undefined) return undefined;
-
+  private static buildParams(query: QueryParams): URLSearchParams | undefined {
     const entries = Object.entries(query);
     if (entries.length === 0) return undefined;
 
-    const params = entries.reduce((acc, [key, value]) => {
-      if (value === undefined) return acc;
+    const params = new URLSearchParams();
+    entries.forEach(([key, value]) => {
+      if (value === undefined) return;
 
-      if (Array.isArray(value)) {
-        value.forEach((val) => acc.append(key, val.toString()));
-      } else if (value === null) {
-        acc.append(key, 'null');
+      if (value === null) {
+        params.append(key, 'null');
+      } else if (Array.isArray(value)) {
+        value.forEach((item) => params.append(key, item.toString()));
       } else {
-        acc.append(key, value.toString());
+        params.append(key, value.toString());
       }
+    });
 
-      return acc;
-    }, new URLSearchParams());
     if (params.size === 0) return undefined;
-
     return params;
   }
 }
