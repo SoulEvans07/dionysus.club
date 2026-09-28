@@ -13,6 +13,7 @@ import { NewLink } from '~/components/catalog/action-links';
 import { useTagList } from '~/queries/tag';
 import { tagFullKey } from '~/utils/tags';
 import { Photo } from '~/components/catalog/photo';
+import { TagSubtitle } from '~/components/catalog/tag-subtitle';
 
 const Params = z.object({ barId: z.string() });
 const QueryParams = z.object({ tag: z.string().optional() });
@@ -58,17 +59,6 @@ export function CocktailListScreen() {
       </main>
     </ScreenFrame>
   );
-}
-
-type TagSubtitleProps = { barId: string; tagKey: string };
-function TagSubtitle(props: TagSubtitleProps) {
-  const { barId, tagKey } = props;
-
-  const list = useTagList(barId);
-  const tag = useMemo(() => list.data?.find((t) => tagFullKey(t) === tagKey), [list.data, tagKey]);
-  if (list.isSuccess && tag === undefined) return <Navigate to={`/bar/${barId}`} replace />;
-
-  return <h2 className={cn('-mt-1! rounded-md text-xs', { skeleton: list.isPending })}>{tag?.name ?? 'Loading'}</h2>;
 }
 
 type CocktailCardProps = {
