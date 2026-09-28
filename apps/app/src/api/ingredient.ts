@@ -10,4 +10,8 @@ export class IngredientAPI {
   public async get(barId: string, id: string) {
     return await Styx.get(`/api/bars/${barId}/ingredients/${id}`, IngredientDTO.parse);
   }
+
+  public async setAvailability(barId: string, id: string, available: boolean) {
+    return await Styx.put(`/api/bars/${barId}/ingredients/${id}/availability`, { body: { available } });
+  }
 }

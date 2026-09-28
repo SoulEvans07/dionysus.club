@@ -1,4 +1,5 @@
-import { queryOptions, useQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import type { IngredientDTO } from '@repo/dtos';
 import { api } from '~/api';
 import { QueryParams } from '~/types/url';
 
@@ -22,4 +23,39 @@ export const ingredientGetQuery = (barId: string, id: string) => {
 
 export function useIngredient(barId: string, id: string) {
   return useQuery({ ...ingredientGetQuery(barId, id) });
+}
+
+// Cocktail recipes embed their ingredients (name, stock), so those go stale too.
+function useInvalidateIngredients(barId: string) {
+  const client = useQueryClient();
+  return () =>
+    Promise.all([
+      client.invalidateQueries({ queryKey: ['bars', barId, 'ingredients'] }),
+      client.invalidateQueries({ queryKey: ['bars', barId, 'cocktails'] }),
+    ]);
+}
+
+export function useSetIngredientAvailability(barId: string) {
+  const client = useQueryClient();
+  const invalidate = useInvalidateIngredients(barId);
+  const listKey = ['bars', barId, 'ingredients', 'list'];
+
+  return useMutation({
+    mutationFn: ({ id, available }: { id: string; available: boolean }) =>
+      api.ingredients.setAvailability(barId, id, available),
+    onMutate: async ({ id, available }) => {
+      await client.cancelQueries({ queryKey: listKey });
+
+      const previous = client.getQueriesData<IngredientDTO[]>({ queryKey: listKey });
+      client.setQueriesData<IngredientDTO[]>({ queryKey: listKey }, (old) =>
+        old?.map((ingredient) => (ingredient.id === id ? { ...ingredient, available } : ingredient))
+      );
+
+      return { previous };
+    },
+    onError: (_err, _vars, context) => {
+      context?.previous.forEach(([key, data]) => client.setQueryData(key, data));
+    },
+    onSettled: invalidate,
+  });
 }
