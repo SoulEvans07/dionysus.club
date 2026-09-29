@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { z } from 'zod';
+import { ScreenFrame } from '~/components/common';
 
 import { useIngredient } from '~/queries/ingredient';
 import { tw } from '~/utils/twElem';
@@ -18,19 +19,17 @@ export function IngredientScreen() {
   const goBack = () => navigate(-1);
 
   const { isPending, error, data } = useIngredient(barId, id);
-  if (isPending) return <Frame>Loading {id}...</Frame>;
-  if (error) return <Frame>Error</Frame>;
+  if (isPending) return <ScreenFrame className="z-200">Loading {id}...</ScreenFrame>;
+  if (error) return <ScreenFrame className="z-200">Error</ScreenFrame>;
 
   return (
-    <Frame>
+    <ScreenFrame className="z-200">
       <button onClick={goBack}>Back</button>
       <h1>Ingredient</h1>
       <div>{id}</div>
       <div>{data.name}</div>
       <div>{data.description}</div>
       <div>{data.available ? 'Available' : 'Unavailable'}</div>
-    </Frame>
+    </ScreenFrame>
   );
 }
-
-const Frame = tw.div('z-200 absolute left-0 right-0 top-0 h-dvh w-dvw overflow-y-auto bg-white');

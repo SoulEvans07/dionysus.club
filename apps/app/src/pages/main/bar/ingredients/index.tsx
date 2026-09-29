@@ -1,12 +1,20 @@
 import { useMemo } from 'react';
-import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router';
+import { Link, useParams, useSearchParams } from 'react-router';
+import { Wine } from 'lucide-react';
 import { z } from 'zod';
 
-import { useIngredientList } from '~/queries/ingredient';
-import { useTagList } from '~/queries/tag';
+import { IngredientDTO } from '@repo/dtos';
 import { cn } from '~/utils/classnames';
-import { tagFullKey } from '~/utils/tags';
-import { tw } from '~/utils/twElem';
+import { useIngredientList, useSetIngredientAvailability } from '~/queries/ingredient';
+import { placeholders } from '~/data/placeholders';
+import { pluralize } from '~/utils/locale';
+import { ScreenFrame, focusRing } from '~/components/common';
+import { BackButton } from '~/components/back-button';
+import { TagSubtitle } from '~/components/catalog/tag-subtitle';
+import { NewLink } from '~/components/catalog/action-links';
+import { EmptyState, ErrorState } from '~/components/catalog/state-message';
+import { Photo } from '~/components/catalog/photo';
+import { Switch } from '~/components/switch';
 
 const Params = z.object({ barId: z.string() });
 const QueryParams = z.object({ tag: z.string().optional() });
@@ -17,39 +25,137 @@ export function IngredientListScreen() {
   const [query] = useSearchParams();
   const { tag } = useMemo(() => QueryParams.parse(Object.fromEntries(query.entries())), [query]);
 
-  const navigate = useNavigate();
-  const goBack = () => navigate(-1);
-
   const list = useIngredientList(barId, { tag });
-
-  if (list.isPending) return <Frame>Loading...</Frame>;
-  if (list.error) return <Frame>Error</Frame>;
+  const visible = useMemo(() => {
+    if (list.isPending) return placeholders.ingredients.list;
+    return list.data ?? [];
+  }, [list.isPending, list.data]);
+  const groups = useMemo(() => groupByLetter(visible), [visible]);
 
   return (
-    <Frame>
-      <button onClick={goBack}>Back</button>
-      <h1>Ingredients</h1>
-      {tag && <TagTitle barId={barId} tagKey={tag} />}
-      {list.data.map((ingr) => (
-        <div key={ingr.id} className="p-2" onClick={() => navigate(`/bar/${barId}/ingredients/${ingr.id}`)}>
-          <div>{ingr.name}</div>
-          <div>{ingr.description}</div>
-          <div>{ingr.available ? 'Available' : 'Unavailable'}</div>
+    <ScreenFrame className="z-100 border-l-8 border-slate-300 bg-slate-200">
+      <header className="sticky top-0 z-10 border-slate-300/80 bg-slate-200/80 backdrop-blur">
+        <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 pb-3 pt-3">
+          <div className="flex items-center gap-3">
+            <BackButton fallback={`/bar/${barId}`} />
+            <div className="-ml-2 flex flex-col">
+              <h1 className={cn('font-serif text-3xl tracking-tight', { 'text-xl': !!tag })}>Ingredients</h1>
+              {tag && <TagSubtitle barId={barId} tagKey={tag} />}
+            </div>
+            {list.data && (
+              <span className="ml-auto text-sm text-slate-500">
+                {visible.length} {pluralize(visible.length, 'item')}
+              </span>
+            )}
+            <NewLink
+              to={`/bar/${barId}/ingredients/new`}
+              label="New ingredient"
+              className={list.data ? '' : 'ml-auto'}
+            />
+          </div>
         </div>
-      ))}
-    </Frame>
+      </header>
+      <main className="mx-auto max-w-5xl px-4 pb-4 pt-2">
+        {list.isError && <ErrorState what="ingredients" onRetry={() => list.refetch()} />}
+        {list.isSuccess && visible.length === 0 && (
+          <EmptyState title="No ingredients here yet">Ingredients added to this bar will show up here.</EmptyState>
+        )}
+        {visible.length > 0 && (
+          <div className="flex flex-col gap-5">
+            {groups.map(([letter, items]) => (
+              <IngredientGroup key={letter} barId={barId} groupName={letter} items={items} skeleton={list.isPending} />
+            ))}
+          </div>
+        )}
+      </main>
+    </ScreenFrame>
   );
 }
 
-const Frame = tw.div('z-100 absolute left-0 right-0 top-0 h-dvh w-dvw overflow-y-auto bg-white');
+function groupByLetter(items: IngredientDTO[]) {
+  const groups = new Map<string, IngredientDTO[]>();
+  for (const item of items) {
+    const letter = item.name.trim().charAt(0).toUpperCase() || '#';
+    groups.set(letter, [...(groups.get(letter) ?? []), item]);
+  }
+  return [...groups.entries()];
+}
 
-type TagTitleProps = { barId: string; tagKey: string };
-function TagTitle(props: TagTitleProps) {
-  const { barId, tagKey: tagKey } = props;
+type IngredientGroupProps = {
+  barId: string;
+  groupName: string;
+  items: IngredientDTO[];
+  skeleton?: boolean;
+};
+function IngredientGroup(props: IngredientGroupProps) {
+  const { barId, groupName, items, skeleton } = props;
+  return (
+    <section aria-label={groupName} className="flex flex-col gap-1.5">
+      <h2
+        aria-hidden
+        className={cn('w-fit rounded-md px-1 font-serif text-xl leading-none text-slate-400', { skeleton })}
+      >
+        {groupName}
+      </h2>
+      <ul
+        className={cn(
+          'divide-y divide-slate-300/50 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100',
+          {}
+        )}
+      >
+        {items.map((ingredient) => (
+          <li key={ingredient.id}>
+            <IngredientRow barId={barId} ingredient={ingredient} skeleton={skeleton} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
 
-  const list = useTagList(barId);
-  const tag = useMemo(() => list.data?.find((tag) => tagFullKey(tag) === tagKey), [list.data, tagKey]);
-  if (list.isSuccess && list.data && tag === undefined) return <Navigate to={`/bar/${barId}`} />;
+type IngredientRowProps = {
+  barId: string;
+  ingredient: IngredientDTO;
+  skeleton?: boolean;
+};
+function IngredientRow(props: IngredientRowProps) {
+  const { barId, ingredient, skeleton } = props;
+  const detail = ingredient.description || ingredient.tags.map((t) => t.name).join(', ');
 
-  return <div className={cn({ skeleton: list.isPending })}>{tag?.name ?? 'tag'}</div>;
+  const setAvailability = useSetIngredientAvailability(barId);
+
+  return (
+    <div className="flex items-center gap-3 p-3 transition-colors hover:bg-slate-100 active:bg-slate-200/50">
+      <Link
+        to={`/bar/${barId}/ingredients/${ingredient.id}`}
+        className={cn(
+          'flex min-w-0 flex-1 items-center gap-3',
+          focusRing,
+          'focus-visible:ring-inset focus-visible:ring-offset-0',
+          { 'pointer-events-none': skeleton }
+        )}
+      >
+        <Photo
+          image={ingredient.iconImage}
+          fallback={Wine}
+          fit="contain"
+          dim={!ingredient.available}
+          className={cn('size-12 shrink-0 rounded-lg border border-slate-100', { skeleton })}
+        />
+        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <div className={cn('truncate font-medium', { 'skeleton w-fit': skeleton })}>{ingredient.name}</div>
+          {detail && (
+            <div className={cn('truncate text-sm text-slate-500', { 'skeleton w-fit': skeleton })}>{detail}</div>
+          )}
+        </div>
+      </Link>
+      <Switch
+        checked={ingredient.available}
+        disabled={setAvailability.isPending}
+        onCheckedChange={(available) => setAvailability.mutate({ id: ingredient.id, available })}
+        aria-label={`Mark ${ingredient.name} as ${ingredient.available ? 'out of stock' : 'in stock'}`}
+        className={cn({ skeleton })}
+      />
+    </div>
+  );
 }
