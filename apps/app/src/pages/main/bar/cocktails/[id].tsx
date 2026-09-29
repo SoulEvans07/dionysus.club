@@ -9,13 +9,13 @@ import { tagFullKey } from '~/utils/tags';
 import { formatAmount, missingIngredients, recipeItemNote } from '~/utils/recipe';
 import { pluralize } from '~/utils/locale';
 import { useCocktail } from '~/queries/cocktail';
+import { placeholders } from '~/data/placeholders';
 import { focusRing, ScreenFrame } from '~/components/common';
 import { ErrorState } from '~/components/catalog/state-message';
 import { Photo } from '~/components/catalog/photo';
 import { BackButton } from '~/components/back-button';
 import { EditLink } from '~/components/catalog/action-links';
 import { TagChip } from '~/components/catalog/tag-chip';
-import { placeholders } from '~/data/placeholders';
 
 const Params = z.object({
   barId: z.string(),
@@ -62,7 +62,11 @@ export function CocktailScreen() {
   );
 }
 
-type CocktailDetailProps = { barId: string; cocktail: CocktailDTO; isPending?: boolean };
+type CocktailDetailProps = {
+  barId: string;
+  cocktail: CocktailDTO;
+  isPending?: boolean;
+};
 function CocktailDetail(props: CocktailDetailProps) {
   const { barId, cocktail, isPending: skeleton } = props;
   const missing = missingIngredients(cocktail);
@@ -77,11 +81,9 @@ function CocktailDetail(props: CocktailDetailProps) {
           <ul className="flex flex-wrap gap-2">
             {cocktail.tags.map((tag) => (
               <li key={tag.id}>
-                <TagChip
-                  name={tag.name}
-                  className={cn({ skeleton })}
-                  to={`/bar/${barId}/cocktails?tag=${tagFullKey(tag)}`}
-                />
+                <TagChip className={cn({ skeleton })} to={`/bar/${barId}/cocktails?tag=${tagFullKey(tag)}`}>
+                  {tag.name}
+                </TagChip>
               </li>
             ))}
           </ul>
