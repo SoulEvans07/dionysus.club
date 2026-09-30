@@ -35,7 +35,7 @@
       "icon": "terminal",
       "color": "terminal.ansiGreen",
       "commands": ["nvm use"],
-      "execute": false
+      "execute": true
     }
   ]
 }
