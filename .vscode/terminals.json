@@ -4,7 +4,7 @@
       "name": "dev/server",
       "icon": "server",
       "color": "terminal.ansiRed",
-      "commands": ["cd apps/api", "pnpm dev"],
+      "commands": ["cd apps/api", "nvm use", "pnpm dev"],
       "execute": true,
       "split": "dev/app"
     },
@@ -12,26 +12,29 @@
       "name": "dev/app",
       "icon": "preview",
       "color": "terminal.ansiBlue",
-      "commands": ["cd apps/app", "pnpm dev"],
+      "commands": ["cd apps/app", "nvm use", "pnpm dev"],
       "execute": true,
       "focus": true
     },
     {
       "name": "db",
       "icon": "database",
-      "color": "terminal.ansiWhite"
+      "color": "terminal.ansiWhite",
+      "commands": ["cd apps/api", "nvm use"],
+      "execute": true
     },
     {
       "name": "libs",
       "icon": "library",
       "color": "terminal.ansiMagenta",
-      "commands": ["cd libs"],
+      "commands": ["cd libs", "nvm use"],
       "execute": true
     },
     {
       "name": "cmd",
       "icon": "terminal",
       "color": "terminal.ansiGreen",
+      "commands": ["nvm use"],
       "execute": false
     }
   ]
