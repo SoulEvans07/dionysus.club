@@ -1,4 +1,5 @@
 {
+  "workbench.colorTheme": "Everforest Pro Dark Vibrant",
   "eslint.workingDirectories": [{ "mode": "auto" }],
   "editor.formatOnSave": true,
   "js/ts.tsdk.path": "node_modules/typescript/lib"
