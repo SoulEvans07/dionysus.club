@@ -1,6 +1,17 @@
+import { useMemo } from 'react';
 import { Search, X } from 'lucide-react';
+import { useMediaQuery } from '@uidotdev/usehooks';
 
 import { Input } from '~/components/shadcn/input';
+import {
+  DrawerHeader,
+  DrawerTitle,
+  DrawerClose,
+  Drawer,
+  DrawerContent,
+  DrawerTrigger,
+} from '~/components/shadcn/drawer';
+import { Sheet, SheetHeader, SheetTitle, SheetClose, SheetContent, SheetTrigger } from '~/components/shadcn/sheet';
 
 type SearchFieldProps = {
   value: string;
@@ -28,5 +39,27 @@ export function SearchField(props: SearchFieldProps) {
         <X className="absolute right-0 top-1/2 size-10 -translate-y-1/2 p-2.5 text-slate-400" onClick={onClear} />
       )}
     </div>
+  );
+}
+
+type FilterContainerProps = {
+  children: [React.ReactNode, React.ReactNode];
+};
+export function FilterContainer(props: FilterContainerProps) {
+  const {
+    children: [trigger, content],
+  } = props;
+  const isMobile = useMediaQuery('(max-width: 640px)');
+
+  const { Root, Trigger, Content } = useMemo(() => {
+    if (isMobile) return { Root: Drawer, Trigger: DrawerTrigger, Content: DrawerContent };
+    return { Root: Sheet, Trigger: SheetTrigger, Content: SheetContent };
+  }, [isMobile]);
+
+  return (
+    <Root>
+      <Trigger>{trigger}</Trigger>
+      <Content className="border-none bg-slate-200">{content}</Content>
+    </Root>
   );
 }
