@@ -84,5 +84,5 @@ const placeholderCocktail: CocktailDTO = {
 
 export const cocktails = {
   single: placeholderCocktail,
-  list: makePlaceholderList(3, placeholderCocktail),
+  list: makePlaceholderList(7, placeholderCocktail),
 };

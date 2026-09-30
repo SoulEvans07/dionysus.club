@@ -1,8 +1,8 @@
 /* needed for @apply to work */
-@reference "./tailwind.css"; 
+@reference "./tailwind.css";
 
 .skeleton {
-  @apply animate-pulse bg-slate-400/50 fill-transparent stroke-transparent text-transparent;
+  @apply pointer-events-none animate-pulse bg-slate-400/50 fill-transparent stroke-transparent text-transparent;
 }
 
 .skeleton > * {

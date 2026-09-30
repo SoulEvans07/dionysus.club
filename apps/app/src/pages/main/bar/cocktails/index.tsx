@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router';
 import { Check, Martini } from 'lucide-react';
 import { z } from 'zod';
@@ -7,14 +7,14 @@ import { CocktailDTO } from '@repo/dtos';
 import { cn } from '~/utils/classnames';
 import { useCocktailList } from '~/queries/cocktail';
 import { placeholders } from '~/data/placeholders';
-import { pluralize } from '~/utils/locale';
 import { canMake } from '~/utils/recipe';
 import { ScreenFrame, focusRing } from '~/components/common';
 import { BackButton } from '~/components/back-button';
-import { NewLink } from '~/components/catalog/action-links';
+import { FilterButton, NewLink, SearchButton } from '~/components/catalog/action-buttons';
 import { Photo } from '~/components/catalog/photo';
 import { TagSubtitle } from '~/components/catalog/tag-subtitle';
 import { EmptyState, ErrorState } from '~/components/catalog/state-message';
+import { SearchField } from '~/components/catalog/filters';
 
 const Params = z.object({ barId: z.string() });
 const QueryParams = z.object({ tag: z.string().optional() });
@@ -25,11 +25,17 @@ export function CocktailListScreen() {
   const [query] = useSearchParams();
   const { tag } = useMemo(() => QueryParams.parse(Object.fromEntries(query.entries())), [query]);
 
+  const [searchOpen, setSearchOpen] = useState(false);
+  const toggleSearch = () => setSearchOpen((prev) => !prev);
+  const [searchText, setSearchText] = useState('');
+  const clearSearch = () => setSearchText('');
+
   const list = useCocktailList(barId, { tag });
   const visible = useMemo(() => {
+    const needle = searchText.trim().toLowerCase();
     if (list.isPending) return placeholders.cocktails.list;
-    return list.data ?? [];
-  }, [list.isPending, list.data]);
+    return (list.data ?? []).filter((o) => (needle ? o.name.toLowerCase().includes(needle) : true));
+  }, [list.isPending, list.data, searchText]);
 
   return (
     <ScreenFrame className="z-100 border-l-8 border-slate-300 bg-slate-200">
@@ -37,17 +43,19 @@ export function CocktailListScreen() {
         <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 pb-3 pt-3">
           <div className="flex items-center gap-3">
             <BackButton fallback={`/bar/${barId}`} />
-            <div className="-ml-2 flex flex-col">
+            <div className="-ml-2 mr-auto flex flex-col">
               <h1 className={cn('font-serif text-3xl tracking-tight', { 'text-xl': !!tag })}>Cocktails</h1>
               {tag && <TagSubtitle barId={barId} tagKey={tag} />}
             </div>
-            {list.data && (
-              <span className="ml-auto text-sm text-slate-500">
-                {list.data.length} {pluralize(list.data.length, 'drink')}
-              </span>
-            )}
-            <NewLink to={`/bar/${barId}/cocktails/new`} label="New cocktail" className={list.data ? '' : 'ml-auto'} />
+            <NewLink to={`/bar/${barId}/cocktails/new`} label="New cocktail" />
+            <SearchButton onClick={toggleSearch} active={searchText.trim().length > 0} />
+            <FilterButton />
           </div>
+          {searchOpen && (
+            <div className="flex items-center gap-2">
+              <SearchField label="Search cocktails" value={searchText} onChange={setSearchText} onClear={clearSearch} />
+            </div>
+          )}
         </div>
       </header>
       <main className="mx-auto max-w-5xl px-4 pb-4 pt-2">

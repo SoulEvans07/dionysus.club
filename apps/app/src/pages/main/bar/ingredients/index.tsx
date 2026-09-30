@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router';
 import { Wine } from 'lucide-react';
 import { z } from 'zod';
@@ -7,14 +7,14 @@ import { IngredientDTO } from '@repo/dtos';
 import { cn } from '~/utils/classnames';
 import { useIngredientList, useSetIngredientAvailability } from '~/queries/ingredient';
 import { placeholders } from '~/data/placeholders';
-import { pluralize } from '~/utils/locale';
 import { ScreenFrame, focusRing } from '~/components/common';
 import { BackButton } from '~/components/back-button';
 import { TagSubtitle } from '~/components/catalog/tag-subtitle';
-import { NewLink } from '~/components/catalog/action-links';
+import { FilterButton, NewLink, SearchButton } from '~/components/catalog/action-buttons';
 import { EmptyState, ErrorState } from '~/components/catalog/state-message';
 import { Photo } from '~/components/catalog/photo';
 import { Switch } from '~/components/switch';
+import { SearchField } from '~/components/catalog/filters';
 
 const Params = z.object({ barId: z.string() });
 const QueryParams = z.object({ tag: z.string().optional() });
@@ -25,11 +25,17 @@ export function IngredientListScreen() {
   const [query] = useSearchParams();
   const { tag } = useMemo(() => QueryParams.parse(Object.fromEntries(query.entries())), [query]);
 
+  const [searchOpen, setSearchOpen] = useState(false);
+  const toggleSearch = () => setSearchOpen((prev) => !prev);
+  const [searchText, setSearchText] = useState('');
+  const clearSearch = () => setSearchText('');
+
   const list = useIngredientList(barId, { tag });
   const visible = useMemo(() => {
+    const needle = searchText.trim().toLowerCase();
     if (list.isPending) return placeholders.ingredients.list;
-    return list.data ?? [];
-  }, [list.isPending, list.data]);
+    return (list.data ?? []).filter((o) => (needle ? o.name.toLowerCase().includes(needle) : true));
+  }, [list.isPending, list.data, searchText]);
   const groups = useMemo(() => groupByLetter(visible), [visible]);
 
   return (
@@ -38,21 +44,24 @@ export function IngredientListScreen() {
         <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 pb-3 pt-3">
           <div className="flex items-center gap-3">
             <BackButton fallback={`/bar/${barId}`} />
-            <div className="-ml-2 flex flex-col">
+            <div className="-ml-2 mr-auto flex flex-col">
               <h1 className={cn('font-serif text-3xl tracking-tight', { 'text-xl': !!tag })}>Ingredients</h1>
               {tag && <TagSubtitle barId={barId} tagKey={tag} />}
             </div>
-            {list.data && (
-              <span className="ml-auto text-sm text-slate-500">
-                {visible.length} {pluralize(visible.length, 'item')}
-              </span>
-            )}
-            <NewLink
-              to={`/bar/${barId}/ingredients/new`}
-              label="New ingredient"
-              className={list.data ? '' : 'ml-auto'}
-            />
+            <NewLink to={`/bar/${barId}/ingredients/new`} label="New ingredient" />
+            <SearchButton onClick={toggleSearch} active={searchText.trim().length > 0} />
+            <FilterButton />
           </div>
+          {searchOpen && (
+            <div className="flex items-center gap-2">
+              <SearchField
+                label="Search ingredients"
+                value={searchText}
+                onChange={setSearchText}
+                onClear={clearSearch}
+              />
+            </div>
+          )}
         </div>
       </header>
       <main className="mx-auto max-w-5xl px-4 pb-4 pt-2">

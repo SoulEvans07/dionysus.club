@@ -14,7 +14,7 @@ import { focusRing, ScreenFrame } from '~/components/common';
 import { ErrorState } from '~/components/catalog/state-message';
 import { Photo } from '~/components/catalog/photo';
 import { BackButton } from '~/components/back-button';
-import { EditLink } from '~/components/catalog/action-links';
+import { EditLink } from '~/components/catalog/action-buttons';
 import { TagChip } from '~/components/catalog/tag-chip';
 
 const Params = z.object({
