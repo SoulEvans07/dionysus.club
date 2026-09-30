@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router';
-import { Martini } from 'lucide-react';
+import { Check, Martini } from 'lucide-react';
 import { z } from 'zod';
 
 import { CocktailDTO } from '@repo/dtos';
@@ -8,6 +8,7 @@ import { cn } from '~/utils/classnames';
 import { useCocktailList } from '~/queries/cocktail';
 import { placeholders } from '~/data/placeholders';
 import { pluralize } from '~/utils/locale';
+import { canMake } from '~/utils/recipe';
 import { ScreenFrame, focusRing } from '~/components/common';
 import { BackButton } from '~/components/back-button';
 import { NewLink } from '~/components/catalog/action-links';
@@ -75,19 +76,26 @@ type CocktailCardProps = {
 };
 export function CocktailCard(props: CocktailCardProps) {
   const { barId, cocktail, isPending: skeleton } = props;
+  const ready = canMake(cocktail);
 
   return (
     <Link
       to={`/bar/${barId}/cocktails/${cocktail.id}`}
-      className={cn('aspect-3/4 relative flex rounded-lg text-left outline-none', focusRing, { skeleton })}
+      className={cn('aspect-3/4 relative flex rounded-xl text-left outline-none', focusRing, { skeleton })}
     >
       <Photo
         className={cn(
-          'aspect-3/4 rounded-lg bg-transparent bg-cover bg-no-repeat transition-transform group-active:scale-[0.98]'
+          'aspect-3/4 rounded-xl bg-transparent bg-cover bg-no-repeat transition-transform group-active:scale-[0.98]'
         )}
         image={cocktail.cardImage}
         fallback={Martini}
       />
+      {ready && (
+        <span className="absolute left-2 top-2 flex items-center gap-1 rounded-full bg-slate-900 py-0.5 pl-1.5 pr-2 text-xs font-medium text-white">
+          <Check className="size-3" strokeWidth={3} />
+          Ready
+        </span>
+      )}
       <div className="bg-linear-to-b absolute bottom-0 left-0 right-0 rounded-bl-lg rounded-br-lg from-transparent to-black/50 px-3 pb-2 pt-6 font-medium text-white transition-transform group-active:scale-[0.98]">
         {cocktail.name}
       </div>
