@@ -1,7 +1,7 @@
-import { queryOptions, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import type { IngredientDTO } from '@repo/dtos';
+import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { CreateIngredientDTO, IngredientDTO } from '@repo/dtos';
+import type { QueryParams } from '~/types/url';
 import { api } from '~/api';
-import { QueryParams } from '~/types/url';
 
 export const ingredientListQuery = (barId: string, query?: QueryParams) => {
   return queryOptions({
@@ -57,5 +57,21 @@ export function useSetIngredientAvailability(barId: string) {
       context?.previous.forEach(([key, data]) => client.setQueryData(key, data));
     },
     onSettled: invalidate,
+  });
+}
+
+export function useCreateIngredient(barId: string) {
+  const invalidate = useInvalidateIngredients(barId);
+  return useMutation({
+    mutationFn: (data: CreateIngredientDTO) => api.ingredients.create(barId, data),
+    onSuccess: invalidate,
+  });
+}
+
+export function useUpdateIngredient(barId: string, id: string) {
+  const invalidate = useInvalidateIngredients(barId);
+  return useMutation({
+    mutationFn: (data: CreateIngredientDTO) => api.ingredients.update(barId, { ...data, id }),
+    onSuccess: invalidate,
   });
 }

@@ -30,6 +30,12 @@ export const SetIngredientAvailabilityDTO = z.object({
 });
 export type SetIngredientAvailabilityDTO = z.infer<typeof SetIngredientAvailabilityDTO>;
 
+export const SetIngredientAvailabilityRespDTO = z.object({
+  id: z.string(),
+  available: z.boolean(),
+});
+export type SetIngredientAvailabilityRespDTO = z.infer<typeof SetIngredientAvailabilityRespDTO>;
+
 export const IngredientListQueryParams = z.object({
   tag: z.string().optional(),
 });
