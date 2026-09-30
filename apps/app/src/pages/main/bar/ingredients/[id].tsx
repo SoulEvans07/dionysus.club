@@ -42,13 +42,13 @@ export function IngredientScreen() {
           />
           <BackButton
             floating
-            fallback={`/bar/${barId}/cocktails`}
+            fallback={`/bar/${barId}/ingredients`}
             className="absolute left-3 top-[max(0.75rem,env(safe-area-inset-top))]"
           />
           {data && (
             <EditLink
-              to={`/bar/${barId}/cocktails/${id}/edit`}
-              label="Edit cocktail"
+              to={`/bar/${barId}/ingredients/${id}/edit`}
+              label="Edit ingredient"
               className="absolute right-3 top-[max(0.75rem,env(safe-area-inset-top))]"
             />
           )}

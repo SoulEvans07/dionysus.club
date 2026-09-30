@@ -12,7 +12,7 @@ export function tagFullKeyUI(tag: TagLike) {
 }
 
 export function sortTagByFullKey(a: TagLike, b: TagLike) {
-  if (a.namespace === TOP_LEVEL_TAG_NAMESPACE) return 1;
-  if (b.namespace === TOP_LEVEL_TAG_NAMESPACE) return -1;
+  if (a.namespace === TOP_LEVEL_TAG_NAMESPACE) return -1;
+  if (b.namespace === TOP_LEVEL_TAG_NAMESPACE) return 1;
   return tagFullKey(a).localeCompare(tagFullKey(b));
 }
