@@ -81,9 +81,11 @@ function CocktailDetail(props: CocktailDetailProps) {
           <ul className="flex flex-wrap gap-2">
             {cocktail.tags.map((tag) => (
               <li key={tag.id}>
-                <TagChip className={cn({ skeleton })} to={`/bar/${barId}/cocktails?tag=${tagFullKey(tag)}`}>
-                  {tag.name}
-                </TagChip>
+                <TagChip
+                  className={cn({ skeleton })}
+                  tag={tag}
+                  to={`/bar/${barId}/cocktails?tag=${tagFullKey(tag)}`}
+                ></TagChip>
               </li>
             ))}
           </ul>

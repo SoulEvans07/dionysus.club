@@ -82,9 +82,11 @@ function IngredientDetail(props: IngredientDetailProps) {
           </li>
           {ingredient.tags.map((tag) => (
             <li key={tag.id}>
-              <TagChip className={cn({ skeleton })} to={`/bar/${barId}/ingredients?tag=${tagFullKey(tag)}`}>
-                {tag.name}
-              </TagChip>
+              <TagChip
+                className={cn({ skeleton })}
+                tag={tag}
+                to={`/bar/${barId}/ingredients?tag=${tagFullKey(tag)}`}
+              ></TagChip>
             </li>
           ))}
         </ul>
@@ -175,7 +177,7 @@ function UsedIn(props: UsedInProps) {
         <p className="text-sm text-slate-500">No cocktail in this bar uses it yet.</p>
       )}
       {!isPending && list.isSuccess && uses.length > 0 && (
-        <ul className="divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+        <ul className="divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
           {uses.map(({ cocktail, item }) => (
             <li key={cocktail.id}>
               <UseRow barId={barId} cocktail={cocktail} item={item} />
