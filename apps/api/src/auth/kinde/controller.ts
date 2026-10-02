@@ -36,7 +36,13 @@ kindeAuthController.get('/login', async (c) => {
     deleteCookie(c, POST_LOGIN_REDIRECT_COOKIE);
   }
 
-  const loginUrl = await kindeAuthClient.login(sessionManager(c));
+  // With a known connection, Kinde skips its hosted page and goes straight to the provider.
+  const connectionId = c.req.query('connection') === 'google' ? process.env.KINDE_GOOGLE_CONNECTION_ID : undefined;
+
+  const loginUrl = await kindeAuthClient.login(
+    sessionManager(c),
+    connectionId ? { authUrlParams: { connection_id: connectionId } } : undefined
+  );
   return c.redirect(loginUrl.toString());
 });
 
@@ -48,7 +54,14 @@ kindeAuthController.get('/register', async (c) => {
 kindeAuthController.get('/callback', async (c) => {
   // get called eveyr time we login or register
   const url = new URL(c.req.url);
-  await kindeAuthClient.handleRedirectToApp(sessionManager(c), url);
+
+  try {
+    await kindeAuthClient.handleRedirectToApp(sessionManager(c), url);
+  } catch (e) {
+    // e.g. the user cancelled on Google's consent screen, or the state cookie expired
+    console.error(e);
+    return c.redirect('/login?error=auth_failed');
+  }
 
   return c.redirect('/api/auth/post-login');
 });
@@ -87,7 +100,7 @@ kindeAuthController.get('/post-login', async (c) => {
       });
     }
   } else {
-    return c.json({ error: 'Unauthorized' }, 401);
+    return c.redirect('/login?error=auth_failed');
   }
 
   const redirect = getCookie(c, POST_LOGIN_REDIRECT_COOKIE);

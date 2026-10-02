@@ -27,6 +27,7 @@ KINDE_CLIENT_ID=
 KINDE_CLIENT_SECRET=
 KINDE_REDIRECT_URI=
 KINDE_LOGOUT_REDIRECT_URI=
+KINDE_GOOGLE_CONNECTION_ID= # optional, conn_... id of the Google connection; sends /login?connection=google straight to Google
 ```
 
 These are validated at startup (`src/env.ts`) - the process will fail fast if any required variable is missing.

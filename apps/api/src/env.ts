@@ -13,6 +13,8 @@ const envVariables = z.object({
   KINDE_CLIENT_SECRET: z.string(),
   KINDE_REDIRECT_URI: z.url(),
   KINDE_LOGOUT_REDIRECT_URI: z.url(),
+  // Kinde connection id for Google (Settings > Authentication). Lets /login skip Kinde's hosted page.
+  KINDE_GOOGLE_CONNECTION_ID: z.string().optional(),
 });
 
 envVariables.parse(process.env);
