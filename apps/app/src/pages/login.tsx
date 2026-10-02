@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { cn } from '~/utils/classnames';
 import { focusRing } from '~/components/common';
 import { Spinner } from '~/components/shadcn/spinner';
+import { RimBackdrop } from '~/components/rim-backdrop';
 
 const SearchParams = z.looseObject({
   redirect: z.string().nullish(),
@@ -35,7 +36,7 @@ export function LoginScreen() {
 
   return (
     <div className="hide-scroll relative flex h-dvh w-dvw flex-col overflow-y-auto bg-slate-200 pb-[max(env(safe-area-inset-bottom),1.5rem)] pt-[max(env(safe-area-inset-top),1.5rem)]">
-      <Backdrop />
+      <RimBackdrop />
 
       <header className="relative px-6">
         <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-500">Dionysus Club</span>
@@ -78,17 +79,6 @@ export function LoginScreen() {
 
         <p className="text-center text-xs text-slate-500">First time here? Signing in creates your account.</p>
       </footer>
-    </div>
-  );
-}
-
-// Soft concentric rings behind the content, like the rim of a glass seen from above.
-function Backdrop() {
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div className="absolute -right-40 -top-40 size-[28rem] rounded-full border border-slate-300/70" />
-      <div className="absolute -right-28 -top-28 size-[21rem] rounded-full border border-slate-300/60" />
-      <div className="absolute -right-16 -top-16 size-56 rounded-full bg-slate-500/40 blur-2xl" />
     </div>
   );
 }
