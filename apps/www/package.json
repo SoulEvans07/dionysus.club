@@ -1,0 +1,29 @@
+{
+  "name": "www",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "prettier": "prettier --write"
+  },
+  "dependencies": {
+    "@astrojs/vercel": "^11.0.11",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.5",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "prettier": "3.9.9",
+    "prettier-plugin-astro": "1.1.0",
+    "prettier-plugin-tailwindcss": "^0.8.1"
+  },
+  "allowScripts": {
+    "esbuild": true
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}
