@@ -11,14 +11,15 @@ type FormScreenProps = React.PropsWithChildren<{
   backTo: string;
   isSaving: boolean;
   error?: string | null;
+  readOnly?: boolean; // Shows the form without a Save button, for viewers who can't edit.
   onSubmit: () => void;
 }>;
 export function FormScreen(props: FormScreenProps) {
-  const { title, backTo, isSaving, error, onSubmit, children } = props;
+  const { title, backTo, isSaving, error, readOnly, onSubmit, children } = props;
 
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
-    if (!isSaving) onSubmit();
+    if (!isSaving && !readOnly) onSubmit();
   };
 
   return (
@@ -28,14 +29,16 @@ export function FormScreen(props: FormScreenProps) {
           <div className="mx-auto flex max-w-2xl items-center gap-3 px-4 py-3">
             <BackButton fallback={backTo} />
             <h1 className="font-serif text-2xl tracking-tight">{title}</h1>
-            <Button
-              type="submit"
-              disabled={isSaving}
-              className="ml-auto h-10 rounded-xl bg-slate-900 px-5 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
-            >
-              {isSaving && <Spinner className="size-4" />}
-              {isSaving ? 'Saving' : 'Save'}
-            </Button>
+            {!readOnly && (
+              <Button
+                type="submit"
+                disabled={isSaving}
+                className="ml-auto h-10 rounded-xl bg-slate-900 px-5 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+              >
+                {isSaving && <Spinner className="size-4" />}
+                {isSaving ? 'Saving' : 'Save'}
+              </Button>
+            )}
           </div>
         </header>
 

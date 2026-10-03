@@ -41,6 +41,7 @@ export function BarScreen() {
   const membersCount = members.data?.length ?? 0;
 
   const skeleton = useMemo(() => bar.isPending || members.isPending, [bar.isPending, members.isPending]);
+  const navigate = useNavigate();
 
   return (
     <div
@@ -89,7 +90,7 @@ export function BarScreen() {
           <Users className="size-4" />
           <span>Members</span>
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={() => navigate(`/bar/${barId}/settings`)}>
           <Settings className="size-4" />
           <span>Settings</span>
         </MenuItem>
