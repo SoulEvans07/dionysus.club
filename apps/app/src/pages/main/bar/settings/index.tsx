@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useParams } from 'react-router';
 import { z } from 'zod';
-import { Store } from 'lucide-react';
+import { Store, Tags } from 'lucide-react';
 
 import { BarVisibility, hasBarRole } from '@repo/dtos';
 import { ErrorState } from '~/components/catalog/state-message';
@@ -33,6 +33,7 @@ export function BarSettingsScreen() {
               value={visibilityOptions[visibility.data].label}
             />
           )}
+          <SettingsLink to={`/bar/${barId}/settings/tags`} icon={Tags} label="Tags" />
         </SettingsGroup>
       )}
     </SettingsScreen>

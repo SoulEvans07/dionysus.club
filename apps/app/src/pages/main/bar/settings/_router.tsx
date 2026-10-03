@@ -2,6 +2,9 @@ import { createRouter } from '~/utils/router';
 import { BarSettingsScreen } from './index';
 import { BarInfoScreen } from './info';
 import { BarVisibilityScreen } from './visibility';
+import { BarTagsScreen } from './tags';
+import { TagCreateScreen } from './tags/new';
+import { TagEditScreen } from './tags/edit';
 
 export const barSettingsRoutes = createRouter([
   {
@@ -10,6 +13,14 @@ export const barSettingsRoutes = createRouter([
       { index: true, Component: BarSettingsScreen },
       { path: 'info', Component: BarInfoScreen },
       { path: 'visibility', Component: BarVisibilityScreen },
+      {
+        path: 'tags',
+        children: [
+          { index: true, Component: BarTagsScreen },
+          { path: 'new', Component: TagCreateScreen },
+          { path: ':id', Component: TagEditScreen },
+        ],
+      },
     ],
   },
 ]);

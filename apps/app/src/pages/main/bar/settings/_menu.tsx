@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { Check, ChevronRight, type LucideIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { BackButton } from '~/components/back-button';
 import { focusRing, ScreenFrame } from '~/components/common';
+import { FieldError } from '~/components/form/field';
 import { Spinner } from '~/components/shadcn/spinner';
 import { cn } from '~/utils/classnames';
 
@@ -10,9 +12,10 @@ type SettingsScreenProps = React.PropsWithChildren<{
   title: string;
   subtitle?: string;
   backTo: string;
+  action?: React.ReactNode; // Sits at the end of the header, e.g. an add button.
 }>;
 export function SettingsScreen(props: SettingsScreenProps) {
-  const { title, subtitle, backTo, children } = props;
+  const { title, subtitle, backTo, action, children } = props;
 
   return (
     <ScreenFrame className="z-100 border-l-8 border-slate-300 bg-slate-200 dark:border-slate-700 dark:bg-slate-950">
@@ -23,6 +26,7 @@ export function SettingsScreen(props: SettingsScreenProps) {
             <h1 className="font-serif text-3xl tracking-tight">{title}</h1>
             {subtitle && <p className="truncate text-sm text-slate-500 dark:text-slate-400">{subtitle}</p>}
           </div>
+          {action && <div className="ml-auto">{action}</div>}
         </div>
       </header>
       <main className="mx-auto flex max-w-2xl flex-col gap-6 px-4 pb-24 pt-2">{children}</main>
@@ -116,5 +120,71 @@ export function SettingsOption(props: SettingsOptionProps) {
         {isPending ? <Spinner className="size-4" /> : selected && <Check className="size-5" />}
       </span>
     </button>
+  );
+}
+
+type ConfirmActionProps = {
+  icon: LucideIcon;
+  label: string;
+  description: string; // Shown once the action is armed, explaining what will happen.
+  confirmLabel: string;
+  isPending?: boolean;
+  error?: string | null;
+  onConfirm: () => void;
+};
+// A destructive action that asks for confirmation in place rather than in a dialog.
+export function ConfirmAction(props: ConfirmActionProps) {
+  const { icon: Icon, label, description, confirmLabel, isPending, error, onConfirm } = props;
+  const [armed, setArmed] = useState(false);
+
+  if (!armed) {
+    return (
+      <button
+        type="button"
+        onClick={() => setArmed(true)}
+        className={cn(
+          'flex min-h-12 items-center gap-3 px-4 py-3 text-left font-medium transition-colors hover:bg-slate-50 active:bg-slate-100 dark:hover:bg-slate-800/60 dark:active:bg-slate-800',
+          focusRing
+        )}
+      >
+        <Icon className="size-5 shrink-0" />
+        {label}
+      </button>
+    );
+  }
+
+  return (
+    <div role="alert" className="flex flex-col gap-3 bg-slate-50 px-4 py-3 dark:bg-slate-800/60">
+      <div className="flex items-start gap-3">
+        <Icon className="mt-0.5 size-5 shrink-0" />
+        <div className="flex flex-col gap-0.5">
+          <p className="font-medium">{label}?</p>
+          <p className="text-sm text-slate-600 dark:text-slate-400">{description}</p>
+          {error && <FieldError>{error}</FieldError>}
+        </div>
+      </div>
+      <div className="flex justify-end gap-2">
+        <button
+          type="button"
+          disabled={isPending}
+          onClick={() => setArmed(false)}
+          className={cn('h-10 rounded-xl px-4 font-medium hover:bg-slate-200 dark:hover:bg-slate-700', focusRing)}
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          disabled={isPending}
+          onClick={onConfirm}
+          className={cn(
+            'flex h-10 items-center gap-2 rounded-xl bg-slate-900 px-4 font-medium text-white hover:bg-slate-800 disabled:opacity-70 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200',
+            focusRing
+          )}
+        >
+          {isPending && <Spinner className="size-4" />}
+          {confirmLabel}
+        </button>
+      </div>
+    </div>
   );
 }
