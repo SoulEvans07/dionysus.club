@@ -8,6 +8,15 @@
   <link rel="icon" type="image/svg+xml" href="/icons/favicon.ico" />
   <link rel="manifest" href="/manifest.json" />
   <title>Dionysus Club | Preview</title>
+  <script>
+    // Set the dark class before first paint to avoid a light flash. Accent colors are applied in main.tsx.
+    try {
+      var theme = JSON.parse(localStorage.getItem('dionysus-settings') || '{}').state?.theme || 'system';
+      if (theme === 'dark' || (theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    } catch (e) {}
+  </script>
 </head>
 
 <body>

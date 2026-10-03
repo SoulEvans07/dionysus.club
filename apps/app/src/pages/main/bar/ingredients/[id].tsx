@@ -17,6 +17,7 @@ import { EditLink } from '~/components/catalog/action-buttons';
 import { TagChip } from '~/components/catalog/tag-chip';
 import { useCocktailList } from '~/queries/cocktail';
 import { formatAmount, recipeItemNote } from '~/utils/recipe';
+import { useSettings } from '~/stores/settings';
 
 const Params = z.object({
   barId: z.string(),
@@ -204,6 +205,7 @@ type UseRowProps = {
 function UseRow(props: UseRowProps) {
   const { barId, cocktail, item } = props;
   const note = recipeItemNote(item);
+  const volumeUnit = useSettings((state) => state.volumeUnit);
 
   return (
     <Link
@@ -217,7 +219,7 @@ function UseRow(props: UseRowProps) {
       <Photo image={cocktail.iconImage} fallback={Martini} className="size-12 shrink-0 rounded-lg" />
       <span className="min-w-0 flex-1 truncate font-serif text-lg">{cocktail.name}</span>
       <span className="flex shrink-0 flex-col items-end text-sm">
-        <span className="font-medium tabular-nums">{formatAmount(item)}</span>
+        <span className="font-medium tabular-nums">{formatAmount(item, volumeUnit)}</span>
         {note && <span className="text-slate-500 dark:text-slate-400">{note}</span>}
       </span>
     </Link>

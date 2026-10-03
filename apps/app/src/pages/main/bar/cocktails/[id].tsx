@@ -7,6 +7,7 @@ import { CocktailDTO } from '@repo/dtos';
 import { cn } from '~/utils/classnames';
 import { tagFullKey } from '~/utils/tags';
 import { formatAmount, missingIngredients, recipeItemNote } from '~/utils/recipe';
+import { useSettings } from '~/stores/settings';
 import { pluralize } from '~/utils/locale';
 import { useCocktail } from '~/queries/cocktail';
 import { placeholders } from '~/data/placeholders';
@@ -174,6 +175,7 @@ type RecipeLineProps = {
 function RecipeLine(props: RecipeLineProps) {
   const { barId, item, skeleton } = props;
   const { ingredient } = item;
+  const volumeUnit = useSettings((state) => state.volumeUnit);
   const notes = [recipeItemNote(item), ingredient.available ? null : 'Out of stock'].filter(Boolean).join(', ');
 
   return (
@@ -200,7 +202,7 @@ function RecipeLine(props: RecipeLineProps) {
               className="min-w-4 flex-1 border-b-2 border-dotted border-slate-300 dark:border-slate-700"
             />
             <span className={cn('whitespace-nowrap rounded-md font-medium tabular-nums', { skeleton })}>
-              {formatAmount(item)}
+              {formatAmount(item, volumeUnit)}
             </span>
           </div>
           {notes && <span className="text-sm text-slate-500 dark:text-slate-400">{notes}</span>}
