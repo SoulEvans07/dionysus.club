@@ -5,7 +5,7 @@ import { and, eq, inArray, isNull, or } from 'drizzle-orm';
 import { SYSTEM_BAR_ID, CreateTagDTO, TagDTO, TagType, UpdateTagDTO } from '@repo/dtos';
 import { cocktailTags, db, ingredientTags, tags } from '~/database';
 import { getUser } from '~/auth/kinde';
-import { getBarWith } from '~/middleware/bar';
+import { getBarWith, requireBarRole } from '~/middleware/bar';
 
 export const tagController = new Hono();
 
@@ -71,53 +71,67 @@ tagController.get('/:id', getUser, getBarWith(), async (c) => {
   return c.json<TagDTO>(TagDTO.parse(item));
 });
 
-tagController.post('/create', getUser, getBarWith(), zValidator('json', CreateTagDTO), async (c) => {
-  const user = c.var.user;
-  const bar = c.var.bar;
-  const body = c.req.valid('json');
+tagController.post(
+  '/create',
+  getUser,
+  getBarWith(),
+  requireBarRole('admin'),
+  zValidator('json', CreateTagDTO),
+  async (c) => {
+    const user = c.var.user;
+    const bar = c.var.bar;
+    const body = c.req.valid('json');
 
-  try {
-    const [item] = await db
-      .insert(tags)
-      .values({ ...body, barId: bar.id, createdById: user.id, updatedById: user.id })
-      .returning();
+    try {
+      const [item] = await db
+        .insert(tags)
+        .values({ ...body, barId: bar.id, createdById: user.id, updatedById: user.id })
+        .returning();
 
-    return c.json<TagDTO>(TagDTO.parse(item));
-  } catch (error) {
-    if (isUniqueViolation(error)) {
-      return c.json({ error: 'A tag with this type, namespace, and key already exists' }, 409);
+      return c.json<TagDTO>(TagDTO.parse(item));
+    } catch (error) {
+      if (isUniqueViolation(error)) {
+        return c.json({ error: 'A tag with this type, namespace, and key already exists' }, 409);
+      }
+      throw error;
     }
-    throw error;
   }
-});
+);
 
-tagController.put('/update', getUser, getBarWith(), zValidator('json', UpdateTagDTO), async (c) => {
-  const user = c.var.user;
-  const bar = c.var.bar;
-  const body = c.req.valid('json');
+tagController.put(
+  '/update',
+  getUser,
+  getBarWith(),
+  requireBarRole('admin'),
+  zValidator('json', UpdateTagDTO),
+  async (c) => {
+    const user = c.var.user;
+    const bar = c.var.bar;
+    const body = c.req.valid('json');
 
-  const item = await db.query.tags.findFirst({
-    where: and(eq(tags.id, body.id), eq(tags.barId, bar.id), isNull(tags.deletedAt)),
-  });
+    const item = await db.query.tags.findFirst({
+      where: and(eq(tags.id, body.id), eq(tags.barId, bar.id), isNull(tags.deletedAt)),
+    });
 
-  if (!item) return c.json({ error: 'Unauthorized' }, 401);
+    if (!item) return c.json({ error: 'Unauthorized' }, 401);
 
-  try {
-    await db
-      .update(tags)
-      .set({ ...body, updatedById: user.id })
-      .where(eq(tags.id, body.id));
-  } catch (error) {
-    if (isUniqueViolation(error)) {
-      return c.json({ error: 'A tag with this type, namespace, and key already exists' }, 409);
+    try {
+      await db
+        .update(tags)
+        .set({ ...body, updatedById: user.id })
+        .where(eq(tags.id, body.id));
+    } catch (error) {
+      if (isUniqueViolation(error)) {
+        return c.json({ error: 'A tag with this type, namespace, and key already exists' }, 409);
+      }
+      throw error;
     }
-    throw error;
+
+    return c.json({ id: body.id });
   }
+);
 
-  return c.json({ id: body.id });
-});
-
-tagController.delete('/:id', getUser, getBarWith(), async (c) => {
+tagController.delete('/:id', getUser, getBarWith(), requireBarRole('admin'), async (c) => {
   const user = c.var.user;
   const bar = c.var.bar;
   const id = c.req.param('id');
