@@ -29,4 +29,8 @@ class BarMembersAPI {
   public async list(barId: string) {
     return await Styx.get(`/api/bars/${barId}/members`, GetBarMemberDTO.array().parse);
   }
+
+  public async leave(barId: string) {
+    return await Styx.delete(`/api/bars/${barId}/members/me`);
+  }
 }

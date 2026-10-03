@@ -50,3 +50,12 @@ export function useSetBarVisibility(barId: string) {
     onSuccess: invalidate,
   });
 }
+
+// Callers navigate away on success; the left bar's cached queries are left to garbage collection.
+export function useLeaveBar(barId: string) {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: () => api.bars.members.leave(barId),
+    onSuccess: () => client.invalidateQueries({ queryKey: sidebarQuery.queryKey }),
+  });
+}
