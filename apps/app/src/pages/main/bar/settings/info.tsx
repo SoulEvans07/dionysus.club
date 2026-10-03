@@ -12,6 +12,7 @@ import { Input } from '~/components/shadcn/input';
 import { Textarea } from '~/components/textarea';
 import { useBar, useUpdateBar } from '~/queries/bar';
 import { fieldErrors, focusFirstError, type FieldErrors } from '~/utils/form';
+import { SettingsNote } from './_menu';
 
 const Params = z.object({ barId: z.string() });
 
@@ -66,11 +67,7 @@ function BarInfoForm(props: BarInfoFormProps) {
       readOnly={readOnly}
       onSubmit={submit}
     >
-      {readOnly && (
-        <p className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">
-          Only the owner and admins can edit the bar info.
-        </p>
-      )}
+      {readOnly && <SettingsNote>Only the owner and admins can edit the bar info.</SettingsNote>}
 
       <ImagePlaceholder image={bar.bannerImage} label="Add banner" fallback={Store} />
 
