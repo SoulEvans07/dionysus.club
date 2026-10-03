@@ -94,7 +94,10 @@ export class Styx {
     if (resp.ok) return;
 
     const body = ErrorBody.safeParse(await this.parseBody(resp));
-    throw new Error(body.success ? body.data.error.message : `HTTP ${resp.status}: ${method} ${resp.url}`);
+    if (!body.success) throw new Error(`HTTP ${resp.status}: ${method} ${resp.url}`);
+
+    const { error } = body.data;
+    throw new Error(typeof error === 'string' ? error : error.message);
   }
 
   private static serializeHeaders(headers: RequestHeaders = {}): Record<string, string> {
