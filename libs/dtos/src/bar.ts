@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { ImageDTO } from './image';
 import { TwBaseColor } from './colors';
 import { DynamicIcon } from './icons';
-import { UserWithImageDTO } from './user';
+import { PublicUserDTO } from './user';
 
 export const BarType = z.enum(['public', 'private', 'personal', 'system']);
 export type BarType = z.infer<typeof BarType>;
@@ -11,6 +11,15 @@ export const BarRoleDAL = z.enum(['admin', 'bartender', 'member', 'guest']);
 export type BarRoleDAL = z.infer<typeof BarRoleDAL>;
 export const BarRole = z.enum(['owner', 'admin', 'bartender', 'member', 'guest']);
 export type BarRole = z.infer<typeof BarRole>;
+
+// Whether `actor` may add, remove or assign someone with `role`. The owner manages everyone,
+// admins manage the roles below admin, and nobody manages the owner (ownership isn't transferable here).
+export function canManageBarRole(actor: BarRole | null | undefined, role: BarRole): boolean {
+  if (role === 'owner') return false;
+  if (actor === 'owner') return true;
+  if (actor === 'admin') return role !== 'admin';
+  return false;
+}
 
 export const BarDTO = z.object({
   id: z.string(),
@@ -47,11 +56,13 @@ export type BarMemberDTO = z.infer<typeof BarMemberDTO>;
 
 export const GetBarMemberDTO = BarMemberDTO.extend({
   barId: z.string(),
-  user: UserWithImageDTO,
+  user: PublicUserDTO,
 });
 export type GetBarMemberDTO = z.infer<typeof GetBarMemberDTO>;
 
-export const AddBarMemberDTO = BarMemberDTO.extend({
+// `userId` comes from a user search, so it's a real id rather than something typed in.
+export const AddBarMemberDTO = z.object({
+  userId: z.guid('Pick someone to add'),
   role: BarRoleDAL,
 });
 export type AddBarMemberDTO = z.infer<typeof AddBarMemberDTO>;

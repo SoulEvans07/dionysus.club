@@ -14,18 +14,21 @@ import {
 import { Sheet, SheetHeader, SheetTitle, SheetClose, SheetContent, SheetTrigger } from '~/components/shadcn/sheet';
 
 type SearchFieldProps = {
+  id?: string;
   value: string;
   label: string;
+  invalid?: boolean;
   onChange: (value: string) => void;
   onClear?: VoidFunction;
 };
 export function SearchField(props: SearchFieldProps) {
-  const { value, label, onChange, onClear } = props;
+  const { id, value, label, invalid, onChange, onClear } = props;
 
   return (
     <div className="relative min-w-0 flex-1">
       <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
       <Input
+        id={id}
         type="text"
         name="search"
         aria-label={label}
@@ -33,6 +36,7 @@ export function SearchField(props: SearchFieldProps) {
         placeholder={label}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        aria-invalid={invalid || undefined}
         className="h-10 rounded-xl border-slate-200 bg-white px-9 shadow-none dark:border-slate-800 dark:bg-slate-900"
       />
       {onClear && value.length > 0 && (

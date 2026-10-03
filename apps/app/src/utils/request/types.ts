@@ -2,8 +2,9 @@ import { z } from 'zod';
 import { BasicHeaders } from './headers';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+// Controllers answer with `{ error: 'message' }`; thrown errors may carry `{ error: { message } }`.
 export const ErrorBody = z.object({
-  error: z.object({ message: z.string() }),
+  error: z.union([z.string(), z.object({ message: z.string() })]),
 });
 export type ErrorBody = z.infer<typeof ErrorBody>;
 
