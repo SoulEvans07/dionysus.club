@@ -42,6 +42,9 @@ export default defineConfig({
       },
     },
   },
+  define: {
+    __APP_VERSION__: JSON.stringify(process.env.npm_package_version ?? 'dev'),
+  },
   plugins: [react(), tailwindcss()],
   resolve: {
     tsconfigPaths: true,
