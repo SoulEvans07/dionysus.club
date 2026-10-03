@@ -10,9 +10,13 @@ function StateMessage(props: StateMessageProps) {
   return (
     <div className="mx-auto flex max-w-sm flex-col items-center gap-1 px-4 py-16 text-center">
       <h2 className="font-serif text-xl">{title}</h2>
-      {children && <p className="text-sm text-slate-500">{children}</p>}
+      {children && <p className="text-sm text-slate-500 dark:text-slate-400">{children}</p>}
       {action && (
-        <Button variant="outline" className="mt-3 border-slate-300 bg-white" onClick={action.onClick}>
+        <Button
+          variant="outline"
+          className="mt-3 border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-900"
+          onClick={action.onClick}
+        >
           {action.label}
         </Button>
       )}

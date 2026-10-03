@@ -5,15 +5,15 @@ export function LoadingScreen() {
     <div
       role="status"
       aria-live="polite"
-      className="relative flex h-dvh w-dvw flex-col items-center justify-center overflow-hidden bg-slate-200 px-6"
+      className="relative flex h-dvh w-dvw flex-col items-center justify-center overflow-hidden bg-slate-200 px-6 dark:bg-slate-950"
     >
       <RimBackdrop />
 
       {/* Fades in after a short delay so quick loads don't flash the splash. */}
       <div className="animate-in fade-in fill-mode-both relative flex flex-col items-center delay-200 duration-500">
-        <PouringGlass className="size-28 text-slate-500" />
-        <p className="mt-6 font-serif text-3xl tracking-tight text-slate-900">Dionysus Club</p>
-        <p className="mt-2 font-serif text-base text-slate-600">Setting up your bar…</p>
+        <PouringGlass className="size-28 text-slate-500 dark:text-slate-400" />
+        <p className="mt-6 font-serif text-3xl tracking-tight text-slate-900 dark:text-slate-100">Dionysus Club</p>
+        <p className="mt-2 font-serif text-base text-slate-600 dark:text-slate-400">Setting up your bar…</p>
       </div>
     </div>
   );
@@ -35,7 +35,7 @@ function PouringGlass(props: React.ComponentProps<'svg'>) {
 
       <g clipPath="url(#splash-bowl)">
         <g className="splash-pour">
-          <path d={WAVE_PATH} className="splash-wave fill-slate-400" />
+          <path d={WAVE_PATH} className="splash-wave fill-slate-400 dark:fill-slate-600" />
         </g>
       </g>
 

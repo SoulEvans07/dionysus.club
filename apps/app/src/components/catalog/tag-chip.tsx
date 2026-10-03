@@ -16,7 +16,7 @@ export function TagChip(props: TagChipProps) {
     <Link
       to={to}
       className={cn(
-        'inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white py-1 pl-2.5 pr-3 text-sm text-slate-700 transition-colors hover:bg-slate-300',
+        'inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white py-1 pl-2.5 pr-3 text-sm text-slate-700 transition-colors hover:bg-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-700',
         focusRing,
         className
       )}

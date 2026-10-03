@@ -35,30 +35,35 @@ export function LoginScreen() {
   };
 
   return (
-    <div className="hide-scroll relative flex h-dvh w-dvw flex-col overflow-y-auto bg-slate-200 pb-[max(env(safe-area-inset-bottom),1.5rem)] pt-[max(env(safe-area-inset-top),1.5rem)]">
+    <div className="hide-scroll relative flex h-dvh w-dvw flex-col overflow-y-auto bg-slate-200 pb-[max(env(safe-area-inset-bottom),1.5rem)] pt-[max(env(safe-area-inset-top),1.5rem)] dark:bg-slate-950">
       <RimBackdrop />
 
       <header className="relative px-6">
-        <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-500">Dionysus Club</span>
+        <span className="text-xs font-medium uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400">
+          Dionysus Club
+        </span>
       </header>
 
       <main className="relative mx-auto flex w-full max-w-sm flex-1 flex-col justify-center px-6 py-10">
-        <div className="mb-8 flex size-16 items-center justify-center rounded-full bg-slate-400 text-slate-50 shadow-[0_0_0_6px_var(--color-slate-200),0_0_0_7px_var(--color-slate-300)]">
+        <div className="mb-8 flex size-16 items-center justify-center rounded-full bg-slate-400 text-slate-50 shadow-[0_0_0_6px_var(--color-slate-200),0_0_0_7px_var(--color-slate-300)] dark:bg-slate-700 dark:text-slate-200 dark:shadow-[0_0_0_6px_var(--color-slate-950),0_0_0_7px_var(--color-slate-800)]">
           <Martini className="size-8" strokeWidth={1.75} />
         </div>
-        <h1 className="font-serif text-5xl leading-[1.05] tracking-tight text-slate-900">
+        <h1 className="font-serif text-5xl leading-[1.05] tracking-tight text-slate-900 dark:text-slate-100">
           Your bar,
           <br />
           your menu.
         </h1>
-        <p className="mt-4 max-w-xs font-serif text-lg leading-relaxed text-slate-600">
+        <p className="mt-4 max-w-xs font-serif text-lg leading-relaxed text-slate-600 dark:text-slate-400">
           Keep track of what's on the shelf and see what you can mix tonight.
         </p>
       </main>
 
       <footer className="relative mx-auto flex w-full max-w-sm flex-col gap-3 px-6">
         {error && (
-          <p role="alert" className="rounded-xl border border-slate-300 bg-slate-100 px-4 py-3 text-sm text-slate-700">
+          <p
+            role="alert"
+            className="rounded-xl border border-slate-300 bg-slate-100 px-4 py-3 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+          >
             Sign-in didn't go through. Give it another try.
           </p>
         )}
@@ -69,15 +74,21 @@ export function LoginScreen() {
           disabled={pending}
           aria-busy={pending}
           className={cn(
-            'flex h-14 w-full items-center justify-center gap-3 rounded-full border border-slate-300 bg-white text-base font-medium text-slate-900 shadow-sm transition active:translate-y-px active:bg-slate-50 disabled:cursor-wait disabled:opacity-80',
+            'flex h-14 w-full items-center justify-center gap-3 rounded-full border border-slate-300 bg-white text-base font-medium text-slate-900 shadow-sm transition active:translate-y-px active:bg-slate-50 disabled:cursor-wait disabled:opacity-80 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:active:bg-slate-800',
             focusRing
           )}
         >
-          {pending ? <Spinner className="size-5 text-slate-500" /> : <GoogleLogo className="size-5" />}
+          {pending ? (
+            <Spinner className="size-5 text-slate-500 dark:text-slate-400" />
+          ) : (
+            <GoogleLogo className="size-5" />
+          )}
           {pending ? 'Opening Google…' : 'Continue with Google'}
         </button>
 
-        <p className="text-center text-xs text-slate-500">First time here? Signing in creates your account.</p>
+        <p className="text-center text-xs text-slate-500 dark:text-slate-400">
+          First time here? Signing in creates your account.
+        </p>
       </footer>
     </div>
   );

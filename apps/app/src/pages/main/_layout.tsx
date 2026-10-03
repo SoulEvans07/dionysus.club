@@ -16,7 +16,10 @@ import { NavBar, type BottomNavBarProps } from '~/components/navbar';
 export function MainLayout() {
   return (
     <>
-      <div className="h-dvh w-dvw bg-slate-400" style={{ viewTransitionName: 'main-screen' } as CSSProperties}>
+      <div
+        className="h-dvh w-dvw bg-slate-400 dark:bg-slate-900"
+        style={{ viewTransitionName: 'main-screen' } as CSSProperties}
+      >
         <Outlet />
         <div className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center">
           <NavBar navItems={bottomNavItems} />

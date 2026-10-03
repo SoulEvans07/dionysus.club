@@ -29,7 +29,7 @@ export function BackButton(props: BackButtonProps) {
         'grid size-10 shrink-0 place-items-center rounded-full transition-colors',
         floating
           ? 'bg-slate-900/60 text-white backdrop-blur hover:bg-slate-900/75 active:bg-slate-900/75'
-          : 'text-slate-700 hover:bg-slate-300 active:bg-slate-400/50',
+          : 'text-slate-700 hover:bg-slate-300 active:bg-slate-400/50 dark:text-slate-300 dark:hover:bg-slate-700 dark:active:bg-slate-600/50',
         focusRing,
         className
       )}

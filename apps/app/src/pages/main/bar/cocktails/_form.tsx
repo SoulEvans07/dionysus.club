@@ -138,7 +138,7 @@ export function CocktailForm(props: CocktailFormProps) {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           aria-invalid={!!errors.description}
-          className="rounded-xl border-slate-200 bg-white"
+          className="rounded-xl border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900"
         />
       </Field>
 
@@ -183,7 +183,7 @@ export function CocktailForm(props: CocktailFormProps) {
           id="recipe"
           type="button"
           variant="outline"
-          className="h-10 self-end rounded-xl border-slate-300 bg-white px-4"
+          className="h-10 self-end rounded-xl border-slate-300 bg-white px-4 dark:border-slate-700 dark:bg-slate-900"
           onClick={() => setRecipe((rows) => [...rows, emptyRecipeRow()])}
         >
           <Plus />
@@ -201,7 +201,7 @@ export function CocktailForm(props: CocktailFormProps) {
               <li key={step.key} className="flex gap-3">
                 <span
                   aria-hidden
-                  className="w-6 shrink-0 pt-2 text-right font-serif text-2xl leading-none text-slate-400"
+                  className="w-6 shrink-0 pt-2 text-right font-serif text-2xl leading-none text-slate-400 dark:text-slate-500"
                 >
                   {i + 1}
                 </span>
@@ -221,7 +221,7 @@ export function CocktailForm(props: CocktailFormProps) {
         <Button
           type="button"
           variant="outline"
-          className="h-10 self-end rounded-xl border-slate-300 bg-white px-4"
+          className="h-10 self-end rounded-xl border-slate-300 bg-white px-4 dark:border-slate-700 dark:bg-slate-900"
           onClick={() => setSteps((rows) => [...rows, { key: newRowKey(), description: '', image: null }])}
         >
           <Plus />
@@ -254,7 +254,7 @@ function RecipeRowEditor(props: RecipeRowEditorProps) {
   const label = `ingredient ${index + 1}`;
 
   return (
-    <div className="flex flex-row rounded-2xl border border-slate-200 bg-slate-50">
+    <div className="flex flex-row rounded-2xl border border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900">
       <div className="flex flex-col gap-3 py-3 pl-3">
         <div className="flex items-center gap-1">
           <NativeSelect
@@ -342,7 +342,9 @@ function Toggle(props: ToggleProps) {
       onClick={() => onPressedChange(!pressed)}
       className={cn(
         'flex h-11 items-center gap-2 rounded-md border px-3 text-sm transition-colors',
-        pressed ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 bg-white text-slate-700',
+        pressed
+          ? 'border-slate-900 bg-slate-900 text-white dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900'
+          : 'border-slate-200 bg-white text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300',
         focusRing
       )}
     >
@@ -375,7 +377,7 @@ function RecipeStepEditor(props: RecipeStepEditorProps) {
         onChange={(e) => onChange({ description: e.target.value })}
         aria-invalid={!!descriptionError}
         placeholder="Stir with ice for 30 seconds"
-        className="aria-invalid:border-slate-900 min-h-20 rounded-xl border-slate-200 bg-white"
+        className="aria-invalid:border-slate-900 dark:aria-invalid:border-slate-100 min-h-20 rounded-xl border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900"
       />
       {descriptionError && <FieldError>{descriptionError}</FieldError>}
       <div className="flex items-center gap-1">

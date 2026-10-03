@@ -23,7 +23,7 @@ export function ImagePlaceholder(props: ImagePlaceholderProps) {
         disabled
         aria-label={label}
         className={cn(
-          'relative grid size-16 shrink-0 place-items-center overflow-hidden rounded-xl border-2 border-dashed border-slate-300 text-slate-400',
+          'relative grid size-16 shrink-0 place-items-center overflow-hidden rounded-xl border-2 border-dashed border-slate-300 text-slate-400 dark:border-slate-700 dark:text-slate-500',
           className
         )}
       >
@@ -44,17 +44,22 @@ export function ImagePlaceholder(props: ImagePlaceholderProps) {
         disabled
         title="Photo upload isn't available yet"
         className={cn(
-          'absolute inset-0 flex flex-col items-center justify-center gap-1.5 rounded-2xl border-2 border-dashed border-slate-300 text-slate-500',
+          'absolute inset-0 flex flex-col items-center justify-center gap-1.5 rounded-2xl border-2 border-dashed border-slate-300 text-slate-500 dark:border-slate-700 dark:text-slate-400',
           image && 'items-end justify-end border-transparent p-3'
         )}
       >
         <span
-          className={cn('flex items-center gap-2 text-sm font-medium', image && 'rounded-full bg-white/90 px-3 py-1.5')}
+          className={cn(
+            'flex items-center gap-2 text-sm font-medium',
+            image && 'rounded-full bg-white/90 px-3 py-1.5 dark:bg-slate-900/90'
+          )}
         >
           <ImagePlus className="size-4" />
           {label}
         </span>
-        {!image && <span className="text-sm text-slate-400">Photo upload isn&apos;t available yet</span>}
+        {!image && (
+          <span className="text-sm text-slate-400 dark:text-slate-500">Photo upload isn&apos;t available yet</span>
+        )}
       </button>
     </div>
   );

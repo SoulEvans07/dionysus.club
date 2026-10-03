@@ -69,16 +69,16 @@ export function IngredientForm(props: IngredientFormProps) {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           aria-invalid={!!errors.description}
-          className="rounded-xl border-slate-200 bg-white"
+          className="rounded-xl border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900"
         />
       </Field>
 
-      <div className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white px-4 py-3">
+      <div className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
         <div>
           <label htmlFor="available" className="font-medium">
             In stock
           </label>
-          <p className="text-sm text-slate-500">Turn this off when the bottle runs out.</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Turn this off when the bottle runs out.</p>
         </div>
         <Switch id="available" checked={available} onCheckedChange={setAvailable} />
       </div>

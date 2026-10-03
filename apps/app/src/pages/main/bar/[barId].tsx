@@ -44,11 +44,11 @@ export function BarScreen() {
 
   return (
     <div
-      className="mt-1 flex min-h-[calc(100%-0.25rem)] flex-col gap-2 rounded-tl-2xl border-l border-t border-slate-200 bg-slate-300"
+      className="mt-1 flex min-h-[calc(100%-0.25rem)] flex-col gap-2 rounded-tl-2xl border-l border-t border-slate-200 bg-slate-300 dark:border-slate-700 dark:bg-slate-800"
       style={{ width: `calc(100% - ${sizes.mainSidebarGuard})` }}
     >
       <div
-        className="aspect-5/2 bg-linear-to-t flex flex-col justify-end rounded-tl-2xl from-slate-500 to-slate-50"
+        className="aspect-5/2 bg-linear-to-t flex flex-col justify-end rounded-tl-2xl from-slate-500 to-slate-50 dark:from-slate-600 dark:to-slate-800"
         style={banner}
       />
       <div className="flex flex-col gap-0.5 px-3">
@@ -84,7 +84,7 @@ export function BarScreen() {
         <CocktailSection barId={barId} />
       </div>
       <div className="mt-auto flex flex-col gap-2 px-2">
-        <hr className="mx-2 border-slate-400/80" />
+        <hr className="mx-2 border-slate-400/80 dark:border-slate-600/80" />
         <MenuItem>
           <Users className="size-4" />
           <span>Members</span>
@@ -108,9 +108,11 @@ const typeIcons: Record<BarType, LucideIcon> = {
 
 const NavbarGuard = tw.div('navbar-guard', { minHeight: sizes.bottomNavbarGuard });
 
-const MenuItem = tw.button('flex flex-row items-center gap-2 rounded-md px-2 py-1 active:bg-slate-400/40');
+const MenuItem = tw.button(
+  'flex flex-row items-center gap-2 rounded-md px-2 py-1 active:bg-slate-400/40 dark:active:bg-slate-600/40'
+);
 const MenuButton = tw.button(
-  'flex flex-row items-center justify-center gap-2 rounded-md bg-slate-400/80 px-2 py-1 active:bg-slate-400'
+  'flex flex-row items-center justify-center gap-2 rounded-md bg-slate-400/80 px-2 py-1 active:bg-slate-400 dark:bg-slate-700/80 dark:active:bg-slate-700'
 );
 
 type CollapsibleSectionProps = PropsWithChildren & {
@@ -159,7 +161,7 @@ function IngredientSection(props: IngredientListProps) {
         <MenuItem key={tag.id} onClick={navToList(tagFullKey(tag))}>
           <Hash className="size-4" />
           <span>{tag.name}</span>
-          <span className="ml-auto text-slate-400">[{tagFullKeyUI(tag)}]</span>
+          <span className="ml-auto text-slate-400 dark:text-slate-500">[{tagFullKeyUI(tag)}]</span>
         </MenuItem>
       ))}
     </CollapsibleSection>
@@ -188,7 +190,7 @@ function CocktailSection(props: CocktailListProps) {
         <MenuItem key={tag.id} onClick={navToList(tagFullKey(tag))}>
           <Hash className="size-4" />
           <span>{tag.name}</span>
-          <span className="ml-auto text-slate-400">[{tagFullKeyUI(tag)}]</span>
+          <span className="ml-auto text-slate-400 dark:text-slate-500">[{tagFullKeyUI(tag)}]</span>
         </MenuItem>
       ))}
     </CollapsibleSection>

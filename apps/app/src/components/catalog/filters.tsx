@@ -24,7 +24,7 @@ export function SearchField(props: SearchFieldProps) {
 
   return (
     <div className="relative min-w-0 flex-1">
-      <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+      <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
       <Input
         type="text"
         name="search"
@@ -33,10 +33,13 @@ export function SearchField(props: SearchFieldProps) {
         placeholder={label}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-10 rounded-xl border-slate-200 bg-white px-9 shadow-none"
+        className="h-10 rounded-xl border-slate-200 bg-white px-9 shadow-none dark:border-slate-800 dark:bg-slate-900"
       />
       {onClear && value.length > 0 && (
-        <X className="absolute right-0 top-1/2 size-10 -translate-y-1/2 p-2.5 text-slate-400" onClick={onClear} />
+        <X
+          className="absolute right-0 top-1/2 size-10 -translate-y-1/2 p-2.5 text-slate-400 dark:text-slate-500"
+          onClick={onClear}
+        />
       )}
     </div>
   );
@@ -59,7 +62,7 @@ export function FilterContainer(props: FilterContainerProps) {
   return (
     <Root>
       <Trigger>{trigger}</Trigger>
-      <Content className="border-none bg-slate-200">{content}</Content>
+      <Content className="border-none bg-slate-200 dark:bg-slate-900">{content}</Content>
     </Root>
   );
 }

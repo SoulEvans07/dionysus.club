@@ -36,7 +36,7 @@ export function NewLink(props: ActionLinkProps) {
       to={to}
       aria-label={label}
       className={cn(
-        'grid size-10 shrink-0 place-items-center rounded-full bg-slate-900 text-white transition-colors hover:bg-slate-800',
+        'grid size-10 shrink-0 place-items-center rounded-full bg-slate-900 text-white transition-colors hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200',
         focusRing,
         className
       )}
@@ -58,13 +58,15 @@ export function SearchButton(props: SearchButtonProps) {
     <button
       aria-label="Search"
       className={cn(
-        'relative grid size-10 place-items-center rounded-full bg-slate-900 text-white backdrop-blur transition-colors active:bg-slate-900/75',
+        'relative grid size-10 place-items-center rounded-full bg-slate-900 text-white backdrop-blur transition-colors active:bg-slate-900/75 dark:bg-slate-100 dark:text-slate-900 dark:active:bg-slate-100/75',
         focusRing,
         className
       )}
       onClick={onClick}
     >
-      {active && <div className="pointer-events-none absolute bottom-0 right-0 size-2.5 rounded-full bg-slate-400" />}
+      {active && (
+        <div className="pointer-events-none absolute bottom-0 right-0 size-2.5 rounded-full bg-slate-400 dark:bg-slate-500" />
+      )}
       <Search className="size-5" />
     </button>
   );
@@ -82,13 +84,15 @@ export function FilterButton(props: FilterButtonProps) {
     <button
       aria-label="Filters"
       className={cn(
-        'relative grid size-10 place-items-center rounded-full bg-slate-900 text-white backdrop-blur transition-colors active:bg-slate-900/75',
+        'relative grid size-10 place-items-center rounded-full bg-slate-900 text-white backdrop-blur transition-colors active:bg-slate-900/75 dark:bg-slate-100 dark:text-slate-900 dark:active:bg-slate-100/75',
         focusRing,
         className
       )}
       onClick={onClick}
     >
-      {active && <div className="pointer-events-none absolute bottom-0 right-0 size-2.5 rounded-full bg-slate-400" />}
+      {active && (
+        <div className="pointer-events-none absolute bottom-0 right-0 size-2.5 rounded-full bg-slate-400 dark:bg-slate-500" />
+      )}
       <ListFilter className="size-5" />
     </button>
   );

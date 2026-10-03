@@ -54,8 +54,8 @@ export function CocktailListScreen() {
   }, [list.isPending, list.data, sortBy, sortDir, searchText]);
 
   return (
-    <ScreenFrame className="z-100 border-l-8 border-slate-300 bg-slate-200">
-      <header className="sticky top-0 z-10 border-slate-300/80 bg-slate-200/80 backdrop-blur">
+    <ScreenFrame className="z-100 border-l-8 border-slate-300 bg-slate-200 dark:border-slate-700 dark:bg-slate-950">
+      <header className="sticky top-0 z-10 border-slate-300/80 bg-slate-200/80 backdrop-blur dark:border-slate-700/80 dark:bg-slate-950/80">
         <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 pb-3 pt-3">
           <div className="flex items-center gap-3">
             <BackButton fallback={`/bar/${barId}`} />
@@ -160,8 +160,8 @@ const SortDir = {
 } as const;
 type SortDir = (typeof SortDir)[keyof typeof SortDir];
 
-const SettingsContent = tw.comp(TabsContent, 'border-t border-slate-400 p-2');
-const SettingsCard = tw.div('rounded-lg bg-slate-100 p-2');
+const SettingsContent = tw.comp(TabsContent, 'border-t border-slate-400 p-2 dark:border-slate-600');
+const SettingsCard = tw.div('rounded-lg bg-slate-100 p-2 dark:bg-slate-800');
 
 type SettingsProps = {
   sortBy: SortKeys;

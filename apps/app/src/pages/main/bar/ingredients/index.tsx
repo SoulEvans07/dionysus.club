@@ -39,8 +39,8 @@ export function IngredientListScreen() {
   const groups = useMemo(() => groupByLetter(visible), [visible]);
 
   return (
-    <ScreenFrame className="z-100 border-l-8 border-slate-300 bg-slate-200">
-      <header className="sticky top-0 z-10 border-slate-300/80 bg-slate-200/80 backdrop-blur">
+    <ScreenFrame className="z-100 border-l-8 border-slate-300 bg-slate-200 dark:border-slate-700 dark:bg-slate-950">
+      <header className="sticky top-0 z-10 border-slate-300/80 bg-slate-200/80 backdrop-blur dark:border-slate-700/80 dark:bg-slate-950/80">
         <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 pb-3 pt-3">
           <div className="flex items-center gap-3">
             <BackButton fallback={`/bar/${barId}`} />
@@ -102,13 +102,15 @@ function IngredientGroup(props: IngredientGroupProps) {
     <section aria-label={groupName} className="flex flex-col gap-1.5">
       <h2
         aria-hidden
-        className={cn('w-fit rounded-md px-1 font-serif text-xl leading-none text-slate-400', { skeleton })}
+        className={cn('w-fit rounded-md px-1 font-serif text-xl leading-none text-slate-400 dark:text-slate-500', {
+          skeleton,
+        })}
       >
         {groupName}
       </h2>
       <ul
         className={cn(
-          'divide-y divide-slate-300/50 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100',
+          'divide-y divide-slate-300/50 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 dark:divide-slate-700/50 dark:border-slate-800 dark:bg-slate-900',
           {}
         )}
       >
@@ -134,7 +136,7 @@ function IngredientRow(props: IngredientRowProps) {
   const setAvailability = useSetIngredientAvailability(barId);
 
   return (
-    <div className="flex items-center gap-3 p-3 transition-colors hover:bg-slate-100 active:bg-slate-200/50">
+    <div className="flex items-center gap-3 p-3 transition-colors hover:bg-slate-100 active:bg-slate-200/50 dark:hover:bg-slate-800 dark:active:bg-slate-800/50">
       <Link
         to={`/bar/${barId}/ingredients/${ingredient.id}`}
         className={cn(
@@ -149,12 +151,14 @@ function IngredientRow(props: IngredientRowProps) {
           fallback={Wine}
           fit="contain"
           dim={!ingredient.available}
-          className={cn('size-12 shrink-0 rounded-lg border border-slate-100', { skeleton })}
+          className={cn('size-12 shrink-0 rounded-lg border border-slate-100 dark:border-slate-800', { skeleton })}
         />
         <div className="flex min-w-0 flex-1 flex-col gap-0.5">
           <div className={cn('truncate font-medium', { 'skeleton w-fit': skeleton })}>{ingredient.name}</div>
           {detail && (
-            <div className={cn('truncate text-sm text-slate-500', { 'skeleton w-fit': skeleton })}>{detail}</div>
+            <div className={cn('truncate text-sm text-slate-500 dark:text-slate-400', { 'skeleton w-fit': skeleton })}>
+              {detail}
+            </div>
           )}
         </div>
       </Link>

@@ -17,7 +17,7 @@ export function IconButton(props: IconButtonProps) {
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        'grid size-11 shrink-0 place-items-center rounded-lg text-slate-500 transition-colors hover:bg-slate-200 hover:text-slate-900 disabled:pointer-events-none disabled:opacity-30',
+        'grid size-11 shrink-0 place-items-center rounded-lg text-slate-500 transition-colors hover:bg-slate-200 hover:text-slate-900 disabled:pointer-events-none disabled:opacity-30 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100',
         className,
         focusRing
       )}

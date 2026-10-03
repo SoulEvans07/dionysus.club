@@ -31,7 +31,7 @@ export function IngredientScreen() {
   const ingredient = isPending ? placeholders.ingredients.single : data;
 
   return (
-    <ScreenFrame className="z-200 bg-slate-100">
+    <ScreenFrame className="z-200 bg-slate-100 dark:bg-slate-950">
       <div className="mx-auto grid max-w-5xl md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:gap-10 md:px-6 md:py-6">
         <div className="relative md:sticky md:top-6 md:self-start">
           <Photo
@@ -91,7 +91,12 @@ function IngredientDetail(props: IngredientDetailProps) {
           ))}
         </ul>
         {ingredient.description && (
-          <p className={cn('max-w-prose rounded-md font-serif text-lg leading-relaxed text-slate-700', { skeleton })}>
+          <p
+            className={cn(
+              'max-w-prose rounded-md font-serif text-lg leading-relaxed text-slate-700 dark:text-slate-300',
+              { skeleton }
+            )}
+          >
             {ingredient.description}
           </p>
         )}
@@ -109,12 +114,13 @@ type StockVariantProps = {
 };
 const stockVariants = {
   available: {
-    className: 'bg-slate-900 text-white',
+    className: 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900',
     Icon: Check,
     label: 'In stock',
   },
   outOfStock: {
-    className: 'border border-slate-300 bg-slate-200 text-slate-600',
+    className:
+      'border border-slate-300 bg-slate-200 text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400',
     Icon: CircleOff,
     label: 'Out of stock',
   },
@@ -174,10 +180,10 @@ function UsedIn(props: UsedInProps) {
       )}
       {list.isError && <ErrorState what="cocktails" onRetry={() => list.refetch()} />}
       {!isPending && list.isSuccess && uses.length === 0 && (
-        <p className="text-sm text-slate-500">No cocktail in this bar uses it yet.</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">No cocktail in this bar uses it yet.</p>
       )}
       {!isPending && list.isSuccess && uses.length > 0 && (
-        <ul className="divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+        <ul className="divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 dark:divide-slate-800 dark:border-slate-800 dark:bg-slate-900">
           {uses.map(({ cocktail, item }) => (
             <li key={cocktail.id}>
               <UseRow barId={barId} cocktail={cocktail} item={item} />
@@ -203,7 +209,7 @@ function UseRow(props: UseRowProps) {
     <Link
       to={`/bar/${barId}/cocktails/${cocktail.id}`}
       className={cn(
-        'flex items-center gap-3 px-3 py-2.5 transition-colors hover:bg-slate-50 active:bg-slate-100',
+        'flex items-center gap-3 px-3 py-2.5 transition-colors hover:bg-slate-50 active:bg-slate-100 dark:hover:bg-slate-800 dark:active:bg-slate-800',
         focusRing,
         'focus-visible:ring-inset focus-visible:ring-offset-0'
       )}
@@ -212,7 +218,7 @@ function UseRow(props: UseRowProps) {
       <span className="min-w-0 flex-1 truncate font-serif text-lg">{cocktail.name}</span>
       <span className="flex shrink-0 flex-col items-end text-sm">
         <span className="font-medium tabular-nums">{formatAmount(item)}</span>
-        {note && <span className="text-slate-500">{note}</span>}
+        {note && <span className="text-slate-500 dark:text-slate-400">{note}</span>}
       </span>
     </Link>
   );

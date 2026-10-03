@@ -30,7 +30,7 @@ export function CocktailScreen() {
   const cocktail = isPending ? placeholders.cocktails.single : data;
 
   return (
-    <ScreenFrame className="z-200 bg-slate-100">
+    <ScreenFrame className="z-200 bg-slate-100 dark:bg-slate-950">
       <div className="mx-auto grid max-w-5xl md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:gap-10 md:px-6 md:py-6">
         <div className="relative md:sticky md:top-6 md:self-start">
           <Photo
@@ -91,7 +91,12 @@ function CocktailDetail(props: CocktailDetailProps) {
           </ul>
         )}
         {cocktail.description && (
-          <p className={cn('max-w-prose rounded-md font-serif text-lg leading-relaxed text-slate-700', { skeleton })}>
+          <p
+            className={cn(
+              'max-w-prose rounded-md font-serif text-lg leading-relaxed text-slate-700 dark:text-slate-300',
+              { skeleton }
+            )}
+          >
             {cocktail.description}
           </p>
         )}
@@ -104,7 +109,7 @@ function CocktailDetail(props: CocktailDetailProps) {
           Recipe
         </h2>
         {cocktail.recipe.length === 0 ? (
-          <p className="text-sm text-slate-500">No ingredients added yet.</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">No ingredients added yet.</p>
         ) : (
           <ul className="flex flex-col">
             {cocktail.recipe.map((item) => (
@@ -139,7 +144,12 @@ function Availability(props: AvailabilityProps) {
 
   if (missing.length === 0) {
     return (
-      <div className={cn('flex items-center gap-3 rounded-2xl bg-slate-900 px-4 py-3 text-white', { skeleton })}>
+      <div
+        className={cn(
+          'flex items-center gap-3 rounded-2xl bg-slate-900 px-4 py-3 text-white dark:bg-slate-100 dark:text-slate-900',
+          { skeleton }
+        )}
+      >
         <Check className="size-5 shrink-0" strokeWidth={2.5} />
         <p className="font-medium">You have everything for this one</p>
       </div>
@@ -147,11 +157,11 @@ function Availability(props: AvailabilityProps) {
   }
 
   return (
-    <div className={cn('rounded-2xl border border-slate-300 px-4 py-3', { skeleton })}>
+    <div className={cn('rounded-2xl border border-slate-300 px-4 py-3 dark:border-slate-700', { skeleton })}>
       <p className="font-medium">
         Missing {missing.length} {pluralize(missing.length, 'ingredient')}
       </p>
-      <p className="text-sm text-slate-600">{missing.map((m) => m.name).join(', ')}</p>
+      <p className="text-sm text-slate-600 dark:text-slate-400">{missing.map((m) => m.name).join(', ')}</p>
     </div>
   );
 }
@@ -170,7 +180,10 @@ function RecipeLine(props: RecipeLineProps) {
     <li>
       <Link
         to={`/bar/${barId}/ingredients/${ingredient.id}`}
-        className={cn('-mx-2 flex items-center gap-3 rounded-xl px-2 py-2 hover:bg-slate-200/60', focusRing)}
+        className={cn(
+          '-mx-2 flex items-center gap-3 rounded-xl px-2 py-2 hover:bg-slate-200/60 dark:hover:bg-slate-800/60',
+          focusRing
+        )}
       >
         <Photo
           image={ingredient.iconImage}
@@ -182,12 +195,15 @@ function RecipeLine(props: RecipeLineProps) {
         <div className="flex min-w-0 flex-1 flex-col">
           <div className="flex items-baseline gap-2">
             <span className={cn('rounded-md font-medium', { skeleton })}>{ingredient.name}</span>
-            <span aria-hidden className="min-w-4 flex-1 border-b-2 border-dotted border-slate-300" />
+            <span
+              aria-hidden
+              className="min-w-4 flex-1 border-b-2 border-dotted border-slate-300 dark:border-slate-700"
+            />
             <span className={cn('whitespace-nowrap rounded-md font-medium tabular-nums', { skeleton })}>
               {formatAmount(item)}
             </span>
           </div>
-          {notes && <span className="text-sm text-slate-500">{notes}</span>}
+          {notes && <span className="text-sm text-slate-500 dark:text-slate-400">{notes}</span>}
         </div>
       </Link>
     </li>
@@ -203,7 +219,10 @@ function RecipeStep(props: RecipeStepProps) {
 
   return (
     <li key={step.index} className="flex gap-4">
-      <span aria-hidden className="w-6 shrink-0 text-right font-serif text-2xl leading-tight text-slate-400">
+      <span
+        aria-hidden
+        className="w-6 shrink-0 text-right font-serif text-2xl leading-tight text-slate-400 dark:text-slate-500"
+      >
         {step.index + 1}.
       </span>
       <div className="flex min-w-0 flex-1 flex-col gap-3">

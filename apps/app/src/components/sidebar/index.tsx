@@ -11,7 +11,7 @@ import { BarIcon } from './bar-icon';
 import { Sidebar } from './common';
 
 const sidebar = cva(
-  'absolute bottom-0 left-0 top-0 z-10 flex shrink-0 grow-0 select-none flex-col gap-2 rounded-r-2xl bg-slate-400 p-2.5',
+  'absolute bottom-0 left-0 top-0 z-10 flex shrink-0 grow-0 select-none flex-col gap-2 rounded-r-2xl bg-slate-400 p-2.5 dark:bg-slate-900',
   {
     variants: {
       open: {
@@ -64,4 +64,4 @@ export function MainSidebar() {
 }
 
 const List = tw.div('flex flex-col gap-2');
-const Separator = tw.hr('mx-1 border-slate-900');
+const Separator = tw.hr('mx-1 border-slate-900 dark:border-slate-700');
