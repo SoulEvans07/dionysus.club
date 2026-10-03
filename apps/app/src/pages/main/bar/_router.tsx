@@ -6,6 +6,7 @@ import { BarScreen } from './[barId]';
 import { NavToBar } from '../_index';
 import { barIngredientsRoutes } from './ingredients/_router';
 import { barCocktailsRoutes } from './cocktails/_router';
+import { barSettingsRoutes } from './settings/_router';
 
 export const barRoutes = createRouter([
   {
@@ -18,7 +19,7 @@ export const barRoutes = createRouter([
         Component: BarLayout,
         children: [{ index: true, Component: BarScreen }],
       },
-      { path: ':barId', children: [...barIngredientsRoutes, ...barCocktailsRoutes] },
+      { path: ':barId', children: [...barIngredientsRoutes, ...barCocktailsRoutes, ...barSettingsRoutes] },
     ],
   },
 ]);

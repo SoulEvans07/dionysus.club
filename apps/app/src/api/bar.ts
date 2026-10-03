@@ -1,4 +1,11 @@
-import { BarWithRoleDTO, GetBarMemberDTO } from '@repo/dtos';
+import {
+  BarWithRoleDTO,
+  GetBarMemberDTO,
+  IdRespDTO,
+  TransferBarDTO,
+  UpdateBarDTO,
+  UpdateBarVisibilityDTO,
+} from '@repo/dtos';
 import { Styx } from '~/utils/request';
 
 export class BarAPI {
@@ -12,6 +19,22 @@ export class BarAPI {
     return await Styx.get(`/api/bars/${barId}`, BarWithRoleDTO.parse);
   }
 
+  public async update(barId: string, body: UpdateBarDTO) {
+    return await Styx.put(`/api/bars/${barId}`, { body }, IdRespDTO.parse);
+  }
+
+  public async setVisibility(barId: string, body: UpdateBarVisibilityDTO) {
+    return await Styx.put(`/api/bars/${barId}/visibility`, { body }, IdRespDTO.parse);
+  }
+
+  public async transfer(barId: string, body: TransferBarDTO) {
+    return await Styx.post(`/api/bars/${barId}/transfer`, { body }, IdRespDTO.parse);
+  }
+
+  public async remove(barId: string) {
+    return await Styx.delete(`/api/bars/${barId}`);
+  }
+
   public get members() {
     return this.membersApi;
   }
@@ -20,5 +43,9 @@ export class BarAPI {
 class BarMembersAPI {
   public async list(barId: string) {
     return await Styx.get(`/api/bars/${barId}/members`, GetBarMemberDTO.array().parse);
+  }
+
+  public async leave(barId: string) {
+    return await Styx.delete(`/api/bars/${barId}/members/me`);
   }
 }

@@ -10,30 +10,17 @@ import {
   BarWithRoleDTO,
   UpdateBarDTO,
   UpdateBarMemberDTO,
+  UpdateBarVisibilityDTO,
+  BarVisibility,
+  TransferBarDTO,
   GetBarMemberDTO,
 } from '@repo/dtos';
-import { bars, barUsers, db, users } from '~/database';
-import { getUser, type AuthedUser } from '~/auth/kinde';
-import { getBarWith } from '~/middleware/bar';
+import { bars, barUsers, db, imageBlobs, users } from '~/database';
+import { getUser } from '~/auth/kinde';
+import { getBarWith, requireBarRole } from '~/middleware/bar';
 import { HTTPException } from 'hono/http-exception';
 
 export const barController = new Hono();
-
-async function getBarRole(bar: { id: string; ownedBy: string }, user: { id: string }): Promise<BarRole | null> {
-  if (bar.ownedBy === user.id) return 'owner';
-
-  const membership = await db.query.barUsers.findFirst({
-    where: and(eq(barUsers.barId, bar.id), eq(barUsers.userId, user.id)),
-  });
-
-  return membership?.role ?? null;
-}
-
-async function isBarAdmin(bar: { id: string; ownedBy: string }, user: AuthedUser): Promise<boolean> {
-  const role = await getBarRole(bar, user);
-  if (!role) return false;
-  return ['owner', 'admin'].includes(role);
-}
 
 barController.get('/list', getUser, async (c) => {
   const user = c.var.user;
@@ -80,29 +67,89 @@ barController.post('/create', getUser, zValidator('json', CreateBarDTO), async (
 // `getBar` doubles as the "does this user have access to :barId" check for a
 // bar's own CRUD routes here, same as it does for ingredients/cocktails/menus.
 barController.get('/:barId', getUser, getBarWith({ logoImage: true, bannerImage: true }), async (c) => {
-  const role = await getBarRole(c.var.bar, c.var.user);
-
-  if (!role) return c.json({ error: 'Unauthorized' }, 401);
-
-  return c.json<BarDTO>(BarWithRoleDTO.parse({ ...c.var.bar, role }));
+  return c.json<BarWithRoleDTO>(BarWithRoleDTO.parse({ ...c.var.bar, role: c.var.role }));
 });
 
-barController.put('/:barId', getUser, getBarWith(), zValidator('json', UpdateBarDTO), async (c) => {
-  const user = c.var.user;
-  const bar = c.var.bar;
-  const body = c.req.valid('json');
+barController.put(
+  '/:barId',
+  getUser,
+  getBarWith(),
+  requireBarRole('admin'),
+  zValidator('json', UpdateBarDTO),
+  async (c) => {
+    const user = c.var.user;
+    const bar = c.var.bar;
+    const body = c.req.valid('json');
 
-  if (!(await isBarAdmin(bar, user))) {
-    return c.json({ error: 'Unauthorized' }, 401);
+    const imageIds = [...new Set([body.logoImageId, body.bannerImageId].filter((id): id is string => !!id))];
+    if (imageIds.length) {
+      const found = await db.query.imageBlobs.findMany({
+        columns: { id: true },
+        where: and(inArray(imageBlobs.id, imageIds), isNull(imageBlobs.deletedAt)),
+      });
+      if (found.length !== imageIds.length) return c.json({ error: 'Unknown image' }, 400);
+    }
+
+    await db
+      .update(bars)
+      .set({ ...body, updatedById: user.id })
+      .where(eq(bars.id, bar.id));
+
+    return c.json({ id: bar.id });
   }
+);
 
-  await db
-    .update(bars)
-    .set({ ...body, updatedById: user.id })
-    .where(eq(bars.id, bar.id));
+barController.put(
+  '/:barId/visibility',
+  getUser,
+  getBarWith(),
+  requireBarRole('owner'),
+  zValidator('json', UpdateBarVisibilityDTO),
+  async (c) => {
+    const user = c.var.user;
+    const bar = c.var.bar;
+    const body = c.req.valid('json');
 
-  return c.json({ id: bar.id });
-});
+    if (!BarVisibility.safeParse(bar.barType).success) {
+      return c.json({ error: `A ${bar.barType} bar's visibility cannot be changed` }, 400);
+    }
+
+    await db.update(bars).set({ barType: body.barType, updatedById: user.id }).where(eq(bars.id, bar.id));
+
+    return c.json({ id: bar.id });
+  }
+);
+
+// The new owner must already be a member; the previous owner stays on as an admin.
+barController.post(
+  '/:barId/transfer',
+  getUser,
+  getBarWith(),
+  requireBarRole('owner'),
+  zValidator('json', TransferBarDTO),
+  async (c) => {
+    const user = c.var.user;
+    const bar = c.var.bar;
+    const body = c.req.valid('json');
+
+    if (!BarVisibility.safeParse(bar.barType).success) {
+      return c.json({ error: `A ${bar.barType} bar cannot change owner` }, 400);
+    }
+
+    const membership = await db.query.barUsers.findFirst({
+      where: and(eq(barUsers.barId, bar.id), eq(barUsers.userId, body.userId)),
+    });
+    if (!membership) return c.json({ error: 'The new owner must be a member of this bar' }, 400);
+
+    await db.transaction(async (tx) => {
+      await tx.update(bars).set({ ownedBy: body.userId, updatedById: user.id }).where(eq(bars.id, bar.id));
+      await tx.delete(barUsers).where(and(eq(barUsers.barId, bar.id), eq(barUsers.userId, body.userId)));
+      await tx.insert(barUsers).values({ barId: bar.id, userId: user.id, role: 'admin' });
+    });
+
+    return c.json({ id: bar.id });
+  }
+);
 
 barController.delete('/:barId', getUser, getBarWith(), async (c) => {
   const user = c.var.user;
@@ -135,37 +182,35 @@ barController.get('/:barId/members', getUser, getBarWith(), async (c) => {
   return c.json<GetBarMemberDTO[]>([{ barId: bar.id, userId: owner.id, role: 'owner', user: owner }, ...members]);
 });
 
-barController.post('/:barId/members', getUser, getBarWith(), zValidator('json', AddBarMemberDTO), async (c) => {
-  const user = c.var.user;
-  const bar = c.var.bar;
-  const body = c.req.valid('json');
+barController.post(
+  '/:barId/members',
+  getUser,
+  getBarWith(),
+  requireBarRole('admin'),
+  zValidator('json', AddBarMemberDTO),
+  async (c) => {
+    const bar = c.var.bar;
+    const body = c.req.valid('json');
 
-  if (!(await isBarAdmin(bar, user))) {
-    return c.json({ error: 'Unauthorized' }, 401);
+    await db
+      .insert(barUsers)
+      .values({ barId: bar.id, userId: body.userId, role: body.role })
+      .onConflictDoUpdate({ target: [barUsers.barId, barUsers.userId], set: { role: body.role } });
+
+    return c.json({ success: true });
   }
-
-  await db
-    .insert(barUsers)
-    .values({ barId: bar.id, userId: body.userId, role: body.role })
-    .onConflictDoUpdate({ target: [barUsers.barId, barUsers.userId], set: { role: body.role } });
-
-  return c.json({ success: true });
-});
+);
 
 barController.put(
   '/:barId/members/:userId',
   getUser,
   getBarWith(),
+  requireBarRole('admin'),
   zValidator('json', UpdateBarMemberDTO),
   async (c) => {
-    const user = c.var.user;
     const bar = c.var.bar;
     const targetUserId = c.req.param('userId');
     const body = c.req.valid('json');
-
-    if (!(await isBarAdmin(bar, user))) {
-      return c.json({ error: 'Unauthorized' }, 401);
-    }
 
     await db
       .update(barUsers)
@@ -176,14 +221,23 @@ barController.put(
   }
 );
 
-barController.delete('/:barId/members/:userId', getUser, getBarWith(), async (c) => {
+// Registered before '/members/:userId' so 'me' isn't read as a user id.
+barController.delete('/:barId/members/me', getUser, getBarWith(), async (c) => {
   const user = c.var.user;
   const bar = c.var.bar;
-  const targetUserId = c.req.param('userId');
 
-  if (!(await isBarAdmin(bar, user))) {
-    return c.json({ error: 'Unauthorized' }, 401);
+  if (c.var.role === 'owner') {
+    return c.json({ error: 'The owner cannot leave their bar; transfer ownership first' }, 400);
   }
+
+  await db.delete(barUsers).where(and(eq(barUsers.barId, bar.id), eq(barUsers.userId, user.id)));
+
+  return c.json({ success: true });
+});
+
+barController.delete('/:barId/members/:userId', getUser, getBarWith(), requireBarRole('admin'), async (c) => {
+  const bar = c.var.bar;
+  const targetUserId = c.req.param('userId');
 
   await db.delete(barUsers).where(and(eq(barUsers.barId, bar.id), eq(barUsers.userId, targetUserId)));
 
