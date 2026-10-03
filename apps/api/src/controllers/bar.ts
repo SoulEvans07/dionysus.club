@@ -13,6 +13,7 @@ import {
   UpdateBarDTO,
   UpdateBarMemberDTO,
   GetBarMemberDTO,
+  IdRespDTO,
 } from '@repo/dtos';
 import { bars, barUsers, db, users } from '~/database';
 import { getUser, type AuthedUser } from '~/auth/kinde';
@@ -110,6 +111,25 @@ barController.get('/discover', getUser, zValidator('query', DiscoverBarsQueryPar
   const result = list.map((bar) => ({ ...bar, memberCount: (countByBarId.get(bar.id) ?? 0) + 1 }));
 
   return c.json<DiscoverBarDTO[]>(DiscoverBarDTO.array().parse(result));
+});
+
+// Anyone can join a public bar as a member. `getBarWith` isn't usable here since it
+// rejects non-members, which is exactly who calls this.
+barController.post('/:barId/join', getUser, async (c) => {
+  const user = c.var.user;
+  const barId = c.req.param('barId');
+
+  const bar = await db.query.bars.findFirst({
+    where: and(eq(bars.id, barId), eq(bars.barType, 'public'), isNull(bars.deletedAt)),
+  });
+
+  if (!bar) return c.json({ error: 'Not found' }, 404);
+  if (bar.ownedBy === user.id) return c.json({ error: 'You already own this bar' }, 400);
+
+  // Joining twice is a no-op, and must never downgrade an existing role to member.
+  await db.insert(barUsers).values({ barId: bar.id, userId: user.id, role: 'member' }).onConflictDoNothing();
+
+  return c.json<IdRespDTO>({ id: bar.id });
 });
 
 barController.post('/create', getUser, zValidator('json', CreateBarDTO), async (c) => {
