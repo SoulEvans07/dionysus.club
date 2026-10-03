@@ -12,7 +12,7 @@ export function useBar(barId: string) {
   return useQuery({ ...barGetQuery(barId) });
 }
 
-export const barMemeberListQuery = (barId: string) => {
+export const barMemberListQuery = (barId: string) => {
   return queryOptions({
     queryKey: ['bars', barId, 'members', 'list'],
     queryFn: () => api.bars.members.list(barId),
@@ -20,5 +20,5 @@ export const barMemeberListQuery = (barId: string) => {
 };
 
 export function useBarMembers(barId: string) {
-  return useQuery({ ...barMemeberListQuery(barId) });
+  return useQuery({ ...barMemberListQuery(barId) });
 }
