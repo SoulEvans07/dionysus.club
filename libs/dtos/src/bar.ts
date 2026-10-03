@@ -78,6 +78,9 @@ export type AddBarMemberDTO = z.infer<typeof AddBarMemberDTO>;
 export const UpdateBarMemberDTO = AddBarMemberDTO.pick({ role: true });
 export type UpdateBarMemberDTO = z.infer<typeof UpdateBarMemberDTO>;
 
+export const TransferBarDTO = BarMemberDTO.pick({ userId: true });
+export type TransferBarDTO = z.infer<typeof TransferBarDTO>;
+
 export const SidebarBarGroup = z.object({
   index: z.number(),
   id: z.string(),

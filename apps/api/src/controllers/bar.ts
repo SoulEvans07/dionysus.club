@@ -12,6 +12,7 @@ import {
   UpdateBarMemberDTO,
   UpdateBarVisibilityDTO,
   BarVisibility,
+  TransferBarDTO,
   GetBarMemberDTO,
 } from '@repo/dtos';
 import { bars, barUsers, db, imageBlobs, users } from '~/database';
@@ -114,6 +115,37 @@ barController.put(
     }
 
     await db.update(bars).set({ barType: body.barType, updatedById: user.id }).where(eq(bars.id, bar.id));
+
+    return c.json({ id: bar.id });
+  }
+);
+
+// The new owner must already be a member; the previous owner stays on as an admin.
+barController.post(
+  '/:barId/transfer',
+  getUser,
+  getBarWith(),
+  requireBarRole('owner'),
+  zValidator('json', TransferBarDTO),
+  async (c) => {
+    const user = c.var.user;
+    const bar = c.var.bar;
+    const body = c.req.valid('json');
+
+    if (!BarVisibility.safeParse(bar.barType).success) {
+      return c.json({ error: `A ${bar.barType} bar cannot change owner` }, 400);
+    }
+
+    const membership = await db.query.barUsers.findFirst({
+      where: and(eq(barUsers.barId, bar.id), eq(barUsers.userId, body.userId)),
+    });
+    if (!membership) return c.json({ error: 'The new owner must be a member of this bar' }, 400);
+
+    await db.transaction(async (tx) => {
+      await tx.update(bars).set({ ownedBy: body.userId, updatedById: user.id }).where(eq(bars.id, bar.id));
+      await tx.delete(barUsers).where(and(eq(barUsers.barId, bar.id), eq(barUsers.userId, body.userId)));
+      await tx.insert(barUsers).values({ barId: bar.id, userId: user.id, role: 'admin' });
+    });
 
     return c.json({ id: bar.id });
   }
