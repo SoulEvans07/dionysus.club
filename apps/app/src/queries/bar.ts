@@ -1,5 +1,7 @@
-import { queryOptions, useQuery } from '@tanstack/react-query';
+import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { UpdateBarDTO } from '@repo/dtos';
 import { api } from '~/api';
+import { sidebarQuery } from './sidebar';
 
 export const barGetQuery = (barId: string) => {
   return queryOptions({
@@ -21,4 +23,17 @@ export const barMemeberListQuery = (barId: string) => {
 
 export function useBarMembers(barId: string) {
   return useQuery({ ...barMemeberListQuery(barId) });
+}
+
+// The sidebar lists bars by name and logo, so it goes stale with the bar itself.
+export function useUpdateBar(barId: string) {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (data: UpdateBarDTO) => api.bars.update(barId, data),
+    onSuccess: () =>
+      Promise.all([
+        client.invalidateQueries({ queryKey: barGetQuery(barId).queryKey, exact: true }),
+        client.invalidateQueries({ queryKey: sidebarQuery.queryKey }),
+      ]),
+  });
 }
