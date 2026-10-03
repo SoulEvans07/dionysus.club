@@ -4,6 +4,7 @@ import { BarAPI } from './bar';
 import { IngredientAPI } from './ingredient';
 import { CocktailAPI } from './cocktail';
 import { TagAPI } from './tag';
+import { UserAPI } from './user';
 
 export const api = {
   auth: new AuthAPI(),
@@ -12,4 +13,5 @@ export const api = {
   ingredients: new IngredientAPI(),
   cocktails: new CocktailAPI(),
   tags: new TagAPI(),
+  users: new UserAPI(),
 };
