@@ -31,6 +31,17 @@ export const BarWithRoleDTO = BarDTO.extend({
 });
 export type BarWithRoleDTO = z.infer<typeof BarWithRoleDTO>;
 
+// memberCount includes the owner, same as the members list does.
+export const DiscoverBarDTO = BarDTO.extend({
+  memberCount: z.number(),
+});
+export type DiscoverBarDTO = z.infer<typeof DiscoverBarDTO>;
+
+export const DiscoverBarsQueryParams = z.object({
+  q: z.string().trim().max(256).optional(),
+});
+export type DiscoverBarsQueryParams = z.infer<typeof DiscoverBarsQueryParams>;
+
 export const CreateBarDTO = BarDTO.omit({ id: true, ownedBy: true, barType: true }).extend({
   barType: BarType.exclude(['personal', 'system']),
 });

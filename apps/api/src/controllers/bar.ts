@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
-import { and, eq, inArray, isNull, or } from 'drizzle-orm';
+import { and, asc, count, eq, ilike, inArray, isNull, ne, notInArray, or } from 'drizzle-orm';
 import _ from 'lodash';
 import {
   AddBarMemberDTO,
@@ -8,6 +8,8 @@ import {
   BarRole,
   CreateBarDTO,
   BarWithRoleDTO,
+  DiscoverBarDTO,
+  DiscoverBarsQueryParams,
   UpdateBarDTO,
   UpdateBarMemberDTO,
   GetBarMemberDTO,
@@ -63,6 +65,51 @@ barController.get('/list', getUser, async (c) => {
   });
 
   return c.json<BarWithRoleDTO[]>(mylist);
+});
+
+const DISCOVER_LIMIT = 50;
+
+// Public bars the user could join: not their own and not ones they're already a member of.
+barController.get('/discover', getUser, zValidator('query', DiscoverBarsQueryParams), async (c) => {
+  const user = c.var.user;
+  const { q } = c.req.valid('query');
+
+  const joinedBarIds = db.select({ id: barUsers.barId }).from(barUsers).where(eq(barUsers.userId, user.id));
+  const needle = q?.replace(/[\\%_]/g, '\\$&');
+
+  const list = await db.query.bars.findMany({
+    where: and(
+      isNull(bars.deletedAt),
+      eq(bars.barType, 'public'),
+      ne(bars.ownedBy, user.id),
+      notInArray(bars.id, joinedBarIds),
+      needle ? ilike(bars.name, `%${needle}%`) : undefined
+    ),
+    with: {
+      logoImage: true,
+      bannerImage: true,
+    },
+    orderBy: asc(bars.name),
+    limit: DISCOVER_LIMIT,
+  });
+
+  const counts = list.length
+    ? await db
+        .select({ barId: barUsers.barId, count: count() })
+        .from(barUsers)
+        .where(
+          inArray(
+            barUsers.barId,
+            list.map((bar) => bar.id)
+          )
+        )
+        .groupBy(barUsers.barId)
+    : [];
+  const countByBarId = new Map(counts.map((row) => [row.barId, row.count]));
+
+  const result = list.map((bar) => ({ ...bar, memberCount: (countByBarId.get(bar.id) ?? 0) + 1 }));
+
+  return c.json<DiscoverBarDTO[]>(DiscoverBarDTO.array().parse(result));
 });
 
 barController.post('/create', getUser, zValidator('json', CreateBarDTO), async (c) => {
