@@ -11,6 +11,7 @@ import {
   UpdateBarDTO,
   UpdateBarMemberDTO,
   GetBarMemberDTO,
+  IdRespDTO,
 } from '@repo/dtos';
 import { bars, barUsers, db, users } from '~/database';
 import { getUser, type AuthedUser } from '~/auth/kinde';
@@ -72,9 +73,9 @@ barController.post('/create', getUser, zValidator('json', CreateBarDTO), async (
   const [item] = await db
     .insert(bars)
     .values({ ...body, ownedBy: user.id, createdById: user.id, updatedById: user.id })
-    .returning();
+    .returning({ id: bars.id });
 
-  return c.json<BarDTO>(BarDTO.parse(item));
+  return c.json<IdRespDTO>(item);
 });
 
 // `getBar` doubles as the "does this user have access to :barId" check for a
