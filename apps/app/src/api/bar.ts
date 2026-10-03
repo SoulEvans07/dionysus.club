@@ -1,4 +1,4 @@
-import { BarWithRoleDTO, DiscoverBarDTO, GetBarMemberDTO, type DiscoverBarsQueryParams } from '@repo/dtos';
+import { BarWithRoleDTO, DiscoverBarDTO, GetBarMemberDTO, IdRespDTO, type DiscoverBarsQueryParams } from '@repo/dtos';
 import { Styx } from '~/utils/request';
 
 export class BarAPI {
@@ -10,6 +10,10 @@ export class BarAPI {
 
   public async discover(query?: DiscoverBarsQueryParams) {
     return await Styx.get('/api/bars/discover', { query }, DiscoverBarDTO.array().parse);
+  }
+
+  public async join(barId: string) {
+    return await Styx.post(`/api/bars/${barId}/join`, IdRespDTO.parse);
   }
 
   public async get(barId: string) {
