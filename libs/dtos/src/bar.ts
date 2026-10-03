@@ -12,6 +12,15 @@ export type BarRoleDAL = z.infer<typeof BarRoleDAL>;
 export const BarRole = z.enum(['owner', 'admin', 'bartender', 'member', 'guest']);
 export type BarRole = z.infer<typeof BarRole>;
 
+// Whether `actor` may add, remove or assign someone with `role`. The owner manages everyone,
+// admins manage the roles below admin, and nobody manages the owner (ownership isn't transferable here).
+export function canManageBarRole(actor: BarRole | null | undefined, role: BarRole): boolean {
+  if (role === 'owner') return false;
+  if (actor === 'owner') return true;
+  if (actor === 'admin') return role !== 'admin';
+  return false;
+}
+
 export const BarDTO = z.object({
   id: z.string(),
   ownedBy: z.string(),
@@ -51,7 +60,9 @@ export const GetBarMemberDTO = BarMemberDTO.extend({
 });
 export type GetBarMemberDTO = z.infer<typeof GetBarMemberDTO>;
 
-export const AddBarMemberDTO = BarMemberDTO.extend({
+// Members are invited by email, since that's what people actually know about each other.
+export const AddBarMemberDTO = z.object({
+  email: z.string().trim().pipe(z.email('Enter a valid email')),
   role: BarRoleDAL,
 });
 export type AddBarMemberDTO = z.infer<typeof AddBarMemberDTO>;

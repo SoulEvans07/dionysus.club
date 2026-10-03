@@ -1,11 +1,12 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
-import { and, eq, inArray, isNull, or } from 'drizzle-orm';
+import { and, eq, inArray, isNull, or, sql } from 'drizzle-orm';
 import _ from 'lodash';
 import {
   AddBarMemberDTO,
   BarDTO,
   BarRole,
+  canManageBarRole,
   CreateBarDTO,
   BarWithRoleDTO,
   UpdateBarDTO,
@@ -29,10 +30,12 @@ async function getBarRole(bar: { id: string; ownedBy: string }, user: { id: stri
   return membership?.role ?? null;
 }
 
+function isAdminRole(role: BarRole | null): boolean {
+  return role === 'owner' || role === 'admin';
+}
+
 async function isBarAdmin(bar: { id: string; ownedBy: string }, user: AuthedUser): Promise<boolean> {
-  const role = await getBarRole(bar, user);
-  if (!role) return false;
-  return ['owner', 'admin'].includes(role);
+  return isAdminRole(await getBarRole(bar, user));
 }
 
 barController.get('/list', getUser, async (c) => {
@@ -143,14 +146,24 @@ barController.post('/:barId/members', getUser, getBarWith(), zValidator('json', 
   const bar = c.var.bar;
   const body = c.req.valid('json');
 
-  if (!(await isBarAdmin(bar, user))) {
-    return c.json({ error: 'Unauthorized' }, 401);
-  }
+  const role = await getBarRole(bar, user);
+  if (!isAdminRole(role)) return c.json({ error: 'Unauthorized' }, 401);
+  if (!canManageBarRole(role, body.role)) return c.json({ error: 'Only the owner can add admins' }, 403);
+  if (bar.barType === 'personal') return c.json({ error: 'A personal bar cannot have members' }, 400);
 
-  await db
+  const target = await db.query.users.findFirst({
+    where: and(eq(sql`lower(${users.email})`, body.email.toLowerCase()), isNull(users.deletedAt)),
+  });
+  if (!target) return c.json({ error: 'No user with that email' }, 404);
+  if (target.id === bar.ownedBy) return c.json({ error: 'This user owns the bar' }, 409);
+
+  // Changing an existing member's role is the PUT's job, so an existing row is a conflict here.
+  const [inserted] = await db
     .insert(barUsers)
-    .values({ barId: bar.id, userId: body.userId, role: body.role })
-    .onConflictDoUpdate({ target: [barUsers.barId, barUsers.userId], set: { role: body.role } });
+    .values({ barId: bar.id, userId: target.id, role: body.role })
+    .onConflictDoNothing()
+    .returning();
+  if (!inserted) return c.json({ error: 'This user is already a member' }, 409);
 
   return c.json({ success: true });
 });
@@ -184,9 +197,13 @@ barController.delete('/:barId/members/:userId', getUser, getBarWith(), async (c)
   const bar = c.var.bar;
   const targetUserId = c.req.param('userId');
 
-  if (!(await isBarAdmin(bar, user))) {
-    return c.json({ error: 'Unauthorized' }, 401);
-  }
+  const role = await getBarRole(bar, user);
+  if (!isAdminRole(role)) return c.json({ error: 'Unauthorized' }, 401);
+  if (targetUserId === bar.ownedBy) return c.json({ error: 'The owner cannot be removed' }, 400);
+
+  const target = await getBarRole(bar, { id: targetUserId });
+  if (!target) return c.json({ error: 'Not found' }, 404);
+  if (!canManageBarRole(role, target)) return c.json({ error: 'Only the owner can remove admins' }, 403);
 
   await db.delete(barUsers).where(and(eq(barUsers.barId, bar.id), eq(barUsers.userId, targetUserId)));
 
