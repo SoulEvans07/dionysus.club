@@ -1,13 +1,16 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { Users } from 'lucide-react';
 import { useDebounce } from '@uidotdev/usehooks';
 
 import type { DiscoverBarDTO } from '@repo/dtos';
-import { useBarDiscovery } from '~/queries/bar';
+import { useBarDiscovery, useJoinBar } from '~/queries/bar';
 import { ScreenFrame } from '~/components/common';
 import { BackButton } from '~/components/back-button';
 import { SearchField } from '~/components/catalog/filters';
 import { EmptyState, ErrorState } from '~/components/catalog/state-message';
+import { FieldError } from '~/components/form/field';
+import { Button } from '~/components/shadcn/button';
 import { Spinner } from '~/components/shadcn/spinner';
 
 const SEARCH_DEBOUNCE_MS = 300;
@@ -67,6 +70,10 @@ function BarCard(props: BarCardProps) {
   const { bar } = props;
   const banner = bar.bannerImage ? { backgroundImage: `url(${bar.bannerImage.url})` } : {};
 
+  const navigate = useNavigate();
+  const join = useJoinBar();
+  const handleJoin = () => join.mutate(bar.id, { onSuccess: ({ id }) => navigate(`/bar/${id}`) });
+
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-900">
       <div
@@ -84,12 +91,25 @@ function BarCard(props: BarCardProps) {
         {bar.description && (
           <p className="line-clamp-2 text-sm text-slate-600 dark:text-slate-300">{bar.description}</p>
         )}
-        <div className="mt-auto flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
-          <Users className="size-4" />
-          <span>
-            {bar.memberCount} {bar.memberCount === 1 ? 'member' : 'members'}
-          </span>
+        <div className="mt-auto flex items-center gap-3">
+          <div className="mr-auto flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
+            <Users className="size-4" />
+            <span>
+              {bar.memberCount} {bar.memberCount === 1 ? 'member' : 'members'}
+            </span>
+          </div>
+          <Button
+            type="button"
+            disabled={join.isPending}
+            onClick={handleJoin}
+            aria-label={`Join ${bar.name}`}
+            className="h-9 rounded-xl bg-slate-900 px-4 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+          >
+            {join.isPending && <Spinner className="size-4" />}
+            {join.isPending ? 'Joining' : 'Join'}
+          </Button>
         </div>
+        {join.error && <FieldError>{join.error.message}</FieldError>}
       </div>
     </article>
   );
