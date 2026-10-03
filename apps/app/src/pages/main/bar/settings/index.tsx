@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { z } from 'zod';
-import { LogOut, Store, Tags } from 'lucide-react';
+import { Crown, LogOut, Store, Tags, Trash2 } from 'lucide-react';
 
 import { BarVisibility, hasBarRole } from '@repo/dtos';
 import { ErrorState } from '~/components/catalog/state-message';
-import { useBar, useLeaveBar } from '~/queries/bar';
+import { useBar, useDeleteBar, useLeaveBar } from '~/queries/bar';
 import { ConfirmAction, SettingsGroup, SettingsLink, SettingsScreen } from './_menu';
 import { visibilityOptions } from './_visibility';
 
@@ -17,6 +17,7 @@ export function BarSettingsScreen() {
   const navigate = useNavigate();
   const bar = useBar(barId);
   const leave = useLeaveBar(barId);
+  const remove = useDeleteBar(barId);
 
   const visibility = BarVisibility.safeParse(bar.data?.barType);
   const isOwner = bar.data?.role === 'owner';
@@ -37,6 +38,21 @@ export function BarSettingsScreen() {
             />
           )}
           <SettingsLink to={`/bar/${barId}/settings/tags`} icon={Tags} label="Tags" />
+        </SettingsGroup>
+      )}
+      {bar.data && isOwner && visibility.success && (
+        <SettingsGroup title="Danger zone">
+          <SettingsLink to={`/bar/${barId}/settings/transfer`} icon={Crown} label="Transfer ownership" />
+          <ConfirmAction
+            icon={Trash2}
+            label="Delete bar"
+            description="Its cocktails, ingredients, tags and menus go with it, and members lose access."
+            confirmLabel="Delete"
+            confirmPhrase={bar.data.name}
+            isPending={remove.isPending}
+            error={remove.error?.message}
+            onConfirm={() => remove.mutate(undefined, { onSuccess: () => navigate('/bar', { replace: true }) })}
+          />
         </SettingsGroup>
       )}
       {bar.data && !isOwner && (

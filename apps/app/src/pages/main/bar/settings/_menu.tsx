@@ -3,8 +3,9 @@ import { Check, ChevronRight, type LucideIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { BackButton } from '~/components/back-button';
-import { focusRing, ScreenFrame } from '~/components/common';
+import { controlClass, focusRing, ScreenFrame } from '~/components/common';
 import { FieldError } from '~/components/form/field';
+import { Input } from '~/components/shadcn/input';
 import { Spinner } from '~/components/shadcn/spinner';
 import { cn } from '~/utils/classnames';
 
@@ -128,22 +129,28 @@ type ConfirmActionProps = {
   label: string;
   description: string; // Shown once the action is armed, explaining what will happen.
   confirmLabel: string;
+  confirmPhrase?: string; // When set, it has to be typed before the action can be confirmed.
+  disabled?: boolean;
   isPending?: boolean;
   error?: string | null;
   onConfirm: () => void;
 };
 // A destructive action that asks for confirmation in place rather than in a dialog.
 export function ConfirmAction(props: ConfirmActionProps) {
-  const { icon: Icon, label, description, confirmLabel, isPending, error, onConfirm } = props;
+  const { icon: Icon, label, description, confirmLabel, confirmPhrase, disabled, isPending, error, onConfirm } = props;
   const [armed, setArmed] = useState(false);
+  const [typed, setTyped] = useState('');
+
+  const canConfirm = !disabled && !isPending && (!confirmPhrase || typed.trim() === confirmPhrase.trim());
 
   if (!armed) {
     return (
       <button
         type="button"
+        disabled={disabled}
         onClick={() => setArmed(true)}
         className={cn(
-          'flex min-h-12 items-center gap-3 px-4 py-3 text-left font-medium transition-colors hover:bg-slate-50 active:bg-slate-100 dark:hover:bg-slate-800/60 dark:active:bg-slate-800',
+          'flex min-h-12 items-center gap-3 px-4 py-3 text-left font-medium transition-colors enabled:hover:bg-slate-50 enabled:active:bg-slate-100 disabled:opacity-50 dark:enabled:hover:bg-slate-800/60 dark:enabled:active:bg-slate-800',
           focusRing
         )}
       >
@@ -163,21 +170,38 @@ export function ConfirmAction(props: ConfirmActionProps) {
           {error && <FieldError>{error}</FieldError>}
         </div>
       </div>
+      {confirmPhrase && (
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="confirm-phrase" className="text-sm">
+            Type <span className="font-semibold">{confirmPhrase}</span> to confirm
+          </label>
+          <Input
+            id="confirm-phrase"
+            value={typed}
+            onChange={(e) => setTyped(e.target.value)}
+            autoComplete="off"
+            className={controlClass}
+          />
+        </div>
+      )}
       <div className="flex justify-end gap-2">
         <button
           type="button"
           disabled={isPending}
-          onClick={() => setArmed(false)}
+          onClick={() => {
+            setArmed(false);
+            setTyped('');
+          }}
           className={cn('h-10 rounded-xl px-4 font-medium hover:bg-slate-200 dark:hover:bg-slate-700', focusRing)}
         >
           Cancel
         </button>
         <button
           type="button"
-          disabled={isPending}
+          disabled={!canConfirm}
           onClick={onConfirm}
           className={cn(
-            'flex h-10 items-center gap-2 rounded-xl bg-slate-900 px-4 font-medium text-white hover:bg-slate-800 disabled:opacity-70 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200',
+            'flex h-10 items-center gap-2 rounded-xl bg-slate-900 px-4 font-medium text-white enabled:hover:bg-slate-800 disabled:opacity-40 dark:bg-slate-100 dark:text-slate-900 dark:enabled:hover:bg-slate-200',
             focusRing
           )}
         >
