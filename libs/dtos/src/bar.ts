@@ -51,6 +51,13 @@ export const UpdateBarDTO = BarDTO.pick({ logoImageId: true, bannerImageId: true
   .partial();
 export type UpdateBarDTO = z.infer<typeof UpdateBarDTO>;
 
+// Only shared bars can switch between public and private; personal and system bars keep their type.
+export const BarVisibility = BarType.extract(['public', 'private']);
+export type BarVisibility = z.infer<typeof BarVisibility>;
+
+export const UpdateBarVisibilityDTO = z.object({ barType: BarVisibility });
+export type UpdateBarVisibilityDTO = z.infer<typeof UpdateBarVisibilityDTO>;
+
 export const BarMemberDTO = z.object({
   userId: z.string(),
   role: BarRole,
