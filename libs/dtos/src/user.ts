@@ -28,3 +28,8 @@ export const PublicUserDTO = z.object({
   profileImage: ImageDTO.nullable(),
 });
 export type PublicUserDTO = z.infer<typeof PublicUserDTO>;
+
+export const UserSearchQueryParams = z.object({
+  q: z.string().trim().min(2, 'Type at least 2 characters').max(64),
+});
+export type UserSearchQueryParams = z.infer<typeof UserSearchQueryParams>;

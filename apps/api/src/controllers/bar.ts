@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
-import { and, eq, inArray, isNull, or, sql } from 'drizzle-orm';
+import { and, eq, inArray, isNull, or } from 'drizzle-orm';
 import _ from 'lodash';
 import {
   AddBarMemberDTO,
@@ -152,10 +152,8 @@ barController.post('/:barId/members', getUser, getBarWith(), zValidator('json', 
   if (!canManageBarRole(role, body.role)) return c.json({ error: 'Only the owner can add admins' }, 403);
   if (bar.barType === 'personal') return c.json({ error: 'A personal bar cannot have members' }, 400);
 
-  const target = await db.query.users.findFirst({
-    where: and(eq(sql`lower(${users.email})`, body.email.toLowerCase()), isNull(users.deletedAt)),
-  });
-  if (!target) return c.json({ error: 'No user with that email' }, 404);
+  const target = await db.query.users.findFirst({ where: and(eq(users.id, body.userId), isNull(users.deletedAt)) });
+  if (!target) return c.json({ error: 'User not found' }, 404);
   if (target.id === bar.ownedBy) return c.json({ error: 'This user owns the bar' }, 409);
 
   // Changing an existing member's role is the PUT's job, so an existing row is a conflict here.

@@ -60,9 +60,9 @@ export const GetBarMemberDTO = BarMemberDTO.extend({
 });
 export type GetBarMemberDTO = z.infer<typeof GetBarMemberDTO>;
 
-// Members are invited by email, since that's what people actually know about each other.
+// `userId` comes from a user search, so it's a real id rather than something typed in.
 export const AddBarMemberDTO = z.object({
-  email: z.string().trim().pipe(z.email('Enter a valid email')),
+  userId: z.guid('Pick someone to add'),
   role: BarRoleDAL,
 });
 export type AddBarMemberDTO = z.infer<typeof AddBarMemberDTO>;
