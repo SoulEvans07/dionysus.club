@@ -33,6 +33,7 @@ export function BarScreen() {
   const params = useParams();
   const { barId } = useMemo(() => Params.parse(params), [params]);
   const bar = useBar(barId);
+  const navigate = useNavigate();
   const banner = bar.data?.bannerImage?.url ? { backgroundImage: `url(${bar.data.bannerImage.url})` } : {};
   const type: BarType = bar.data?.barType ?? 'personal';
   const TypeIcon = typeIcons[type];
@@ -85,7 +86,7 @@ export function BarScreen() {
       </div>
       <div className="mt-auto flex flex-col gap-2 px-2">
         <hr className="mx-2 border-slate-400/80 dark:border-slate-600/80" />
-        <MenuItem>
+        <MenuItem onClick={() => navigate(`/bar/${barId}/members`)}>
           <Users className="size-4" />
           <span>Members</span>
         </MenuItem>
