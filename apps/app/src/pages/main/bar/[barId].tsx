@@ -26,6 +26,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/component
 import { cn } from '~/utils/classnames';
 import { Spinner } from '~/components/shadcn/spinner';
 import { tagFullKey, tagFullKeyUI } from '~/utils/tags';
+import { canInvite } from '~/utils/members';
 
 const Params = z.object({ barId: z.string() });
 
@@ -75,9 +76,11 @@ export function BarScreen() {
             <Search className="size-4" />
             <span>Search</span>
           </MenuButton>
-          <MenuButton>
-            <UserPlus className="size-4" />
-          </MenuButton>
+          {canInvite(bar.data) && (
+            <MenuButton aria-label="Add member" onClick={() => navigate(`/bar/${barId}/members/new`)}>
+              <UserPlus className="size-4" />
+            </MenuButton>
+          )}
         </div>
       </div>
       <div className="flex flex-col gap-2 px-2">
