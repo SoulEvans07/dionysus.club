@@ -1,5 +1,5 @@
 import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { AddBarMemberDTO } from '@repo/dtos';
+import type { AddBarMemberDTO, BarRoleDAL, GetBarMemberDTO } from '@repo/dtos';
 import { api } from '~/api';
 
 export const barGetQuery = (barId: string) => {
@@ -34,6 +34,32 @@ export function useAddBarMember(barId: string) {
   return useMutation({
     mutationFn: (data: AddBarMemberDTO) => api.bars.members.add(barId, data),
     onSuccess: invalidate,
+  });
+}
+
+export function useUpdateBarMemberRole(barId: string) {
+  const client = useQueryClient();
+  const invalidate = useInvalidateMembers(barId);
+  const listKey = barMemberListQuery(barId).queryKey;
+
+  return useMutation({
+    mutationFn: ({ userId, role }: { userId: string; role: BarRoleDAL }) =>
+      api.bars.members.update(barId, userId, { role }),
+    // Moves the member into their new group right away; the refetch restores the server's ordering.
+    onMutate: async ({ userId, role }) => {
+      await client.cancelQueries({ queryKey: listKey });
+
+      const previous = client.getQueryData<GetBarMemberDTO[]>(listKey);
+      client.setQueryData<GetBarMemberDTO[]>(listKey, (old) =>
+        old?.map((member) => (member.userId === userId ? { ...member, role } : member))
+      );
+
+      return { previous };
+    },
+    onError: (_err, _vars, context) => {
+      if (context?.previous) client.setQueryData(listKey, context.previous);
+    },
+    onSettled: invalidate,
   });
 }
 
