@@ -189,6 +189,20 @@ barController.put(
   }
 );
 
+// Registered before '/members/:userId' so 'me' isn't read as a user id.
+barController.delete('/:barId/members/me', getUser, getBarWith(), async (c) => {
+  const user = c.var.user;
+  const bar = c.var.bar;
+
+  if (c.var.role === 'owner') {
+    return c.json({ error: 'The owner cannot leave their bar; transfer ownership first' }, 400);
+  }
+
+  await db.delete(barUsers).where(and(eq(barUsers.barId, bar.id), eq(barUsers.userId, user.id)));
+
+  return c.json({ success: true });
+});
+
 barController.delete('/:barId/members/:userId', getUser, getBarWith(), requireBarRole('admin'), async (c) => {
   const bar = c.var.bar;
   const targetUserId = c.req.param('userId');
