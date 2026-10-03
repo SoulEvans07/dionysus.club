@@ -1,5 +1,5 @@
 import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { UpdateBarDTO, UpdateBarVisibilityDTO } from '@repo/dtos';
+import type { TransferBarDTO, UpdateBarDTO, UpdateBarVisibilityDTO } from '@repo/dtos';
 import { api } from '~/api';
 import { sidebarQuery } from './sidebar';
 
@@ -56,6 +56,26 @@ export function useLeaveBar(barId: string) {
   const client = useQueryClient();
   return useMutation({
     mutationFn: () => api.bars.members.leave(barId),
+    onSuccess: () => client.invalidateQueries({ queryKey: sidebarQuery.queryKey }),
+  });
+}
+
+// The caller's role and the member list both change hands.
+export function useTransferBar(barId: string) {
+  const client = useQueryClient();
+  const invalidate = useInvalidateBar(barId);
+  return useMutation({
+    mutationFn: (data: TransferBarDTO) => api.bars.transfer(barId, data),
+    onSuccess: () =>
+      Promise.all([invalidate(), client.invalidateQueries({ queryKey: barMemeberListQuery(barId).queryKey })]),
+  });
+}
+
+// Callers navigate away on success, like useLeaveBar.
+export function useDeleteBar(barId: string) {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: () => api.bars.remove(barId),
     onSuccess: () => client.invalidateQueries({ queryKey: sidebarQuery.queryKey }),
   });
 }

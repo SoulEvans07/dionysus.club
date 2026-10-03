@@ -1,4 +1,11 @@
-import { BarWithRoleDTO, GetBarMemberDTO, IdRespDTO, UpdateBarDTO, UpdateBarVisibilityDTO } from '@repo/dtos';
+import {
+  BarWithRoleDTO,
+  GetBarMemberDTO,
+  IdRespDTO,
+  TransferBarDTO,
+  UpdateBarDTO,
+  UpdateBarVisibilityDTO,
+} from '@repo/dtos';
 import { Styx } from '~/utils/request';
 
 export class BarAPI {
@@ -18,6 +25,14 @@ export class BarAPI {
 
   public async setVisibility(barId: string, body: UpdateBarVisibilityDTO) {
     return await Styx.put(`/api/bars/${barId}/visibility`, { body }, IdRespDTO.parse);
+  }
+
+  public async transfer(barId: string, body: TransferBarDTO) {
+    return await Styx.post(`/api/bars/${barId}/transfer`, { body }, IdRespDTO.parse);
+  }
+
+  public async remove(barId: string) {
+    return await Styx.delete(`/api/bars/${barId}`);
   }
 
   public get members() {
