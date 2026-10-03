@@ -2,15 +2,15 @@ import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { z } from 'zod';
 
-import { AddBarMemberDTO, BarRoleDAL } from '@repo/dtos';
-import { useAddBarMember, useBar } from '~/queries/bar';
+import { AddBarMemberDTO, BarRoleDAL, type PublicUserDTO } from '@repo/dtos';
+import { useAddBarMember, useBar, useBarMembers } from '~/queries/bar';
 import { assignableRoles, roleLabels } from '~/utils/members';
 import { fieldErrors, focusFirstError, type FieldErrors } from '~/utils/form';
 import { controlClass } from '~/components/common';
 import { Field } from '~/components/form/field';
 import { FormLoading, FormScreen } from '~/components/form/form-screen';
-import { Input } from '~/components/shadcn/input';
 import { NativeSelect } from '~/components/native-select';
+import { UserPicker } from './_user-picker';
 
 const Params = z.object({ barId: z.string() });
 
@@ -23,8 +23,10 @@ export function MemberAddScreen() {
   const bar = useBar(barId);
   const add = useAddBarMember(barId);
   const roles = assignableRoles(bar.data?.role);
+  const members = useBarMembers(barId);
+  const memberIds = useMemo(() => new Set(members.data?.map((m) => m.userId)), [members.data]);
 
-  const [email, setEmail] = useState('');
+  const [user, setUser] = useState<PublicUserDTO | null>(null);
   const [role, setRole] = useState<BarRoleDAL>('member');
   const [errors, setErrors] = useState<FieldErrors>({});
 
@@ -35,7 +37,7 @@ export function MemberAddScreen() {
   }
 
   const submit = () => {
-    const result = AddBarMemberDTO.safeParse({ email, role });
+    const result = AddBarMemberDTO.safeParse({ userId: user?.id ?? '', role });
     if (!result.success) {
       const found = fieldErrors(result.error);
       setErrors(found);
@@ -55,19 +57,8 @@ export function MemberAddScreen() {
       error={add.error?.message}
       onSubmit={submit}
     >
-      <Field label="Email" htmlFor="email" error={errors.email} hint="They need a dionysus.club account.">
-        <Input
-          id="email"
-          type="email"
-          inputMode="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="name@example.com"
-          autoComplete="off"
-          autoCapitalize="none"
-          aria-invalid={!!errors.email}
-          className={controlClass}
-        />
+      <Field label="Person" htmlFor="userId" error={errors.userId}>
+        <UserPicker id="userId" value={user} onChange={setUser} memberIds={memberIds} invalid={!!errors.userId} />
       </Field>
 
       <Field label="Role" htmlFor="role" error={errors.role}>
