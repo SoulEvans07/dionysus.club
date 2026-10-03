@@ -179,8 +179,15 @@ barController.put(
     const targetUserId = c.req.param('userId');
     const body = c.req.valid('json');
 
-    if (!(await isBarAdmin(bar, user))) {
-      return c.json({ error: 'Unauthorized' }, 401);
+    const role = await getBarRole(bar, user);
+    if (!isAdminRole(role)) return c.json({ error: 'Unauthorized' }, 401);
+    if (targetUserId === bar.ownedBy) return c.json({ error: "The owner's role cannot be changed" }, 400);
+
+    const target = await getBarRole(bar, { id: targetUserId });
+    if (!target) return c.json({ error: 'Not found' }, 404);
+    // Both ends count: an admin can neither demote another admin nor promote anyone to admin.
+    if (!canManageBarRole(role, target) || !canManageBarRole(role, body.role)) {
+      return c.json({ error: 'Only the owner can manage admins' }, 403);
     }
 
     await db
