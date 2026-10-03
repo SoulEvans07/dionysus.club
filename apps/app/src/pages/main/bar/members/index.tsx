@@ -61,7 +61,7 @@ export function MemberListScreen() {
           </div>
         )}
       </main>
-      <MemberSheet barId={barId} member={selected} onClose={() => setSelectedId(null)} />
+      <MemberSheet barId={barId} actorRole={bar.data?.role} member={selected} onClose={() => setSelectedId(null)} />
     </ScreenFrame>
   );
 }
