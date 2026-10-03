@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { z } from 'zod';
-import { Store, Tags } from 'lucide-react';
+import { LogOut, Store, Tags } from 'lucide-react';
 
 import { BarVisibility, hasBarRole } from '@repo/dtos';
 import { ErrorState } from '~/components/catalog/state-message';
-import { useBar } from '~/queries/bar';
-import { SettingsGroup, SettingsLink, SettingsScreen } from './_menu';
+import { useBar, useLeaveBar } from '~/queries/bar';
+import { ConfirmAction, SettingsGroup, SettingsLink, SettingsScreen } from './_menu';
 import { visibilityOptions } from './_visibility';
 
 const Params = z.object({ barId: z.string() });
@@ -14,9 +14,12 @@ const Params = z.object({ barId: z.string() });
 export function BarSettingsScreen() {
   const params = useParams();
   const { barId } = useMemo(() => Params.parse(params), [params]);
+  const navigate = useNavigate();
   const bar = useBar(barId);
+  const leave = useLeaveBar(barId);
 
   const visibility = BarVisibility.safeParse(bar.data?.barType);
+  const isOwner = bar.data?.role === 'owner';
 
   return (
     <SettingsScreen title="Settings" subtitle={bar.data?.name} backTo={`/bar/${barId}`}>
@@ -34,6 +37,19 @@ export function BarSettingsScreen() {
             />
           )}
           <SettingsLink to={`/bar/${barId}/settings/tags`} icon={Tags} label="Tags" />
+        </SettingsGroup>
+      )}
+      {bar.data && !isOwner && (
+        <SettingsGroup title="Danger zone">
+          <ConfirmAction
+            icon={LogOut}
+            label="Leave bar"
+            description={`You'll lose access to ${bar.data.name} until someone adds you again.`}
+            confirmLabel="Leave"
+            isPending={leave.isPending}
+            error={leave.error?.message}
+            onConfirm={() => leave.mutate(undefined, { onSuccess: () => navigate('/bar', { replace: true }) })}
+          />
         </SettingsGroup>
       )}
     </SettingsScreen>
