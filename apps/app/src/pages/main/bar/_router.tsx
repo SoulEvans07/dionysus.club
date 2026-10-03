@@ -3,6 +3,7 @@ import { queryClient } from '~/queries/_client';
 import { sidebarQuery } from '~/queries/sidebar';
 import { BarLayout } from './_layout';
 import { BarScreen } from './[barId]';
+import { BarDiscoverScreen } from './discover';
 import { NavToBar } from '../_index';
 import { barIngredientsRoutes } from './ingredients/_router';
 import { barCocktailsRoutes } from './cocktails/_router';
@@ -13,6 +14,7 @@ export const barRoutes = createRouter([
     loader: loadSidebar,
     children: [
       { index: true, Component: NavToBar },
+      { path: 'discover', Component: BarDiscoverScreen },
       {
         path: ':barId',
         Component: BarLayout,
