@@ -132,7 +132,10 @@ barController.get('/:barId/members', getUser, getBarWith(), async (c) => {
     with: { user: { with: { profileImage: true } } },
   });
 
-  return c.json<GetBarMemberDTO[]>([{ barId: bar.id, userId: owner.id, role: 'owner', user: owner }, ...members]);
+  // Highest role first (in `BarRole` order), then alphabetical, so clients can group without re-sorting.
+  const sorted = _.sortBy(members, [(m) => BarRole.options.indexOf(m.role), (m) => m.user.username.toLowerCase()]);
+
+  return c.json<GetBarMemberDTO[]>([{ barId: bar.id, userId: owner.id, role: 'owner', user: owner }, ...sorted]);
 });
 
 barController.post('/:barId/members', getUser, getBarWith(), zValidator('json', AddBarMemberDTO), async (c) => {
