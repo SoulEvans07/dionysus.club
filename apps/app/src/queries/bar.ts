@@ -1,5 +1,7 @@
-import { queryOptions, useQuery } from '@tanstack/react-query';
+import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { CreateBarDTO } from '@repo/dtos';
 import { api } from '~/api';
+import { sidebarQuery } from './sidebar';
 
 export const barGetQuery = (barId: string) => {
   return queryOptions({
@@ -21,4 +23,13 @@ export const barMemeberListQuery = (barId: string) => {
 
 export function useBarMembers(barId: string) {
   return useQuery({ ...barMemeberListQuery(barId) });
+}
+
+// A new bar shows up in the sidebar's "Owned" group, so that has to refetch too.
+export function useCreateBar() {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (data: CreateBarDTO) => api.bars.create(data),
+    onSuccess: () => client.invalidateQueries({ queryKey: sidebarQuery.queryKey }),
+  });
 }

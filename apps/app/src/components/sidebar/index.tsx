@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { ChevronsRight, Compass, Plus } from 'lucide-react';
 import { cva } from 'class-variance-authority';
 
@@ -26,6 +27,7 @@ const sidebar = cva(
 export function MainSidebar() {
   const [open, setOpen] = useState(false);
   const toggleSidebar = () => setOpen((prev) => !prev);
+  const navigate = useNavigate();
 
   const { isPending, error, data } = useSidebarData();
 
@@ -46,7 +48,7 @@ export function MainSidebar() {
         ))}
       </div>
       <List className="mt-auto">
-        <Sidebar.CircleButton>
+        <Sidebar.CircleButton role="button" aria-label="Create bar" onClick={() => navigate('/bar/new')}>
           <Plus />
         </Sidebar.CircleButton>
         <Sidebar.CircleButton>

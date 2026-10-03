@@ -31,8 +31,13 @@ export const BarWithRoleDTO = BarDTO.extend({
 });
 export type BarWithRoleDTO = z.infer<typeof BarWithRoleDTO>;
 
-export const CreateBarDTO = BarDTO.omit({ id: true, ownedBy: true, barType: true }).extend({
-  barType: BarType.exclude(['personal', 'system']),
+// Images aren't part of create yet - they'll come with the upload flow.
+// Personal and system bars are provisioned by the server, never created by users.
+export const CreateBarDTO = z.object({
+  name: z.string().trim().min(1, 'Name is required').max(256),
+  slogan: z.string().trim().max(512),
+  description: z.string().trim().max(2000),
+  barType: BarType.extract(['public', 'private']),
 });
 export type CreateBarDTO = z.infer<typeof CreateBarDTO>;
 

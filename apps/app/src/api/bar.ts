@@ -1,4 +1,4 @@
-import { BarWithRoleDTO, GetBarMemberDTO } from '@repo/dtos';
+import { BarWithRoleDTO, CreateBarDTO, GetBarMemberDTO, IdRespDTO } from '@repo/dtos';
 import { Styx } from '~/utils/request';
 
 export class BarAPI {
@@ -10,6 +10,10 @@ export class BarAPI {
 
   public async get(barId: string) {
     return await Styx.get(`/api/bars/${barId}`, BarWithRoleDTO.parse);
+  }
+
+  public async create(body: CreateBarDTO) {
+    return await Styx.post('/api/bars/create', { body }, IdRespDTO.parse);
   }
 
   public get members() {
