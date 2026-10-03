@@ -16,6 +16,7 @@ import {
 import { bars, barUsers, db, users } from '~/database';
 import { getUser, type AuthedUser } from '~/auth/kinde';
 import { getBarWith } from '~/middleware/bar';
+import { publicUserQuery } from '~/utils/user';
 import { HTTPException } from 'hono/http-exception';
 
 export const barController = new Hono();
@@ -127,12 +128,12 @@ barController.delete('/:barId', getUser, getBarWith(), async (c) => {
 barController.get('/:barId/members', getUser, getBarWith(), async (c) => {
   const bar = c.var.bar;
 
-  const owner = await db.query.users.findFirst({ where: eq(users.id, bar.ownedBy), with: { profileImage: true } });
+  const owner = await db.query.users.findFirst({ where: eq(users.id, bar.ownedBy), ...publicUserQuery });
   if (!owner) throw new HTTPException(500, { message: `Can't find owner of ${bar.id}` });
 
   const members = await db.query.barUsers.findMany({
     where: eq(barUsers.barId, bar.id),
-    with: { user: { with: { profileImage: true } } },
+    with: { user: publicUserQuery },
   });
 
   // Highest role first (in `BarRole` order), then alphabetical, so clients can group without re-sorting.

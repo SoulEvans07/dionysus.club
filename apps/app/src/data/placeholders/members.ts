@@ -6,10 +6,7 @@ const placeholderMember: GetBarMemberDTO = {
   role: 'member',
   user: {
     id: 'placeholder-user',
-    kindeId: 'placeholder-kinde',
     username: 'xxxxxxxxxx',
-    email: 'xxxxxxxx@xxxxxx.xxx',
-    profileImageId: null,
     profileImage: null,
   },
 };

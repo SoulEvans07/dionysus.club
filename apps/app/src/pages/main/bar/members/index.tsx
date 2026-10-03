@@ -134,7 +134,7 @@ function MemberRow(props: MemberRowProps) {
         alt=""
         className={cn('size-11 shrink-0 rounded-full', { skeleton })}
       />
-      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+      <div className="flex min-w-0 flex-1">
         <div className={cn('flex min-w-0 items-center gap-2', { 'skeleton w-fit rounded-md': skeleton })}>
           <span className="truncate font-medium">{user.username}</span>
           {isMe && (
@@ -142,13 +142,6 @@ function MemberRow(props: MemberRowProps) {
               You
             </span>
           )}
-        </div>
-        <div
-          className={cn('truncate text-sm text-slate-500 dark:text-slate-400', {
-            'skeleton w-fit rounded-md': skeleton,
-          })}
-        >
-          {user.email}
         </div>
       </div>
       {onSelect && <ChevronRight className="size-4 shrink-0 text-slate-400 dark:text-slate-500" />}

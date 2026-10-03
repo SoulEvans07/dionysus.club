@@ -20,3 +20,11 @@ export const UserWithImageDTO = UserDTO.extend({
   profileImage: ImageDTO.nullable(),
 });
 export type UserWithImageDTO = z.infer<typeof UserWithImageDTO>;
+
+// All another user may see of someone. Every user is public for now; private profiles come later.
+export const PublicUserDTO = z.object({
+  id: z.string(),
+  username: z.string(),
+  profileImage: ImageDTO.nullable(),
+});
+export type PublicUserDTO = z.infer<typeof PublicUserDTO>;

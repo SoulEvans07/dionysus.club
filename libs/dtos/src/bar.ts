@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { ImageDTO } from './image';
 import { TwBaseColor } from './colors';
 import { DynamicIcon } from './icons';
-import { UserWithImageDTO } from './user';
+import { PublicUserDTO } from './user';
 
 export const BarType = z.enum(['public', 'private', 'personal', 'system']);
 export type BarType = z.infer<typeof BarType>;
@@ -56,7 +56,7 @@ export type BarMemberDTO = z.infer<typeof BarMemberDTO>;
 
 export const GetBarMemberDTO = BarMemberDTO.extend({
   barId: z.string(),
-  user: UserWithImageDTO,
+  user: PublicUserDTO,
 });
 export type GetBarMemberDTO = z.infer<typeof GetBarMemberDTO>;
 

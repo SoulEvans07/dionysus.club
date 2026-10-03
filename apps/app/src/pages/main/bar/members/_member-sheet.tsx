@@ -40,7 +40,7 @@ export function MemberSheet(props: MemberSheetProps) {
           <MemberActions key={shown.userId} barId={barId} actorRole={actorRole} member={shown} onDone={onClose}>
             <Title className="truncate font-serif text-2xl tracking-tight">{shown.user.username}</Title>
             <Description className="truncate text-sm text-slate-500 dark:text-slate-400">
-              {shown.user.email} · {roleLabels[shown.role].one}
+              {roleLabels[shown.role].one}
             </Description>
           </MemberActions>
         )}
